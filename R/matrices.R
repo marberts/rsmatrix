@@ -57,11 +57,11 @@ rs_x <- function(p2, p1, z) {
   # check input
   stopifnot(
     "'p2' and 'p1' must be numeric vectors" = 
-      is.vector(p2, "numberic") && is.vector(p1, "numeric"), 
+      is.vector(p2, "numeric") && is.vector(p1, "numeric"), 
     "'p2' and 'p1' must be the same length" =
       length(p2) == length(p1),
     "'z' must be a matrix" = 
-      is.matrix(z), 
+      length(dim(z)) == 2L, 
     "Each column in 'z' must be the same length as 'p2' and 'p1'" = 
       length(p2) == nrow(z)
   )
