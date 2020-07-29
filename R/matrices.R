@@ -30,13 +30,15 @@ rs_z <- function(t2, t1, f, sparse = FALSE) {
     mm <- stats::model.matrix
   }
   # turn inputs into factors
-  lev <- as.character(sort(unique(c(t2, t1))))
+  lev <- sort(unique(c(as.character(t2), as.character(t1))))
   # throw an error if there are fewer than 2 levels
   if (length(lev) < 2L) stop("There must be at least two levels in 't2' and 't1'")
-  # throw a warning if any t2 < t1
-  if (any(t2 < t1)) warning("All elements of 't2' should be greater than the corresponding elements in 't1'")
   t2 <- factor(t2, lev)
   t1 <- factor(t1, lev)
+  # throw a warning if any t2 < t1
+  if (any(as.numeric(t2) <= as.numeric(t1))) {
+    warning("All elements of 't2' should be greater than the corresponding elements in 't1'")
+  } 
   # interact with f
   if (!missing(f)) {
     f <- as.factor(f)
