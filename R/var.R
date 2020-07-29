@@ -2,18 +2,19 @@ rs_var <- function(u, Z, X = Z, ids = seq(nrow(X)), df) {
   # check input
   stopifnot("'u' must be a column vector" = 
               length(dim(u)) == 2L && ncol(u) == 1L,
-            "'X' must be a matrix" = 
-              length(dim(X)) == 2L,
-            "'X' and 'u' must have the same number of rows" = 
-              nrow(u) == nrow(X),
-            "'X' and 'Z' must have the same dimension" =
+            "'Z' must be a matrix" = 
+              length(dim(Z)) == 2L,
+            "'Z' and 'u' must have the same number of rows" = 
+              nrow(u) == nrow(Z),
+            "'Z' and 'X' must have the same dimensions" =
               identical(dim(X), dim(Z)),
             "'ids' must be an atomic vector" = 
               is.atomic(ids),
             "'ids' must be the same length as 'u'" = 
               length(ids) == nrow(u),
             "'df' must be a length 1 numeric vector" = 
-              missing(df) || length(df) == 1L && is.vector(df, "numeric"))
+              missing(df) || length(df) == 1L && is.vector(df, "numeric")
+            )
   # the meat
   ug <- split.data.frame(u, ids)
   Zg <- split.data.frame(Z, ids)

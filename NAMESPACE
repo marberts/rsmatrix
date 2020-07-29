@@ -2,4 +2,4 @@ export(rs_z)
 export(rs_x)
 export(rs_pair)
 export(rs_unpair)
-
+export(rs_var)
