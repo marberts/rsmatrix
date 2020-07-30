@@ -7,7 +7,7 @@ Compute a cluster-robust variance matrix for a linear regression, with or withou
 }
 
 \usage{
-rs_ var(u, Z, X = Z, ids = seq(nrow(X)), df)
+rs_var(u, Z, X = Z, ids = seq(nrow(X)), df)
 }
 
 \arguments{
@@ -27,7 +27,7 @@ A kxk matrix.
 }
 
 \details{
-This function calculates the standard robust variance matrix for a linear regression, as in Manski (1988, Theorem 1 in Chapter 8) or White (2001, Theorem 6.3); that is, (Z'X)^-1 V (X'Z)^-1.
+This function calculates the standard robust variance matrix for a linear regression, as in Manski (1988, section 8.1.2) or White (2001, Theorem 6.3); that is, (Z'X)^-1 V (X'Z)^-1.
 
 It is useful when a regression is calculated by hand. This function gives the same result as \code{vcovHC(x, type = 'sss', cluster = 'group')} from the 'plm' package.
 }

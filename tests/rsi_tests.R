@@ -1,8 +1,24 @@
+library(rsmatrix)
+
 set.seed(4321)
 t2 <- sample(101:200)
 t1 <- sample(1:100) 
 p2 <- runif(100)
 p1 <- runif(100)
+
+x <- data.frame(date = c(3, 2, 3, 2, 3, 3), 
+                date_prev = c(1, 1, 2, 1, 2, 1), 
+                price = 6:1, 
+                price_prev = c(1, 1, 5, 1, 3, 1),
+                id = c("a", "b", "b", "c", "c", "d"))
+Z <- rs_z(x$date, x$date_prev)
+Z1 <- Z[, -1]
+X <- rs_x(x$price, x$price_prev, Z)
+X1 <- X[, -1]
+y <- log(x$price) - log(x$price_prev)
+Y <- -X[, 1]
+b <- solve(crossprod(Z1), crossprod(Z1, y))
+g <- solve(crossprod(Z1, X1), crossprod(Z1, Y))
 
 #---- Tests for matrices ----
 stopifnot(
@@ -36,6 +52,20 @@ stopifnot(
               Matrix::Matrix(rs_z(t2, t1), sparse = TRUE))
     identical(rs_x(p2, p1, rs_z(t2, t1, sparse = TRUE)), 
               Matrix::Matrix(rs_x(p2, p1, rs_z(t2, t1)), sparse = TRUE))
+    # test results
+    # results from lm
+    max(abs(b[, 1] - c(1.306078088, 0.943826747))) < .Machine$double.eps^0.5
+    # results from vcovHC
+    max(abs(rs_var(y - Z1 %*% b, Z1) -
+              matrix(c(0.090470592, 0.144521572, 0.144521572, 0.274811790), ncol = 2))) < .Machine$double.eps^0.5
+    # results from plm
+    max(abs(rs_var(y - Z1 %*% b, Z1, ids = x$id) -
+              matrix(c(0.091047862, 0.162948279, 0.162948279, 0.310083942), ncol = 2))) < .Machine$double.eps^0.5
+    # results from ivreg
+    max(abs(g[, 1] - c(0.2375, 0.3000))) < .Machine$double.eps^0.5
+    # results from vcovHC
+    max(abs(rs_var(Y - X1 %*% g, Z1, X1) - 
+              matrix(c(0.003587000, 0.007032129, 0.007032129, 0.017439844), ncol = 2))) < .Machine$double.eps^0.5
   }, 
   local = getNamespace("rsmatrix")
 )

@@ -39,9 +39,9 @@ Shiller, R. J. (1991). Arithmetic repeat sales price estimators. \emph{Journal o
 
 \examples{
 # Make some data
-x <- data.frame(date = c(3, 2, 3), 
-                date_prev = c(1, 1, 2), 
-                price = 3:1, 
+x <- data.frame(date = c(3, 2, 3, 2, 3, 3), 
+                date_prev = c(1, 1, 2, 1, 2, 1), 
+                price = 6:1, 
                 price_prev = 1)
 
 # Calculate the GRS index
