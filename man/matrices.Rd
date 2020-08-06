@@ -26,10 +26,14 @@ rs_x(p2, p1, z)
 }
 
 \value{
-A matrix.
+Either a regular matrix if \code{sparse = FALSE}, or a sparse matrix of class 'dgCMAtrix' if \code{sparse = FALSE}.
 }
 
 \details{
+The \code{rs_z()} function computes a generalization of the Z matrix in Shiller (1991, section I) that is applicable to grouped data. This is useful for calculating separate indexes for many, say, cities without needing an explicit loop.
+
+The \code{rs_x()} function computes the X matrix in Shiller (1991, section II) that is also applicable to grouped data. 
+
 The Z matrix is not well defined if either \code{t1} or \code{t2} have missing values, and an error is thrown if any inputs have missing values. Similarly, it should always be the case that \code{t2 > t1}, otherwise a warning is given.
 }
 

@@ -45,7 +45,7 @@ A data.frame.
 }
 
 \details{
-Making sales pairs takes consecutive sales for each id and turns them into pairs of consecutive sales. This is equivalent to first-differencing the data.
+Making sales pairs takes consecutive sales for each \code{id} and turns them into pairs of consecutive sales. This is equivalent to first-differencing the data.
 
 Observations with missing values and duplicated observations are not removed prior to creating sales pairs. Making sales pairs is generally not well defined with missing and duplicated values, and these should be removed prior to making pairs.
 
