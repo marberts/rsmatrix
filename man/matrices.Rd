@@ -53,7 +53,7 @@ Z <- rs_z(x$date, x$date_prev)
 Z1 <- Z[, -1] # set period 1 as ref period
 y <- log(x$price) - log(x$price_prev)
 b <- solve(crossprod(Z1), crossprod(Z1, y))[, 1]
-# or use the QR decomposition: b <- qr.coef(qr(Z1, y))
+# or use the QR decomposition: b <- qr.coef(qr(Z1), y))
 exp(b) * 100
 
 # Calculate the ARS index
