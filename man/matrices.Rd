@@ -26,7 +26,7 @@ rs_x(p2, p1, z)
 }
 
 \value{
-Either a regular matrix if \code{sparse = FALSE}, or a sparse matrix of class 'dgCMAtrix' if \code{sparse = FALSE}.
+Either a regular matrix if \code{sparse = FALSE}, or a sparse matrix of class 'dgCMatrix' if \code{sparse = TRUE}.
 }
 
 \details{
@@ -48,12 +48,12 @@ x <- data.frame(date = c(3, 2, 3, 2, 3, 3),
                 price = 6:1, 
                 price_prev = 1)
 
-# Calculate the GRS index
+# Calculate the GRS index in Bailey, Muth, and Nourse (1963)
 Z <- rs_z(x$date, x$date_prev)
 Z1 <- Z[, -1] # set period 1 as ref period
 y <- log(x$price) - log(x$price_prev)
 b <- solve(crossprod(Z1), crossprod(Z1, y))[, 1]
-# or use the QR decomposition: b <- qr.coef(qr(Z1), y))
+# or b <- qr.coef(qr(Z1), y)
 exp(b) * 100
 
 # Calculate the ARS index
@@ -61,7 +61,7 @@ X <- rs_x(x$price, x$price_prev, Z)
 X1 <- X[, -1] # set period 1 as ref period
 Y <- -X[, 1]
 b <- solve(crossprod(Z1, X1), crossprod(Z1, Y))[, 1]
-# or use the QR decomposition: b <- qr.coef(qr(crossprod(Z1, X1)), crossprod(Z1, Y))
+# or b <- qr.coef(qr(crossprod(Z1, X1)), crossprod(Z1, Y))
 100 / b
 
 # Works with grouped data

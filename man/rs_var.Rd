@@ -46,7 +46,7 @@ mtcars$clust<- letters[1:4]
 x <- model.matrix(~ cyl + disp, mtcars)
 y <- matrix(mtcars$mpg)
 # Regression coefficients
-b <- solve(crossprod(x)) \%*\% crossprod(x, y)
+b <- solve(crossprod(x), crossprod(x, y))
 # Residuals
 r <- y - x \%*\% b
 # Robust variance matrix
