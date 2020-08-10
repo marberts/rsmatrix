@@ -1,22 +1,5 @@
 #---- Z matrix ----
-rs_z <- function(t2, t1, f, sparse = FALSE) {
-  # check input
-  stopifnot(
-    "'t2' and 't1' must be atomic vectors" =
-      is.atomic(t2) && is.atomic(t1), 
-    "'t2' and 't1' must be the same length" = 
-      length(t2) == length(t1),
-    "'f' must be an atomic vector" = 
-      missing(f) || is.atomic(f),
-    "'f' must be the same length as 't2' and 't1'" = 
-      missing(f) || length(f) == length(t2),
-    "'t2' and 't1' cannot contain NAs" = 
-      !anyNA(t2) && !anyNA(t1),
-    "'f' cannot contain NAs" = 
-      missing(f) || !anyNA(f),
-    "'sparse' must be TRUE or FALSE" = 
-      length(sparse) == 1L && is.logical(sparse) && !is.na(sparse)
-  )
+rs_z_ <- function(t2, t1, f = NULL, sparse = FALSE) {
   # make sure Matrix is installed if spare == TRUE
   if (sparse && !requireNamespace('Matrix', quietly = TRUE)) {
     stop("The 'Matrix' library is not installed.")
@@ -40,10 +23,10 @@ rs_z <- function(t2, t1, f, sparse = FALSE) {
     }
   }
   # interact with f
-  if (!missing(f)) {
+  if (!is.null(f)) {
     f <- as.factor(f)
-    t2 <- f:t2
-    t1 <- f:t1
+    t2 <- interaction(f, t2)
+    t1 <- interaction(f, t1)
   }
   # calculate Z
   if (nlevels(t2) < 2L) {
@@ -65,19 +48,28 @@ rs_z <- function(t2, t1, f, sparse = FALSE) {
   z
 }
 
-#---- X matrix ----
-rs_x <- function(p2, p1, z) {
+#---- All matrices ----
+rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
   # check input
   stopifnot(
-    "'p2' and 'p1' must be numeric vectors" = 
-      is.vector(p2, "numeric") && is.vector(p1, "numeric"), 
-    "'p2' and 'p1' must be the same length" =
-      length(p2) == length(p1),
-    "'z' must be a matrix" = 
-      length(dim(z)) == 2L, 
-    "Each column in 'z' must be the same length as 'p2' and 'p1'" = 
-      length(p2) == nrow(z)
+    "'t2' and 't1' must be atomic vectors of the same length" =
+      is.atomic(t2) && is.atomic(t1) && length(t2) == length(t1), 
+    "'p2' and 'p1' must be numeric vectors the same length as 't2' and 't1'" =
+      is.vector(p2, "numeric") && is.vector(p1, "numeric") && 
+      length(p2) == length(p1) && length(p2) == length(t2),
+    "'f' must be an atomic vector, either NULL or the same length as 't2' and 't1'" = 
+      is.atomic(f) && (is.null(f) || length(f) == length(t2)),
+    "'t2', 't1', and 'f' cannot contain NAs" = 
+      !anyNA(t2) && !anyNA(t1) && !anyNA(f),
+    "'sparse' must be TRUE or FALSE" = 
+      length(sparse) == 1L && is.logical(sparse) && !is.na(sparse)
   )
-  # return X matrix
-  (z > 0) * p2 - (z < 0) * p1
+  z <- rs_z_(t2, t1, f, sparse)
+  x <- (z > 0) * p2 - (z < 0) * p1
+  n <- max(length(unique(f)), min(1L, length(z)))
+  y <- -(if (sparse) Matrix::rowSums else rowSums)(x[, seq_len(n), drop = FALSE])
+  list(Z = z[, -seq_len(n), drop = FALSE], 
+       X = x[, -seq_len(n), drop = FALSE], 
+       Y = y,
+       y = log(p2) - log(p1))
 }

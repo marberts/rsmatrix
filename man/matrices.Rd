@@ -1,40 +1,33 @@
-\name{matrices}
-\alias{rs_z}
-\alias{rs_x}
-\title{Shiller's Z and X matrices}
+\name{rs_matrix}
+\alias{rs_matrix}
+\title{Shiller's Z, X, y, and Y matrices}
 
 \description{
-Compute the Z and X matrices in Shiller (1991, sections I-II) from sales-pair data to calculate a repeat-sales price index.
+Compute the Z, X, y, and Y matrices in Shiller (1991, sections I-II) from sales-pair data to calculate a repeat-sales price index.
 }
 
 \usage{
-rs_z(t2, t1, f, sparse = FALSE)
-
-rs_x(p2, p1, z)
+rs_matrix(t2, t1, p2, p1, f = NULL, sparse = FALSE)
 }
 
 \arguments{
 \item{t2, t1}{A pair of vectors giving the time period of the second and first sale, respectively. Usually a vector of dates.}
 
+\item{p2, p1}{A pair of numeric vectors giving the price of the second and first sale, respectively.}
+
 \item{f}{An optional factor the same length as \code{t1} and \code{t2}, or a vector to be turned into a factor, that is used to group \code{t2} and \code{t1}.}
 
 \item{sparse}{Should sparse matrices from 'Matrix' be used in the calculation (faster for large datasets), or regular dense matrices?}
-
-\item{p2, p1}{A pair of numeric vectors giving the price of the second and first sale, respectively.}
-
-\item{z}{Shiller's Z matrix.}
 }
 
 \value{
-Either a regular matrix if \code{sparse = FALSE}, or a sparse matrix of class 'dgCMatrix' if \code{sparse = TRUE}.
+A list of two matrices (Z and X) and two vectors (y and Y), either regular matrices if \code{sparse = FALSE}, or a sparse matrices of class 'dgCMatrix' if \code{sparse = TRUE}.
 }
 
 \details{
-The \code{rs_z()} function computes a generalization of the Z matrix in Shiller (1991, section I) that is applicable to grouped data. This is useful for calculating separate indexes for many, say, cities without needing an explicit loop.
+The \code{rs_matrix()} function computes a generalization of the matrices in Shiller (1991, sections I-II) that are applicable to grouped data. This is useful for calculating separate indexes for many, say, cities without needing an explicit loop.
 
-The \code{rs_x()} function computes the X matrix in Shiller (1991, section II) that is also applicable to grouped data. 
-
-The Z matrix is not well defined if either \code{t1} or \code{t2} have missing values, and an error is thrown if any inputs have missing values. Similarly, it should always be the case that \code{t2 > t1}, otherwise a warning is given.
+The Z, X, and Y matrices are not well defined if either \code{t1} or \code{t2} have missing values, and an error is thrown if any inputs have missing values. Similarly, it should always be the case that \code{t2 > t1}, otherwise a warning is given.
 }
 
 \references{
@@ -49,19 +42,14 @@ x <- data.frame(date = c(3, 2, 3, 2, 3, 3),
                 price_prev = 1)
 
 # Calculate the GRS index in Bailey, Muth, and Nourse (1963)
-Z <- rs_z(x$date, x$date_prev)
-Z1 <- Z[, -1] # set period 1 as ref period
-y <- log(x$price) - log(x$price_prev)
-b <- solve(crossprod(Z1), crossprod(Z1, y))[, 1]
-# or b <- qr.coef(qr(Z1), y)
+mat <- rs_matrix(x$date, x$date_prev, x$price, x$price_prev)
+b <- solve(crossprod(mat$Z), crossprod(mat$Z, mat$y))[, 1]
+# or b <- qr.coef(qr(mat$Z), y)
 exp(b) * 100
 
 # Calculate the ARS index
-X <- rs_x(x$price, x$price_prev, Z)
-X1 <- X[, -1] # set period 1 as ref period
-Y <- -X[, 1]
-b <- solve(crossprod(Z1, X1), crossprod(Z1, Y))[, 1]
-# or b <- qr.coef(qr(crossprod(Z1, X1)), crossprod(Z1, Y))
+b <- solve(crossprod(mat$Z, mat$X), crossprod(mat$Z, mat$Y))[, 1]
+# or b <- qr.coef(qr(crossprod(mat$Z, mat$X)), crossprod(mat$Z, mat$Y))
 100 / b
 
 # Works with grouped data
@@ -71,11 +59,7 @@ x <- data.frame(date = c(3, 2, 3, 2),
                 price_prev = 1,
                 group = c("a", "a", "b", "b"))
                 
-Z <- rs_z(x$date, x$date_prev, x$group)
-Z1 <- Z[, -c(1, 4)] # set period 1 as ref period for each group
-X <- rs_x(x$price, x$price_prev, Z)
-X1 <- X[, -c(1, 4)] # set period 1 as ref period fo each group
-Y <- -rowSums(X[, c(1, 4)]) # make sure Y is a vector
-b <- solve(crossprod(Z1, X1), crossprod(Z1, Y))[, 1]
+mat <- rs_matrix(x$date, x$date_prev, x$price, x$price_prev, x$group)
+b <- solve(crossprod(mat$Z, mat$X), crossprod(mat$Z, mat$Y))[, 1]
 100 / b
 }
