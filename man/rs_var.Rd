@@ -7,7 +7,7 @@ Compute a cluster-robust variance matrix for a linear regression, with or withou
 }
 
 \usage{
-rs_var(u, Z, X = Z, ids = seq(nrow(X)), df)
+rs_var(u, Z, X = Z, ids = seq_len(nrow(X)), df)
 }
 
 \arguments{
@@ -50,7 +50,7 @@ b <- solve(crossprod(x), crossprod(x, y))
 # Residuals
 r <- y - x \%*\% b
 # Robust variance matrix
-vcov <- rvar(r, x, ids = mtcars$clust)
+vcov <- rs_var(r, x, ids = mtcars$clust)
 }
 \dontrun{
 # Same as plm

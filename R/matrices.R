@@ -54,7 +54,7 @@ rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
   stopifnot(
     "'t2' and 't1' must be atomic vectors of the same length" =
       is.atomic(t2) && is.atomic(t1) && length(t2) == length(t1), 
-    "'p2' and 'p1' must be numeric vectors the same length as 't2' and 't1'" =
+    "'p2' and 'p1' must be numeric vectors, the same length as 't2' and 't1'" =
       is.vector(p2, "numeric") && is.vector(p1, "numeric") && 
       length(p2) == length(p1) && length(p2) == length(t2),
     "'f' must be an atomic vector, either NULL or the same length as 't2' and 't1'" = 
@@ -64,12 +64,22 @@ rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
     "'sparse' must be TRUE or FALSE" = 
       length(sparse) == 1L && is.logical(sparse) && !is.na(sparse)
   )
+  # make the z matrix (including first column)
   z <- rs_z_(t2, t1, f, sparse)
-  x <- (z > 0) * p2 - (z < 0) * p1
-  n <- max(length(unique(f)), min(1L, length(z)))
-  y <- -(if (sparse) Matrix::rowSums else rowSums)(x[, seq_len(n), drop = FALSE])
-  list(Z = z[, -seq_len(n), drop = FALSE], 
-       X = x[, -seq_len(n), drop = FALSE], 
-       Y = y,
-       y = log(p2) - log(p1))
+  # number of columns that need to be removed for base period
+  n <- max(length(unique(f)), min(1L, ncol(z)))
+  # function to make the x matrix from the z matrix
+  rs_x_ <- function(m) (m > 0) * p2 - (m < 0) * p1
+  # return value
+  function(matrix = c("Z", "X", "y", "Y")) {
+    switch(
+      match.arg(matrix),
+      Z = z[, -seq_len(n), drop = FALSE],
+      X = rs_x_(z[, -seq_len(n), drop = FALSE]),
+      y = stats::setNames(log(p2 / p1), rownames(z)),
+      Y = -(if (sparse) Matrix::rowSums else rowSums)(
+        rs_x_(z[, seq_len(n), drop = FALSE])
+      )
+    )
+  }
 }

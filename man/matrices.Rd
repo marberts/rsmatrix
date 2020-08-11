@@ -1,9 +1,9 @@
 \name{rs_matrix}
 \alias{rs_matrix}
-\title{Shiller's Z, X, y, and Y matrices}
+\title{Shiller's repeat-sales matrices}
 
 \description{
-Compute the Z, X, y, and Y matrices in Shiller (1991, sections I-II) from sales-pair data to calculate a repeat-sales price index.
+Create a function to compute the Z, X, y, and Y matrices in Shiller (1991, sections I-II) from sales-pair data to calculate a repeat-sales price index.
 }
 
 \usage{
@@ -21,11 +21,11 @@ rs_matrix(t2, t1, p2, p1, f = NULL, sparse = FALSE)
 }
 
 \value{
-A list of two matrices (Z and X) and two vectors (y and Y), either regular matrices if \code{sparse = FALSE}, or a sparse matrices of class 'dgCMatrix' if \code{sparse = TRUE}.
+A function that takes a single argument naming the desired matrix. It returns one of two matrices (Z and X) or two vectors (y and Y), either regular matrices if \code{sparse = FALSE}, or a sparse matrices of class 'dgCMatrix' if \code{sparse = TRUE}.
 }
 
 \details{
-The \code{rs_matrix()} function computes a generalization of the matrices in Shiller (1991, sections I-II) that are applicable to grouped data. This is useful for calculating separate indexes for many, say, cities without needing an explicit loop.
+The function returned by \code{rs_matrix()} computes a generalization of the matrices in Shiller (1991, sections I-II) that are applicable to grouped data. This is useful for calculating separate indexes for many, say, cities without needing an explicit loop.
 
 The Z, X, and Y matrices are not well defined if either \code{t1} or \code{t2} have missing values, and an error is thrown if any inputs have missing values. Similarly, it should always be the case that \code{t2 > t1}, otherwise a warning is given.
 }
@@ -41,15 +41,21 @@ x <- data.frame(date = c(3, 2, 3, 2, 3, 3),
                 price = 6:1, 
                 price_prev = 1)
 
+# Calculate matrices
+mat <- with(x, rs_matrix(date, date_prev, price, price_prev))
+mat("Z") # Z matrix
+mat("X") # X matrix
+mat("y") # y vector
+mat("Y") # Y vector
+
 # Calculate the GRS index in Bailey, Muth, and Nourse (1963)
-mat <- rs_matrix(x$date, x$date_prev, x$price, x$price_prev)
-b <- solve(crossprod(mat$Z), crossprod(mat$Z, mat$y))[, 1]
-# or b <- qr.coef(qr(mat$Z), y)
+b <- solve(crossprod(mat("Z")), crossprod(mat("Z"), mat("y")))[, 1]
+# or b <- qr.coef(qr(mat("Z")), mat("y"))
 exp(b) * 100
 
 # Calculate the ARS index
-b <- solve(crossprod(mat$Z, mat$X), crossprod(mat$Z, mat$Y))[, 1]
-# or b <- qr.coef(qr(crossprod(mat$Z, mat$X)), crossprod(mat$Z, mat$Y))
+b <- solve(crossprod(mat("Z"), mat("X")), crossprod(mat("Z"), mat("Y")))[, 1]
+# or b <- qr.coef(qr(crossprod(mat("Z"), mat("X"))), crossprod(mat("Z"), mat("Y")))
 100 / b
 
 # Works with grouped data
@@ -59,7 +65,7 @@ x <- data.frame(date = c(3, 2, 3, 2),
                 price_prev = 1,
                 group = c("a", "a", "b", "b"))
                 
-mat <- rs_matrix(x$date, x$date_prev, x$price, x$price_prev, x$group)
-b <- solve(crossprod(mat$Z, mat$X), crossprod(mat$Z, mat$Y))[, 1]
+mat <- with(x, rs_matrix(date, date_prev, price, price_prev, group))
+b <- solve(crossprod(mat("Z"), mat("X")), crossprod(mat("Z"), mat("Y")))[, 1]
 100 / b
 }

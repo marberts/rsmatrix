@@ -1,4 +1,4 @@
-rs_var <- function(u, Z, X = Z, ids = seq(nrow(X)), df) {
+rs_var <- function(u, Z, X = Z, ids = seq_len(nrow(X)), df) {
   # check input
   stopifnot("'u' must be a column vector" = 
               length(dim(u)) == 2L && ncol(u) == 1L,
