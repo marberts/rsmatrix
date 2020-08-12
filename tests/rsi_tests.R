@@ -12,6 +12,7 @@ x <- data.frame(date = c(3, 2, 3, 2, 3, 3),
                 price_prev = c(1, 1, 5, 1, 3, 1),
                 id = c("a", "b", "b", "c", "c", "d"))
 mat <- with(x, rs_matrix(date, date_prev, price, price_prev))
+mats <- with(x, rs_matrix(date, date_prev, price, price_prev, sparse = TRUE))
 b <- solve(crossprod(mat("Z")), crossprod(mat("Z"), mat("y")))
 g <- solve(crossprod(mat("Z"), mat("X")), crossprod(mat("Z"), mat("Y")))
 
@@ -90,6 +91,8 @@ stopifnot(
     # results from vcovHC
     max(abs(rs_var(mat("Y") - mat("X") %*% g, mat("Z"), mat("X")) - 
               matrix(c(0.003587000, 0.007032129, 0.007032129, 0.017439844), ncol = 2))) < .Machine$double.eps^0.5
+    max(abs(rs_var(mat("Y") - mat("X") %*% g, mat("Z"), mat("X")) - 
+              rs_var(mats("Y") - mats("X") %*% g, mats("Z"), mats("X")))) < .Machine$double.eps^0.5
   }, 
   local = getNamespace("rsmatrix")
 )

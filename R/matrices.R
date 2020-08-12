@@ -1,9 +1,5 @@
 #---- Z matrix ----
 rs_z_ <- function(t2, t1, f = NULL, sparse = FALSE) {
-  # make sure Matrix is installed if spare == TRUE
-  if (sparse && !requireNamespace('Matrix', quietly = TRUE)) {
-    stop("The 'Matrix' library is not installed.")
-  }
   # turn inputs into factors
   lev <- sort(unique(c(as.character(t2), as.character(t1))))
   t2 <- factor(t2, lev)
@@ -33,10 +29,10 @@ rs_z_ <- function(t2, t1, f = NULL, sparse = FALSE) {
     # return a nx1 matrix of 0's if there's only one level
     # return a 0x0 matrix if there are no levels
     z <- matrix(rep(0, length(t2)), ncol = nlevels(t2))
-    if (sparse) z <- methods::as(z, "dgCMatrix")
+    if (sparse) z <- as(z, "dgCMatrix")
   } else {
     # model matrix otherwise
-    mm <- if (sparse) Matrix::sparse.model.matrix else stats::model.matrix
+    mm <- if (sparse) sparse.model.matrix else model.matrix
     z <- mm(~ t2 - 1, contrasts.arg = list(t2 = "contr.treatment")) - 
       mm(~ t1 - 1, contrasts.arg = list(t1 = "contr.treatment"))
   }
@@ -47,6 +43,9 @@ rs_z_ <- function(t2, t1, f = NULL, sparse = FALSE) {
   attributes(z)[c('assign', 'contrasts')] <- NULL
   z
 }
+
+# function to make the x matrix from the z matrix
+rs_x_ <- function(z, p2, p1) (z > 0) * p2 - (z < 0) * p1
 
 #---- All matrices ----
 rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
@@ -68,18 +67,14 @@ rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
   z <- rs_z_(t2, t1, f, sparse)
   # number of columns that need to be removed for base period
   n <- max(length(unique(f)), min(1L, ncol(z)))
-  # function to make the x matrix from the z matrix
-  rs_x_ <- function(m) (m > 0) * p2 - (m < 0) * p1
   # return value
   function(matrix = c("Z", "X", "y", "Y")) {
     switch(
       match.arg(matrix),
       Z = z[, -seq_len(n), drop = FALSE],
-      X = rs_x_(z[, -seq_len(n), drop = FALSE]),
-      y = stats::setNames(log(p2 / p1), rownames(z)),
-      Y = -(if (sparse) Matrix::rowSums else rowSums)(
-        rs_x_(z[, seq_len(n), drop = FALSE])
-      )
+      X = rs_x_(z[, -seq_len(n), drop = FALSE], p2, p1),
+      y = setNames(log(p2 / p1), rownames(z)),
+      Y = -rowSums(rs_x_(z[, seq_len(n), drop = FALSE], p2, p1))
     )
   }
 }

@@ -8,10 +8,8 @@ rs_var <- function(u, Z, X = Z, ids = seq_len(nrow(X)), df) {
               nrow(u) == nrow(Z),
             "'Z' and 'X' must have the same dimensions" =
               identical(dim(X), dim(Z)),
-            "'ids' must be an atomic vector" = 
-              is.atomic(ids),
-            "'ids' must be the same length as 'u'" = 
-              length(ids) == nrow(u),
+            "'ids' must be an atomic vector, the same length as 'u'" = 
+              is.atomic(ids) && length(ids) == nrow(u),
             "'df' must be a length 1 numeric vector" = 
               missing(df) || length(df) == 1L && is.vector(df, "numeric")
             )
