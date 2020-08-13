@@ -51,12 +51,20 @@ mat("Y") # Y vector
 # Calculate the GRS index in Bailey, Muth, and Nourse (1963)
 b <- solve(crossprod(mat("Z")), crossprod(mat("Z"), mat("y")))[, 1]
 # or b <- qr.coef(qr(mat("Z")), mat("y"))
-exp(b) * 100
+(grs <- exp(b) * 100)
 
-# Calculate the ARS index
+# Covariance matrix
+vcov <- rs_var(mat("y") - mat("Z") \%*\% b, mat("Z"))
+sqrt(diag(vcov)) * grs # delta method
+
+# Calculate the ARS index in Shiller (1991)
 b <- solve(crossprod(mat("Z"), mat("X")), crossprod(mat("Z"), mat("Y")))[, 1]
 # or b <- qr.coef(qr(crossprod(mat("Z"), mat("X"))), crossprod(mat("Z"), mat("Y")))
-100 / b
+(ars <- 100 / b)
+
+# Standard errors
+vcov <- rs_var(mat("Y") - mat("X") \%*\% b, mat("Z"), mat("X"))
+sqrt(diag(vcov)) * ars^2 / 100 # delta method
 
 # Works with grouped data
 x <- data.frame(date = c(3, 2, 3, 2), 

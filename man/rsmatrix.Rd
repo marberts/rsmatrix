@@ -3,18 +3,18 @@
 \alias{rsmatrix-package}
 \alias{rsmatrix}
 
-\title{Matrices for Repeat-Sale Price Indexes}
+\title{Matrices for Repeat-Sales Price Indexes}
 
 \description{
-A small package for calculating the matrices in Shiller (1991, <doi:10.1016/S1051-1377(05)80028-2>) for repeat-sale price indexes.
+A small package for calculating the matrices in Shiller (1991, <doi:10.1016/S1051-1377(05)80028-2>) for repeat-sales price indexes.
 }
 
 \details{
-Most repeat-sale price indexes used in practice require the matrices in Shiller (1991, sections I-II), e.g., S&P's Case-Shiller index, Statistics Canada's RPPI. The \code{\link[rsmatrix:rs_matrix]{rs_matrix()}} function constructs these matrices. In most cases data need to be structured as "sales pairs", which can be done with the \code{\link[rsmatrix:rs_pair]{rs_pair()}} function.
+Most repeat-sales price indexes used in practice require the matrices in Shiller (1991, sections I-II), e.g., S&P's Case-Shiller index, Statistics Canada's RPPI. The \code{\link[rsmatrix:rs_matrix]{rs_matrix()}} function produces a function to construct these matrices. In most cases data need to be structured as "sales pairs", which can be done with the \code{\link[rsmatrix:rs_pair]{rs_pair()}} function.
 }
 
 \note{
-The 'mcspatial' package has some functionality for making repeat-sales indices. The functions in this package build off of those in the 'rsi' package in Kirby-McGregor and Martin (2019).
+The 'mcspatial' package has some functionality for making repeat-sales indices. The functions in this package build off of those in the 'rsi' package in Kirby-McGregor and Martin (2019), which also gives a good background on the theory of repeat-sales indexes.
 }
 
 \references{

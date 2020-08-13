@@ -14,6 +14,8 @@ rs_z_ <- function(t2, t1, f = NULL, sparse = FALSE) {
       names(t2) 
     } else if (!is.null(names(t1))) {
       names(t1)
+    } else if (!is.null(names(f))) {
+      names(f)
     } else {
       seq_along(t2)
     }
