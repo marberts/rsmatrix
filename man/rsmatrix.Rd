@@ -6,11 +6,11 @@
 \title{Matrices for Repeat-Sales Price Indexes}
 
 \description{
-A small package for calculating the matrices in Shiller (1991, <doi:10.1016/S1051-1377(05)80028-2>) for repeat-sales price indexes.
+A small package for calculating the matrices in Shiller (1991) that serve as the foundation for many repeat-sales price indexes.
 }
 
 \details{
-Most repeat-sales price indexes used in practice require the matrices in Shiller (1991, sections I-II), e.g., S&P's Case-Shiller index, Statistics Canada's RPPI. The \code{\link[rsmatrix:rs_matrix]{rs_matrix()}} function produces a function to construct these matrices. In most cases data need to be structured as "sales pairs", which can be done with the \code{\link[rsmatrix:rs_pair]{rs_pair()}} function.
+Most repeat-sales price indexes used in practice require the matrices in Shiller (1991, sections I-II), e.g., S&P's Case-Shiller index, Statistics Canada's RPPI. The \code{\link[rsmatrix:rs_matrix]{rs_matrix()}} function produces a function to construct these matrices. In most cases data need to be structured as sales pairs, which can be done with the \code{\link[rsmatrix:rs_pair]{rs_pair()}} function.
 }
 
 \note{

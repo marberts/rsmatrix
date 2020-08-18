@@ -10,11 +10,22 @@ x <- data.frame(date = c(3, 2, 3, 2, 3, 3),
                 date_prev = c(1, 1, 2, 1, 2, 1), 
                 price = 6:1, 
                 price_prev = c(1, 1, 5, 1, 3, 1),
-                id = c("a", "b", "b", "c", "c", "d"))
+                id = c("a", "b", "b", "c", "c", "d"),
+                id2 = rep(c("a", "b"), each = 3))
+
 mat <- with(x, rs_matrix(date, date_prev, price, price_prev))
 mats <- with(x, rs_matrix(date, date_prev, price, price_prev, sparse = TRUE))
+matg <- with(x, rs_matrix(date, date_prev, price, price_prev, id2))
+mata <- with(subset(x, id2 == "a"),
+             rs_matrix(date, date_prev, price, price_prev))
+
 b <- solve(crossprod(mat("Z")), crossprod(mat("Z"), mat("y")))
+bg <- solve(crossprod(matg("Z")), crossprod(matg("Z"), matg("y")))
+ba <- solve(crossprod(mata("Z")), crossprod(mata("Z"), mata("y")))
+
 g <- solve(crossprod(mat("Z"), mat("X")), crossprod(mat("Z"), mat("Y")))
+gg <- solve(crossprod(matg("Z"), matg("X")), crossprod(matg("Z"), matg("Y")))
+ga <- solve(crossprod(mata("Z"), mata("X")), crossprod(mata("Z"), mata("Y")))
 
 #---- Tests for matrices ----
 stopifnot(
@@ -78,6 +89,8 @@ stopifnot(
     identical(rs_matrix(c(2, 4), 1:2, c(2, 5), 1:2, sparse = TRUE)("Y"), 
               c("1" = 1, "2" = 0))
     # test results
+    identical(as.numeric(ba[, 1]), as.numeric(bg[seq(1, 4, 2), 1]))
+    identical(as.numeric(ga[, 1]), as.numeric(gg[seq(1, 4, 2), 1]))
     # results from lm
     max(abs(b[, 1] - c(1.306078088, 0.943826747))) < .Machine$double.eps^0.5
     # results from vcovHC
@@ -94,19 +107,5 @@ stopifnot(
     max(abs(rs_var(mat("Y") - mat("X") %*% g, mat("Z"), mat("X")) - 
               rs_var(mats("Y") - mats("X") %*% g, mats("Z"), mats("X")))) < .Machine$double.eps^0.5
   }, 
-  local = getNamespace("rsmatrix")
-)
-
-#---- Tests for pair/unpair ----
-x <- data.frame(id = c(1, 2), date = c(3, 2), price = c(4, 2), x = c(2, 1), date_prev = c(1, 1), price_prev = c(3, 1))
-y <- data.frame(id = c(2, 2, 1, 1, 3), date = c(1, 2, 1, 3, 2), price = c(1, 2, 3, 4, 5), x = c(1, 1, 2, 2, 1))
-stopifnot(
-  exprs = {
-    identical(rs_pair(y), x)
-    identical(rs_unpair(x), 
-              as.data.frame(y[order(y$id), ][-5, ], row.names = 1:4))
-    identical(rs_unpair(rs_pair(data.frame(id = character(0), date = character(0), price = character(0)))), 
-              data.frame(id = character(0), date = character(0), price = character(0))) 
-  },
   local = getNamespace("rsmatrix")
 )

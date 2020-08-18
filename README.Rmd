@@ -1,27 +1,32 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file. -->
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
 # Matrices for repeat-sales price indexes
 
-A small package for calculating the matrices in Shiller (1991) that
-serve as the foundation for many repeat-sales price indexes. Builds on
-the ‘rsi’ package by Kirby-McGregor and Martin (2019).
+A small package for calculating the matrices in Shiller (1991) that serve as the foundation for many repeat-sales price indexes. Builds on the 'rsi' package by Kirby-McGregor and Martin (2019).
 
 ## Installation
 
-``` r
+```{r, eval=FALSE}
 install.package("rsmatrix")
 ```
 
 Get the development version from GitHub.
 
-``` r
+```{r, eval=FALSE}
 devtools::install_github("marberts/rsmatrix")
 ```
 
 ## Usage
 
-``` r
+```{r}
 library(rsmatrix)
 
 # Make some data
@@ -31,14 +36,7 @@ sales <- data.frame(id = c(1, 1, 1, 2, 2),
 
 # Turn into sales pairs
 (sales_pairs <- rs_pair(sales))
-```
 
-    ##   id date price date_prev price_prev
-    ## 1  1    2     3         1          1
-    ## 2  1    3     2         2          3
-    ## 3  2    3     1         1          1
-
-``` r
 # Calculate matrices
 matrix_constructor <- with(sales_pairs, 
                            rs_matrix(date, date_prev, price, price_prev))
@@ -47,24 +45,14 @@ matrices <- lapply(setNames(nm = c("Z", "X", "y", "Y")), matrix_constructor)
 # Calculate the GRS index in Bailey, Muth, and Nourse (1963)
 b <- with(matrices, solve(crossprod(Z), crossprod(Z, y))[, 1])
 (grs <- exp(b) * 100)
-```
 
-    ##        2        3 
-    ## 238.1102 125.9921
-
-``` r
 # Calculate the ARS index in Shiller (1991)
 b <- with(matrices, solve(crossprod(Z, X), crossprod(Z, Y))[, 1])
 (ars <- 100 / b)
 ```
 
-    ##        2        3 
-    ## 240.0000 133.3333
-
 ## References
 
-Kirby-McGregor, M., and Martin, S. (2019). An R package for calculating
-repeat-sale price indices. *Romanian Statistical Review*, 3:17-33.
+Kirby-McGregor, M., and Martin, S. (2019). An R package for calculating repeat-sale price indices. *Romanian Statistical Review*, 3:17-33.
 
-Shiller, R. J. (1991). Arithmetic repeat sales price estimators.
-*Journal of Housing Economics*, 1(1):110-126.
+Shiller, R. J. (1991). Arithmetic repeat sales price estimators. *Journal of Housing Economics*, 1(1):110-126.

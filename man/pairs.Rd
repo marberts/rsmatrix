@@ -9,23 +9,20 @@ Turn a long dataset with repeat sales information into a dataset of sales pairs,
 }
 
 \usage{
-rs_pair(
-  x, 
-  id = "id", 
-  date = "date", 
-  price = "price"
-)
+rs_pair(x,
+        id = "id", 
+        date = "date", 
+        price = "price")
 
-rs_unpair(
-  x,
-  id = "id",
-  date = "date",
-  date_prev = "date_prev",
-  price = "price",
-  price_prev = "price_prev"
-)
+rs_unpair(x,
+          id = "id",
+          date = "date",
+          date_prev = "date_prev",
+          price = "price",
+          price_prev = "price_prev")
 
 }
+
 \arguments{
 \item{x}{A data.frame, or something that can be coerced into one.}
 
@@ -58,20 +55,16 @@ As with making sales pairs, un-making sales pairs is generally not well defined 
 
 \examples{
 # Turn into a 'wide' dataset of sales pairs
-x <- data.frame(
-id = c(1, 1, 1, 2, 2), 
-date = c(1, 2, 3, 1, 3), 
-price = c(1, 3, 2, 1, 1)
-)
+x <- data.frame(id = c(1, 1, 1, 2, 2), 
+                date = c(1, 2, 3, 1, 3), 
+                price = c(1, 3, 2, 1, 1))
 rs_pair(x)
 
 # Turn into a 'long' dataset of sales pairs
-x <- data.frame(
-id = c(1, 1, 2), 
-date = c(2, 3, 3), 
-date_prev = c(1, 2, 1), 
-price = 3:1, 
-price_prev = c(1, 3, 1)
-)
+x <- data.frame(id = c(1, 1, 2), 
+                date = c(2, 3, 3), 
+                date_prev = c(1, 2, 1), 
+                price = 3:1, 
+                price_prev = c(1, 3, 1))
 rs_unpair(x)
 }

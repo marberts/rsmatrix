@@ -43,27 +43,27 @@ x <- data.frame(date = c(3, 2, 3, 2, 3, 3),
 
 # Calculate matrices
 mat <- with(x, rs_matrix(date, date_prev, price, price_prev))
-mat("Z") # Z matrix
-mat("X") # X matrix
-mat("y") # y vector
-mat("Y") # Y vector
+Z <- mat("Z") # Z matrix
+X <- mat("X") # X matrix
+y <- mat("y") # y vector
+Y <- mat("Y") # Y vector
 
 # Calculate the GRS index in Bailey, Muth, and Nourse (1963)
-b <- solve(crossprod(mat("Z")), crossprod(mat("Z"), mat("y")))[, 1]
-# or b <- qr.coef(qr(mat("Z")), mat("y"))
+b <- solve(crossprod(Z), crossprod(Z, y))[, 1]
+# or b <- qr.coef(qr(Z), y)
 (grs <- exp(b) * 100)
 
 # Covariance matrix
-vcov <- rs_var(mat("y") - mat("Z") \%*\% b, mat("Z"))
+vcov <- rs_var(y - Z \%*\% b, Z)
 sqrt(diag(vcov)) * grs # delta method
 
 # Calculate the ARS index in Shiller (1991)
-b <- solve(crossprod(mat("Z"), mat("X")), crossprod(mat("Z"), mat("Y")))[, 1]
-# or b <- qr.coef(qr(crossprod(mat("Z"), mat("X"))), crossprod(mat("Z"), mat("Y")))
+b <- solve(crossprod(Z, X), crossprod(Z, Y))[, 1]
+# or b <- qr.coef(qr(crossprod(Z, X)), crossprod(Z, Y))
 (ars <- 100 / b)
 
 # Standard errors
-vcov <- rs_var(mat("Y") - mat("X") \%*\% b, mat("Z"), mat("X"))
+vcov <- rs_var(Y - X \%*\% b, Z, X)
 sqrt(diag(vcov)) * ars^2 / 100 # delta method
 
 # Works with grouped data

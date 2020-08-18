@@ -1,10 +1,10 @@
 Package: rsmatrix
-Title: Matrices for Repeat-Sale Price Indexes
+Title: Matrices for Repeat-Sales Price Indexes
 Version: 0.1.0
 Authors@R: c(
     person(given = "Steve", family = "Martin", role = c("aut", "cre", "cph"), email = "stevemartin041@gmail.com")
     )
-Description: A small package for calculating the matrices in Shiller (1991, <doi:10.1016/S1051-1377(05)80028-2>) for repeat-sale price indexes.
+Description: A small package for calculating the matrices in Shiller (1991, <doi:10.1016/S1051-1377(05)80028-2>) that serve as the foundation for many repeat-sales price indexes.
 Depends: R (>= 4.0)
 Imports: Matrix, methods, stats
 License: MIT + file LICENSE
