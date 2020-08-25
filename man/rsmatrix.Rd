@@ -14,7 +14,7 @@ Most repeat-sales price indexes used in practice require the matrices in Shiller
 }
 
 \note{
-The 'mcspatial' package has some functionality for making repeat-sales indices. The functions in this package build off of those in the 'rsi' package in Kirby-McGregor and Martin (2019), which also gives a good background on the theory of repeat-sales indexes.
+The \code{'McSpatial'} package has some functionality for making repeat-sales indices. The functions in this package build off of those in the \code{'rsi'} package in Kirby-McGregor and Martin (2019), which also gives a good background on the theory of repeat-sales indexes.
 }
 
 \references{

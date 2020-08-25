@@ -27,8 +27,7 @@ rs_var <- function(u, Z, X = Z, ids = seq_len(nrow(X)), df) {
     n <- nrow(X)
     k <- ncol(X)
     g <- length(unique(ids))
-    return(g / (g - 1) * (n - 1) / (n - k) * vcov) # stata's df correction
-  } else {
-    return(df * vcov)
+    df <- g / (g - 1) * (n - 1) / (n - k) # stata's df correction
   }
+  df * vcov
 }

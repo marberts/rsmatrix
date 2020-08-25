@@ -9,17 +9,10 @@ Turn a long dataset with repeat sales information into a dataset of sales pairs,
 }
 
 \usage{
-rs_pair(x,
-        id = "id", 
-        date = "date", 
-        price = "price")
+rs_pair(x, id = "id", date = "date", price = "price")
 
-rs_unpair(x,
-          id = "id",
-          date = "date",
-          date_prev = "date_prev",
-          price = "price",
-          price_prev = "price_prev")
+rs_unpair(x, id = "id", date = "date", date_prev = "date_prev",
+          price = "price", price_prev = "price_prev")
 
 }
 
@@ -51,6 +44,10 @@ Extra columns with data that do not varying over time for each id are preserved 
 When unmaking sales pairs, the previous price and date for the earliest sale are extracted for each id, then concatenated (row-wise) back into \code{x}. Extra columns are expanded in the long format.
 
 As with making sales pairs, un-making sales pairs is generally not well defined with missing and duplicated values, and these should be removed prior to un-making pairs.
+}
+
+\seealso{
+\code{\link[rsmatrix]{rs_matrix}} for using sales pairs to make a repeat-sales index.
 }
 
 \examples{

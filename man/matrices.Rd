@@ -17,11 +17,11 @@ rs_matrix(t2, t1, p2, p1, f = NULL, sparse = FALSE)
 
 \item{f}{An optional factor the same length as \code{t1} and \code{t2}, or a vector to be turned into a factor, that is used to group \code{t2} and \code{t1}.}
 
-\item{sparse}{Should sparse matrices from 'Matrix' be used in the calculation (faster for large datasets), or regular dense matrices?}
+\item{sparse}{Should sparse matrices from the \code{'Matrix'} package be used in the calculation (faster for large datasets), or regular dense matrices?}
 }
 
 \value{
-A function that takes a single argument naming the desired matrix. It returns one of two matrices (Z and X) or two vectors (y and Y), either regular matrices if \code{sparse = FALSE}, or a sparse matrices of class 'dgCMatrix' if \code{sparse = TRUE}.
+A function that takes a single argument naming the desired matrix. It returns one of two matrices (Z and X) or two vectors (y and Y), either regular matrices if \code{sparse = FALSE}, or sparse matrices of class \code{'dgCMatrix'} if \code{sparse = TRUE}.
 }
 
 \details{
@@ -32,6 +32,10 @@ The Z, X, and Y matrices are not well defined if either \code{t1} or \code{t2} h
 
 \references{
 Shiller, R. J. (1991). Arithmetic repeat sales price estimators. \emph{Journal of Housing Economics}, 1(1):110-126.
+}
+
+\seealso{
+\code{\link[rsmatrix]{rs_pair}} for turning sales data into sales pairs.
 }
 
 \examples{

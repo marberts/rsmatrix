@@ -29,7 +29,7 @@ A kxk matrix.
 \details{
 This function calculates the standard robust variance matrix for a linear regression, as in Manski (1988, section 8.1.2) or White (2001, Theorem 6.3); that is, (Z'X)^-1 V (X'Z)^-1. It is useful when a regression is calculated by hand. This generalizes the variance matrix proposed by Shiller (1991, section II) when a property sells more than twice.
 
-This function gives the same result as \code{vcovHC(x, type = 'sss', cluster = 'group')} from the 'plm' package.
+This function gives the same result as \code{vcovHC(x, type = 'sss', cluster = 'group')} from the \code{'plm'} package.
 }
 
 \references{
