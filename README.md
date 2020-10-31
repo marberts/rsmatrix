@@ -52,6 +52,24 @@ matrix_constructor <- with(sales_pairs,
                            rs_matrix(date, date_prev, price, price_prev))
 matrices <- lapply(setNames(nm = c("Z", "X", "y", "Y")), matrix_constructor)
 
+matrices$Z
+```
+
+    ##    2 3
+    ## 1  1 0
+    ## 2 -1 1
+    ## 3  0 1
+
+``` r
+matrices$X
+```
+
+    ##    2 3
+    ## 1  3 0
+    ## 2 -3 2
+    ## 3  0 1
+
+``` r
 # Calculate the GRS index in Bailey, Muth, and Nourse (1963)
 b <- with(matrices, solve(crossprod(Z), crossprod(Z, y))[, 1])
 (grs <- exp(b) * 100)

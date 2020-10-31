@@ -7,7 +7,7 @@ Compute a cluster-robust variance matrix for a linear regression, with or withou
 }
 
 \usage{
-rs_var(u, Z, X = Z, ids = seq_len(nrow(X)), df)
+rs_var(u, Z, X = Z, ids = seq_len(nrow(X)), df = sss(nrow(X), ncol(X), distinct(ids)))
 }
 
 \arguments{
@@ -19,7 +19,7 @@ rs_var(u, Z, X = Z, ids = seq_len(nrow(X)), df)
 
 \item{ids}{A vector of length n that groups observations in \code{u}. By default each observation belongs to its own group.}
 
-\item{df}{An optional degrees of freedom correction. Default is Stata's degrees of freedom correction.}
+\item{df}{An optional degrees of freedom correction. Default is Stata's small sample degrees of freedom correction.}
 }
 
 \value{
@@ -65,4 +65,3 @@ vcov2 <- vcovHC(mdl, type = 'sss', cluster = 'group')
 vcov - vcov2
 }
 }
-
