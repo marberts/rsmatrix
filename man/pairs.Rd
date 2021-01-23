@@ -47,7 +47,7 @@ As with making sales pairs, un-making sales pairs is generally not well defined 
 }
 
 \seealso{
-\code{\link[rsmatrix]{rs_matrix}} for using sales pairs to make a repeat-sales index.
+\code{\link{rs_matrix}} for using sales pairs to make a repeat-sales index.
 }
 
 \examples{

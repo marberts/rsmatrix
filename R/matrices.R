@@ -1,4 +1,4 @@
-#---- Helper functions ----
+#---- Helper functions (internal) ----
 check_many <- function(fun) {
   fun <- match.fun(fun)
   function(...) {
@@ -13,7 +13,7 @@ all_atomic <- check_many(is.atomic)
 all_numeric <- check_many(is.numeric)
 
 all_same_length <- function(...) {
-  res <- vapply(list(...), length, numeric(1))
+  res <- lengths(list(...))
   all(res == res[1])
 }
 
@@ -21,10 +21,12 @@ is_T_or_F <- function(x) {
   length(x) == 1 && is.logical(x) && !is.na(x)
 }
 
-distinct <- function(x) length(unique(x))
+distinct <- function(x) {
+  length(unique(x))
+}
 
 #---- Z matrix (internal) ----
-rs_z_ <- function(t2, t1, f = NULL, sparse = FALSE) {
+.rs_z <- function(t2, t1, f = NULL, sparse = FALSE) {
   # turn inputs into factors
   lev <- sort(unique(c(as.character(t2), as.character(t1))))
   t2 <- factor(t2, lev)
@@ -72,7 +74,7 @@ rs_z_ <- function(t2, t1, f = NULL, sparse = FALSE) {
 }
 
 #---- X matrix (internal) ----
-rs_x_ <- function(z, p2, p1) (z > 0) * p2 - (z < 0) * p1
+.rs_x <- function(z, p2, p1) (z > 0) * p2 - (z < 0) * p1
 
 #---- All matrices ----
 rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
@@ -87,15 +89,15 @@ rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
     "'sparse' must be TRUE or FALSE" = is_T_or_F(sparse)
   )
   # make the z matrix (including first column)
-  z <- rs_z_(t2, t1, f, sparse)
+  z <- .rs_z(t2, t1, f, sparse)
   # number of columns that need to be removed for base period
   n <- max(distinct(f), min(1, ncol(z)))
   # return value
   function(matrix = c("Z", "X", "y", "Y")) {
     switch(match.arg(matrix),
            Z = z[, -seq_len(n), drop = FALSE],
-           X = rs_x_(z[, -seq_len(n), drop = FALSE], p2, p1),
+           X = .rs_x(z[, -seq_len(n), drop = FALSE], p2, p1),
            y = setNames(log(p2 / p1), rownames(z)),
-           Y = -rowSums(rs_x_(z[, seq_len(n), drop = FALSE], p2, p1)))
+           Y = -rowSums(.rs_x(z[, seq_len(n), drop = FALSE], p2, p1)))
   }
 }

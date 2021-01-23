@@ -31,11 +31,13 @@ The Z, X, and Y matrices are not well defined if either \code{t1} or \code{t2} h
 }
 
 \references{
+Bailey, M. J., Muth, R. F., and Nourse, H. O. (1963). A regression method for real estate price index construction. \emph{Journal of the American Statistical Association }, 53(304):933-942.
+
 Shiller, R. J. (1991). Arithmetic repeat sales price estimators. \emph{Journal of Housing Economics}, 1(1):110-126.
 }
 
 \seealso{
-\code{\link[rsmatrix]{rs_pair}} for turning sales data into sales pairs.
+\code{\link{rs_pair}} for turning sales data into sales pairs.
 }
 
 \examples{

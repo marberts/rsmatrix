@@ -1,9 +1,15 @@
 #---- Helper functions ----
-is_matrix <- function(x) is.matrix(x) || is(x, "Matrix")
+is_matrix <- function(x) {
+  is.matrix(x) || is(x, "Matrix")
+}
 
-is_column_vector <- function(x) is_matrix(x) && ncol(x) == 1
+is_column_vector <- function(x) {
+  is_matrix(x) && ncol(x) == 1
+}
 
-sss <- function(n, k, g) g / (g - 1) * (n - 1) / (n - k)
+sss <- function(n, k, g) {
+  g / (g - 1) * (n - 1) / (n - k)
+}
 
 #---- Variance matrix ----
 rs_var <- function(u, Z, X = Z, ids = seq_len(nrow(X)), df = sss(nrow(X), ncol(X), distinct(ids))) {

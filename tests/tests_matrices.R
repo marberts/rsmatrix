@@ -31,34 +31,34 @@ ga <- solve(crossprod(mata("Z"), mata("X")), crossprod(mata("Z"), mata("Y")))
 stopifnot(
   exprs = {
     # tests for Z
-    identical(rs_z_(integer(0), character(0)), 
+    identical(.rs_z(integer(0), character(0)), 
               matrix(double(0), ncol = 0))
-    identical(rs_z_(integer(0), character(0), logical(0)), 
+    identical(.rs_z(integer(0), character(0), logical(0)), 
               matrix(double(0), ncol = 0))
-    identical(rs_z_(rep("a", 2), rep("a", 2)), 
+    identical(.rs_z(rep("a", 2), rep("a", 2)), 
               matrix(0, ncol = 1, nrow = 2, dimnames = list(1:2, "a")))
-    identical(rs_z_(c(a = rep("a", 2)), c(b = rep("a", 2)), 1:2), 
+    identical(.rs_z(c(a = rep("a", 2)), c(b = rep("a", 2)), 1:2), 
               matrix(rep(0, 4), ncol = 2, dimnames = list(c("a1", "a2"), c("1.a", "2.a"))))
-    identical(rs_z_(c(a = 2:1), 2:1), 
+    identical(.rs_z(c(a = 2:1), 2:1), 
               matrix(c(0, 0, 0, 0), ncol = 2, dimnames = list(c("a1", "a2"), 1:2)))
-    identical(rs_z_(1:2, c(a = 2:1)), 
+    identical(.rs_z(1:2, c(a = 2:1)), 
               matrix(c(1, -1, -1, 1), ncol = 2, dimnames = list(c("a1", "a2"), 1:2)))
-    identical(rs_z_(3:2, 2:1), 
+    identical(.rs_z(3:2, 2:1), 
               matrix(c(0, -1, -1, 1, 1, 0), ncol = 3, dimnames = list(1:2, 1:3)))
-    identical(rs_z_(c(a = 2, b = 2), c(1, 1), c("a", "b")),
+    identical(.rs_z(c(a = 2, b = 2), c(1, 1), c("a", "b")),
               matrix(c(-1, 0, 0, -1, 1, 0, 0, 1), ncol = 4, dimnames = list(c("a", "b"), c("a.1", "b.1", "a.2", "b.2"))))
-    identical(rs_z_(factor(c(3:2, 2)), c(2:1, 1), letters[c(1, 1, 2)]),
+    identical(.rs_z(factor(c(3:2, 2)), c(2:1, 1), letters[c(1, 1, 2)]),
               matrix(c(0, -1, 0, 0, 0, -1, -1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0), ncol = 6, dimnames = list(1:3, c("a.1", "b.1", "a.2", "b.2", "a.3", "b.3"))))
-    identical(rs_z_(factor(3:2), 2:1), 
-              rs_z_(3:2, 2:1))
-    identical(rs_z_(factor(2:1, levels = 1:3), factor(c(a = 1, b = 1))),
+    identical(.rs_z(factor(3:2), 2:1), 
+              .rs_z(3:2, 2:1))
+    identical(.rs_z(factor(2:1, levels = 1:3), factor(c(a = 1, b = 1))),
               matrix(c(-1, 0, 1, 0), ncol = 2, dimnames = list(c("a", "b"), 1:2)))
-    identical(rs_z_(factor(letters[3:2]), factor(letters[2:1])), 
-              rs_z_(letters[3:2], letters[2:1]))
-    identical(rs_z_(as.Date(c("2017-02-01", "2017-03-01", "2017-01-01")), as.Date(c("2017-01-01", "2017-02-01", "2017-01-01"))), 
+    identical(.rs_z(factor(letters[3:2]), factor(letters[2:1])), 
+              .rs_z(letters[3:2], letters[2:1]))
+    identical(.rs_z(as.Date(c("2017-02-01", "2017-03-01", "2017-01-01")), as.Date(c("2017-01-01", "2017-02-01", "2017-01-01"))), 
               matrix(c(-1, 0, 0, 1, -1, 0, 0, 1, 0), ncol = 3, dimnames = list(1:3, c("2017-01-01", "2017-02-01", "2017-03-01"))))
-    all(rowSums(rs_z_(t2, t1)) == 0)
-    all(rowSums(abs(rs_z_(t2, t1))) == 2)
+    all(rowSums(.rs_z(t2, t1)) == 0)
+    all(rowSums(abs(.rs_z(t2, t1))) == 2)
     # tests for other matrices
     identical(rs_matrix(integer(0), character(0), integer(0), double(0))("X"), 
               matrix(double(0), ncol = 0))
@@ -70,16 +70,16 @@ stopifnot(
     identical(rs_matrix(c(2, 4), 1:2, c(2, 5), 1:2)("Y"), 
               c("1" = 1, "2" = 0))
     # tests for sparse
-    identical(rs_z_(integer(0), integer(0), sparse = TRUE),
+    identical(.rs_z(integer(0), integer(0), sparse = TRUE),
               as(matrix(double(0), ncol = 0), "dgCMatrix"))
-    identical(rs_z_(1, 1, sparse = TRUE),
+    identical(.rs_z(1, 1, sparse = TRUE),
               as(matrix(0, ncol = 1, dimnames = list(1, 1)), "dgCMatrix"))
-    identical(rs_z_(c(a = "a"), "a", sparse = TRUE),
+    identical(.rs_z(c(a = "a"), "a", sparse = TRUE),
               as(matrix(0, ncol = 1, dimnames = list("a", "a")), "dgCMatrix"))
-    identical(rs_z_(c(2, 2), c(1, 1), c("a", "b"), TRUE),
+    identical(.rs_z(c(2, 2), c(1, 1), c("a", "b"), TRUE),
               as(matrix(c(-1, 0, 0, -1, 1, 0, 0, 1), ncol = 4, dimnames = list(1:2, c("a.1", "b.1", "a.2", "b.2"))), "dgCMatrix"))
-    identical(rs_z_(t2, t1, sparse = TRUE), 
-              Matrix::Matrix(rs_z_(t2, t1), sparse = TRUE))
+    identical(.rs_z(t2, t1, sparse = TRUE), 
+              Matrix::Matrix(.rs_z(t2, t1), sparse = TRUE))
     identical(rs_matrix(integer(0), integer(0), integer(0), integer(0), sparse = TRUE)("X"),
               as(matrix(double(0), ncol = 0), "dgCMatrix"))
     identical(rs_matrix(t2, t1, p2, p1, sparse = TRUE)("X"), 
