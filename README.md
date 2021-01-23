@@ -10,7 +10,6 @@ status](https://www.r-pkg.org/badges/version/rsmatrix)](https://cran.r-project.o
 [![Build
 Status](https://travis-ci.org/marberts/rsmatrix.svg?branch=master)](https://travis-ci.org/marberts/rsmatrix)
 [![codecov](https://codecov.io/gh/marberts/rsmatrix/branch/master/graph/badge.svg)](https://codecov.io/gh/marberts/rsmatrix)
-[![rdocumentation](https://www.rdocumentation.org/badges/version/rsmatrix)](https://www.rdocumentation.org/packages/rsmatrix)
 
 A small package for calculating the matrices in Shiller (1991) that
 serve as the foundation for many repeat-sales price indexes. Builds on
