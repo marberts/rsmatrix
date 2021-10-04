@@ -96,35 +96,29 @@ Type 'q()' to quit R.
 > 
 > flush(stderr()); flush(stdout())
 > 
-> ### Name: sales pairs
-> ### Title: Make/unmake sales pairs
-> ### Aliases: rs_pair rs_unpair
+> ### Name: rs_pairs
+> ### Title: Sales pairs
+> ### Aliases: rs_pairs
 > 
 > ### ** Examples
 > 
-> # Turn into a 'wide' dataset of sales pairs
+> # Make sales pairs
+> 
 > x <- data.frame(id = c(1, 1, 1, 2, 2), 
 +                 date = c(1, 2, 3, 1, 3), 
 +                 price = c(1, 3, 2, 1, 1))
-> rs_pair(x)
-  id date price date_prev price_prev
-1  1    2     3         1          1
-2  1    3     2         2          3
-3  2    3     1         1          1
 > 
-> # Turn into a 'long' dataset of sales pairs
-> x <- data.frame(id = c(1, 1, 2), 
-+                 date = c(2, 3, 3), 
-+                 date_prev = c(1, 2, 1), 
-+                 price = 3:1, 
-+                 price_prev = c(1, 3, 1))
-> rs_unpair(x)
-  id date price
-1  1    1     1
-2  1    2     3
-3  1    3     2
-4  2    1     1
-5  2    3     1
+> pairs <- rs_pairs(x$date, x$id)
+> 
+> x[c("date_prev", "price_prev")] <- x[c("date", "price")][pairs, ]
+> 
+> x
+  id date price date_prev price_prev
+1  1    1     1         1          1
+2  1    2     3         1          1
+3  1    3     2         2          3
+4  2    1     1         1          1
+5  2    3     1         1          1
 > 
 > 
 > 
