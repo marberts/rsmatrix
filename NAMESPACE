@@ -1,5 +1,5 @@
 export(rs_matrix, rs_pairs, rs_var)
 importFrom(Matrix, sparse.model.matrix, rowSums)
 importMethodsFrom(Matrix, solve, crossprod, tcrossprod)
-importFrom(stats, model.matrix, setNames)
+importFrom(stats, model.matrix)
 importFrom(methods, as, is)
