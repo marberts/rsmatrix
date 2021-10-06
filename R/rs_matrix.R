@@ -4,6 +4,11 @@ different_lengths <- function(...) {
   any(res != res[1])
 }
 
+any_NA <- function(...) {
+  res <- vapply(list(...), anyNA, logical(1))
+  any(res)
+}
+
 distinct <- function(x) {
   length(unique(x))
 }
@@ -15,9 +20,9 @@ distinct <- function(x) {
   t1 <- factor(t1, lev)
   # something is probably wrong if t2 < t1
   if (any(as.numeric(t2) <= as.numeric(t1), na.rm = TRUE)) {
-    warning("All elements of 't2' should be greater than the corresponding elements in 't1'")
+    warning(gettext("all elements of 't2' should be greater than the corresponding elements in 't1'"))
   } 
-  # get row names
+  # get row names before interacting with f
   nm <- if (length(t2)) {
     if (!is.null(names(t2))) {
       names(t2) 
@@ -61,14 +66,19 @@ distinct <- function(x) {
 rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
   if (is.null(f)) {
     if (different_lengths(t2, t1, p2, p1)) {
-      
+      stop(gettext("'t2', 't1', 'p2', and 'p1' must be the same length"))
+    }
+    if (any_NA(t2, t1)) {
+      stop(gettext("'t2' and 't1' cannot contain NAs"))
     }
   } else {
     if (different_lengths(t2, t1, p2, p1, f)) {
-      
+      stop(gettext("'t2', 't1', 'p2', 'p1', and 'f' must be the same length"))
+    }
+    if (any_NA(t2, t1, f)) {
+      stop(gettext("'t2', 't1', and 'f' cannot contain NAs"))
     }
   }
-  # make the z matrix (including first column)
   z <- .rs_z(t2, t1, f, sparse)
   # number of columns that need to be removed for base period
   n <- max(distinct(f), min(1, ncol(z)))

@@ -23,5 +23,5 @@ rs_pairs <- function(period, product) {
   }
   m <- lapply(period, prev)
   res <- .mapply(`[`, list(res, m), list())
-  unlist(res, use.names = FALSE)
+  unsplit(res, product)
 }
