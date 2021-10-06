@@ -11,13 +11,13 @@ rs_matrix(t2, t1, p2, p1, f = NULL, sparse = FALSE)
 }
 
 \arguments{
-\item{t2, t1}{A pair of vectors giving the time period of the second and first sale, respectively. Usually a vector of dates.}
+\item{t2, t1}{A pair of vectors giving the time period of the second and first sale, respectively. Usually a vector of dates, but other values are possible if they are naturally in chronological order (i.e., with \code{\link[=sort]{sort()}}).}
 
 \item{p2, p1}{A pair of numeric vectors giving the price of the second and first sale, respectively.}
 
-\item{f}{An optional factor the same length as \code{t1} and \code{t2}, or a vector to be turned into a factor, that is used to group \code{t2} and \code{t1}.}
+\item{f}{An optional factor the same length as \code{t1} and \code{t2}, or a vector to be turned into a factor, that is used to group sales.}
 
-\item{sparse}{Should sparse matrices from the \pkg{Matrix} package be used in the calculation (faster for large datasets), or regular dense matrices?}
+\item{sparse}{Should sparse matrices from the \pkg{Matrix} package be returned (faster for large datasets), or regular dense matrices?}
 }
 
 \details{

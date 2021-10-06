@@ -4,11 +4,15 @@ sss <- function(n, k, g) {
 }
 
 #---- Variance matrix ----
-rs_var <- function(u, Z, X = Z, ids = seq_len(nrow(X)), df = sss(nrow(X), ncol(X), distinct(ids))) {
+rs_var <- function(u, Z, X = Z, ids = seq_len(nrow(X)), df = sss(nrow(X), ncol(X), nlevels(ids))) {
+  ids <- as.factor(ids)
   # the meat
   ug <- split.data.frame(u, ids)
   Zg <- split.data.frame(Z, ids)
-  V <- lapply(seq_along(ug), function(i) tcrossprod(crossprod(Zg[[i]], ug[[i]])))
+  V <- lapply(seq_along(ug), 
+              function(i) {
+                tcrossprod(crossprod(Zg[[i]], ug[[i]]))
+              })
   V <- Reduce(`+`, V)
   # the bread
   B <- solve(crossprod(Z, X))

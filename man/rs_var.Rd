@@ -7,7 +7,7 @@ Compute a cluster-robust variance matrix for a linear regression, with or withou
 }
 
 \usage{
-rs_var(u, Z, X = Z, ids = seq_len(nrow(X)), df = sss(nrow(X), ncol(X), distinct(ids)))
+rs_var(u, Z, X = Z, ids = seq_len(nrow(X)), df = sss(nrow(X), ncol(X), nlevels(ids)))
 }
 
 \arguments{
@@ -17,7 +17,7 @@ rs_var(u, Z, X = Z, ids = seq_len(nrow(X)), df = sss(nrow(X), ncol(X), distinct(
 
 \item{X}{An  \eqn{n \times k}{n x k} matrix of covariates.}
 
-\item{ids}{A vector of length \eqn{n}{n} that groups observations in \code{u}. By default each observation belongs to its own group.}
+\item{ids}{A factor of length \eqn{n}{n}, or something that can be coerced into one, that groups observations in \code{u}. By default each observation belongs to its own group.}
 
 \item{df}{An optional degrees of freedom correction. Default is Stata's small sample degrees of freedom correction.}
 }

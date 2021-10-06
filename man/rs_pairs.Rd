@@ -18,7 +18,7 @@ rs_pairs(period, product)
 }
 
 \value{
-A numeric vector of indices giving the previous transactions for each \code{product}, with the convention that the previous transaction for the first transaction is itself.
+A numeric vector of indices giving the position of the previous transactions for each \code{product}, with the convention that the previous transaction for the first transaction is itself.
 }
 
 \seealso{
