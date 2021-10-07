@@ -1,3 +1,11 @@
+Changes in version 0.2.0
+
+- rs_piars() has been reworked to be much faster and more general, while rs_unpair() has been removed. These changes are not backward compatible.
+
+- Added French translations.
+
+- Fixed the NOTE about LazyData from CRAN.
+
 Changes in version 0.1.2
 
 - Fixed some small bugs, and made some minor improvements to the documentation.

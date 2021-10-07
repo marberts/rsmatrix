@@ -1,10 +1,11 @@
 library(rsmatrix)
 
 set.seed(4321)
-t2 <- sample(101:200)
-t1 <- sample(1:100) 
+t2 <- sprintf("%03d", sample(101:200))
+t1 <- sprintf("%03d", sample(1:100)) 
 p2 <- runif(100)
 p1 <- runif(100)
+f <- sample(letters[1:3], 100, TRUE)
 
 x <- data.frame(date = c(3, 2, 3, 2, 3, 3), 
                 date_prev = c(1, 1, 2, 1, 2, 1), 
@@ -58,6 +59,7 @@ stopifnot(
     identical(.rs_z(as.Date(c("2017-02-01", "2017-03-01", "2017-01-01")), as.Date(c("2017-01-01", "2017-02-01", "2017-01-01"))), 
               matrix(c(-1, 0, 0, 1, -1, 0, 0, 1, 0), ncol = 3, dimnames = list(1:3, c("2017-01-01", "2017-02-01", "2017-03-01"))))
     all(rowSums(.rs_z(t2, t1)) == 0)
+    all(rowSums(.rs_z(t2, t1, f)) == 0)
     all(rowSums(abs(.rs_z(t2, t1))) == 2)
     # tests for other matrices
     identical(rs_matrix(integer(0), character(0), integer(0), double(0))("X"), 

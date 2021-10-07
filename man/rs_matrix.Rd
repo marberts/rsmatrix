@@ -11,7 +11,7 @@ rs_matrix(t2, t1, p2, p1, f = NULL, sparse = FALSE)
 }
 
 \arguments{
-\item{t2, t1}{A pair of vectors giving the time period of the second and first sale, respectively. Usually a vector of dates, but other values are possible if they are naturally in chronological order (i.e., with \code{\link[=sort]{sort()}}).}
+\item{t2, t1}{A pair of vectors giving the time period of the second and first sale, respectively. Usually a vector of dates, but other values are possible if they can be sorted in chronological order (i.e., with \code{\link[=sort]{sort()}}).}
 
 \item{p2, p1}{A pair of numeric vectors giving the price of the second and first sale, respectively.}
 
@@ -21,7 +21,7 @@ rs_matrix(t2, t1, p2, p1, f = NULL, sparse = FALSE)
 }
 
 \details{
-The function returned by \code{rs_matrix()} computes a generalization of the matrices in Shiller (1991, sections I-II) that are applicable to grouped data. This is useful for calculating separate indexes for many, say, cities without needing an explicit loop.
+The function returned by \code{rs_matrix()} computes a generalization of the matrices in Shiller (1991, sections I-II) that are applicable to grouped data. These are useful for calculating separate indexes for many, say, cities without needing an explicit loop.
 
 The Z, X, and Y matrices are not well defined if either \code{t1} or \code{t2} have missing values, and an error is thrown in this case. Similarly, it should always be the case that \code{t2 > t1}, otherwise a warning is given.
 }
@@ -59,7 +59,7 @@ b <- solve(crossprod(Z), crossprod(Z, y))[, 1]
 # or b <- qr.coef(qr(Z), y)
 (grs <- exp(b) * 100)
 
-# Covariance matrix
+# Standard errors
 vcov <- rs_var(y - Z \%*\% b, Z)
 sqrt(diag(vcov)) * grs # delta method
 

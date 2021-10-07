@@ -38,19 +38,20 @@ sales <- data.frame(id = c(1, 1, 1, 2, 2),
                     price = c(1, 3, 2, 1, 1))
 
 # Turn into sales pairs
-(sales_pairs <- rs_pair(sales))
+sales[c("date_prev", "price_prev")] <- sales[rs_pairs(sales$date, sales$id), c("date", "price")]
+
+(sales <- subset(sales, date > date_prev))
 ```
 
     ##   id date price date_prev price_prev
-    ## 1  1    2     3         1          1
-    ## 2  1    3     2         2          3
-    ## 3  2    3     1         1          1
+    ## 2  1    2     3         1          1
+    ## 3  1    3     2         2          3
+    ## 5  2    3     1         1          1
 
 ``` r
 # Calculate matrices
-matrix_constructor <- with(sales_pairs, 
-                           rs_matrix(date, date_prev, price, price_prev))
-matrices <- lapply(setNames(nm = c("Z", "X", "y", "Y")), matrix_constructor)
+matrix_constructor <- with(sales, rs_matrix(date, date_prev, price, price_prev))
+matrices <- sapply(c("Z", "X", "y", "Y"), matrix_constructor)
 
 matrices$Z
 ```

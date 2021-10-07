@@ -1,0 +1,32 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: rsmatrix 0.1.2.9003\n"
+"POT-Creation-Date: 2021-10-06 23:29\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+msgid "all elements of 't2' should be greater than the corresponding elements in 't1'"
+msgstr ""
+
+msgid "'t2', 't1', 'p2', and 'p1' must be the same length"
+msgstr ""
+
+msgid "'t2' and 't1' cannot contain NAs"
+msgstr ""
+
+msgid "'t2', 't1', 'p2', 'p1', and 'f' must be the same length"
+msgstr ""
+
+msgid "'t2', 't1', and 'f' cannot contain NAs"
+msgstr ""
+
+msgid "'period' and 'product' must be the same length"
+msgstr ""
+
+msgid "there are duplicated period-product pairs"
+msgstr ""

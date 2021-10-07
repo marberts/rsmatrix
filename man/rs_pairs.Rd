@@ -4,7 +4,7 @@
 \title{Sales pairs}
 
 \description{
-Turn repeat sales data into sales pairs that are suitable for making repeat-sales matrices.
+Turn repeat-sales data into sales pairs that are suitable for making repeat-sales matrices.
 }
 
 \usage{
@@ -12,13 +12,13 @@ rs_pairs(period, product)
 }
 
 \arguments{
-\item{period}{A factor, or something that can be coerced into one, that gives the corresponding time period for each transaction. The ordering of time periods follows the levels of period to agree with \code{\link[=cut.Date]{cut()}}}.
+\item{period}{A factor, or something that can be coerced into one, that gives the corresponding time period for each sale. The ordering of time periods follows the levels of period to agree with \code{\link[=cut.Date]{cut()}}}.
 
-\item{product}{A factor, or something that can be coerced into one, that gives the corresponding product identifier for each transaction.}
+\item{product}{A factor, or something that can be coerced into one, that gives the corresponding product identifier for each sale.}
 }
 
 \value{
-A numeric vector of indices giving the position of the previous transactions for each \code{product}, with the convention that the previous transaction for the first transaction is itself.
+A numeric vector of indices giving the position of the previous sale for each \code{product}, with the convention that the previous sale for the first sale is itself.
 }
 
 \seealso{

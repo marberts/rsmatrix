@@ -14,7 +14,7 @@ any_NA <- function(...) {
   lev <- sort(unique(c(as.character(t2), as.character(t1))))
   t2 <- factor(t2, lev)
   t1 <- factor(t1, lev)
-  # something is probably wrong if t2 < t1
+  # something is probably wrong if t2 <= t1
   if (any(as.numeric(t2) <= as.numeric(t1), na.rm = TRUE)) {
     warning(gettext("all elements of 't2' should be greater than the corresponding elements in 't1'"))
   } 
