@@ -27,7 +27,6 @@ A numeric vector of indices giving the position of the previous sale for each \c
 
 \examples{
 # Make sales pairs
-
 x <- data.frame(id = c(1, 1, 1, 3, 2, 2, 3, 3), 
                 date = c(1, 2, 3, 2, 1, 3, 4, 1), 
                 price = c(1, 3, 2, 3, 1, 1, 1, 2))

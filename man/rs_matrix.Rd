@@ -3,7 +3,7 @@
 \title{Shiller's repeat-sales matrices}
 
 \description{
-Create a function to compute the Z, X, y, and Y matrices in Shiller (1991, sections I-II) from sales-pair data to calculate a repeat-sales price index.
+Create a function to compute the \eqn{Z}{Z}, \eqn{X}{X}, \eqn{y}{y}, and \eqn{Y}{Y} matrices in Shiller (1991, sections I-II) from sales-pair data to calculate a repeat-sales price index.
 }
 
 \usage{
@@ -23,11 +23,11 @@ rs_matrix(t2, t1, p2, p1, f = NULL, sparse = FALSE)
 \details{
 The function returned by \code{rs_matrix()} computes a generalization of the matrices in Shiller (1991, sections I-II) that are applicable to grouped data. These are useful for calculating separate indexes for many, say, cities without needing an explicit loop.
 
-The Z, X, and Y matrices are not well defined if either \code{t1} or \code{t2} have missing values, and an error is thrown in this case. Similarly, it should always be the case that \code{t2 > t1}, otherwise a warning is given.
+The \eqn{Z}{Z}, \eqn{X}{X}, and \eqn{Y}{Y} matrices are not well defined if either \code{t1} or \code{t2} have missing values, and an error is thrown in this case. Similarly, it should always be the case that \code{t2 > t1}, otherwise a warning is given.
 }
 
 \value{
-A function that takes a single argument naming the desired matrix. It returns one of two matrices (Z and X) or two vectors (y and Y), either regular matrices if \code{sparse = FALSE}, or sparse matrices of class \code{dgCMatrix} if \code{sparse = TRUE}.
+A function that takes a single argument naming the desired matrix. It returns one of two matrices (\eqn{Z}{Z} and \eqn{X}{X}) or two vectors (\eqn{y}{y} and \eqn{Y}{Y}), either regular matrices if \code{sparse = FALSE}, or sparse matrices of class \code{dgCMatrix} if \code{sparse = TRUE}.
 }
 
 \references{

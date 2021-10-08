@@ -9,11 +9,11 @@
 A small package for calculating the matrices in Shiller (1991) that serve as the foundation for many repeat-sales price indexes.
 }
 
-\details{
+\section{Usage}{
 Most repeat-sales price indexes used in practice require the matrices in Shiller (1991, sections I-II), e.g., S&P's Case-Shiller index, Statistics Canada's RPPI. The \code{\link[=rs_matrix]{rs_matrix()}} function produces a function to easily construct these matrices. In most cases data need to be structured as sales pairs, which can be done with the \code{\link[=rs_pairs]{rs_pairs()}} function.
 }
 
-\note{
+\section{Contribution}{
 The \pkg{McSpatial} package has some functionality for making repeat-sales indices. The functions in this package build off of those in the \pkg{rsi} package in Kirby-McGregor and Martin (2019), which also gives a good background on the theory of repeat-sales indexes.
 }
 
