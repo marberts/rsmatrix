@@ -1,11 +1,11 @@
 #---- Helper functions (internal) ----
 different_lengths <- function(...) {
   res <- lengths(list(...))
-  any(res != res[1])
+  any(res != res[1L])
 }
 
 any_NA <- function(...) {
-  res <- vapply(list(...), anyNA, logical(1))
+  res <- vapply(list(...), anyNA, logical(1L))
   any(res)
 }
 
@@ -35,10 +35,10 @@ any_NA <- function(...) {
     t1 <- interaction(f, t1)
   }
   # calculate Z
-  if (nlevels(t2) < 2) {
+  if (nlevels(t2) < 2L) {
     # return a nx1 matrix of 0's if there's only one level
     # return a 0x0 matrix if there are no levels
-    z <- matrix(rep(0, length(t2)), ncol = nlevels(t2))
+    z <- matrix(rep(0L, length(t2)), ncol = nlevels(t2))
     if (sparse) z <- as(z, "dgCMatrix")
   } else {
     # model matrix otherwise
@@ -78,7 +78,7 @@ rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
   }
   z <- .rs_z(t2, t1, f, sparse)
   # number of columns that need to be removed for base period
-  n <- max(nlevels(f), min(1, ncol(z)))
+  n <- max(nlevels(f), min(1L, ncol(z)))
   # return value
   function(matrix = c("Z", "X", "y", "Y")) {
     switch(match.arg(matrix),

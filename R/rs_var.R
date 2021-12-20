@@ -1,6 +1,6 @@
 #---- Helper functions ----
 sss <- function(n, k, g) {
-  g / (g - 1) * (n - 1) / (n - k)
+  g / (g - 1L) * (n - 1L) / (n - k)
 }
 
 #---- Variance matrix ----

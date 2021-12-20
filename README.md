@@ -7,8 +7,7 @@
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/rsmatrix)](https://cran.r-project.org/package=rsmatrix)
-[![Build
-Status](https://travis-ci.org/marberts/rsmatrix.svg?branch=master)](https://travis-ci.org/marberts/rsmatrix)
+[![R-CMD-check](https://github.com/marberts/rsmatrix/workflows/R-CMD-check/badge.svg)](https://github.com/marberts/rsmatrix/actions)
 [![codecov](https://codecov.io/gh/marberts/rsmatrix/branch/master/graph/badge.svg)](https://codecov.io/gh/marberts/rsmatrix)
 
 A small package for calculating the matrices in Shiller (1991) that

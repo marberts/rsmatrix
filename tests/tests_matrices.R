@@ -30,11 +30,11 @@ ga <- solve(crossprod(mata("Z"), mata("X")), crossprod(mata("Z"), mata("Y")))
 
 #---- Tests for matrices ----
 identical(rsmatrix:::.rs_z(integer(0), character(0)), 
-          matrix(double(0), ncol = 0))
+          matrix(integer(0), ncol = 0))
 identical(rsmatrix:::.rs_z(integer(0), character(0), logical(0)), 
-          matrix(double(0), ncol = 0))
+          matrix(integer(0), ncol = 0))
 identical(rsmatrix:::.rs_z(rep("a", 2), rep("a", 2)), 
-          matrix(0, ncol = 1, nrow = 2, dimnames = list(1:2, "a")))
+          matrix(0L, ncol = 1, nrow = 2, dimnames = list(1:2, "a")))
 identical(rsmatrix:::.rs_z(c(a = rep("a", 2)), c(b = rep("a", 2)), 1:2), 
           matrix(rep(0, 4), ncol = 2, dimnames = list(c("a1", "a2"), c("1.a", "2.a"))))
 identical(rsmatrix:::.rs_z(c(a = 2:1), 2:1), 
@@ -70,7 +70,7 @@ identical(rs_matrix(c(2, 4), 1:2, c(2, 5), 1:2)("Y"),
           c("1" = 1, "2" = 0))
 # tests for sparse
 identical(rsmatrix:::.rs_z(integer(0), integer(0), sparse = TRUE),
-          as(matrix(double(0), ncol = 0), "dgCMatrix"))
+          as(matrix(integer(0), ncol = 0), "dgCMatrix"))
 identical(rsmatrix:::.rs_z(1, 1, sparse = TRUE),
           as(matrix(0, ncol = 1, dimnames = list(1, 1)), "dgCMatrix"))
 identical(rsmatrix:::.rs_z(c(a = "a"), "a", sparse = TRUE),
