@@ -1,6 +1,6 @@
 Changes in version 0.2.0
 
-- rs_piars() has been reworked to be much faster and more general, while rs_unpair() has been removed. These changes are not backward compatible.
+- rs_pairs() has been reworked to be much faster and more general, while rs_unpair() has been removed. These changes are not backwards compatible.
 
 - Added French translations.
 

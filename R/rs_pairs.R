@@ -5,6 +5,7 @@ prev <- function(x) {
   ord <- order(x)
   res <- integer(len)
   res[ord] <- ord[c(1L, seq_len(len - 1L))]
+  # set the previous value of NA to NA, rather than the largest value
   if (anyNA(x)) res[is.na(x)] <- NA
   res
 }
