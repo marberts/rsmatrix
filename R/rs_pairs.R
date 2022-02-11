@@ -1,6 +1,5 @@
 # internal function to find previous value for an integer vector
 prev <- function(x) {
-  if (!length(x)) return(integer(0L))
   ord <- order(x, na.last = NA)
   res <- rep.int(NA_integer_, length(x))
   res[ord] <- ord[c(1L, seq_len(length(ord) - 1L))]

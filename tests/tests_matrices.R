@@ -30,11 +30,11 @@ ga <- solve(crossprod(mata("Z"), mata("X")), crossprod(mata("Z"), mata("Y")))
 
 #---- Tests for matrices ----
 identical(rsmatrix:::.rs_z(integer(0), character(0)), 
-          matrix(integer(0), ncol = 0))
+          matrix(numeric(0), ncol = 0))
 identical(rsmatrix:::.rs_z(integer(0), character(0), logical(0)), 
-          matrix(integer(0), ncol = 0))
+          matrix(numeric(0), ncol = 0))
 identical(rsmatrix:::.rs_z(rep("a", 2), rep("a", 2)), 
-          matrix(0L, ncol = 1, nrow = 2, dimnames = list(1:2, "a")))
+          matrix(0, ncol = 1, nrow = 2, dimnames = list(1:2, "a")))
 identical(rsmatrix:::.rs_z(c(a = rep("a", 2)), c(b = rep("a", 2)), 1:2), 
           matrix(rep(0, 4), ncol = 2, dimnames = list(c("a1", "a2"), c("1.a", "2.a"))))
 identical(rsmatrix:::.rs_z(c(a = 2:1), 2:1), 

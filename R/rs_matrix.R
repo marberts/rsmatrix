@@ -4,11 +4,6 @@ different_lengths <- function(...) {
   any(res != res[1L])
 }
 
-any_NA <- function(...) {
-  res <- vapply(list(...), anyNA, logical(1L))
-  any(res)
-}
-
 #---- Z matrix (internal) ----
 .rs_z <- function(t2, t1, f = NULL, sparse = FALSE) {
   lev <- sort(unique(c(as.character(t2), as.character(t1))))
@@ -38,7 +33,7 @@ any_NA <- function(...) {
   if (nlevels(t2) < 2L) {
     # return a nx1 matrix of 0's if there's only one level
     # return a 0x0 matrix if there are no levels
-    z <- matrix(rep(0L, length(t2)), ncol = nlevels(t2))
+    z <- matrix(rep(0, length(t2)), ncol = nlevels(t2))
     if (sparse) z <- as(z, "dgCMatrix")
   } else {
     # model matrix otherwise
@@ -64,14 +59,14 @@ rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
     if (different_lengths(t2, t1, p2, p1)) {
       stop(gettext("'t2', 't1', 'p2', and 'p1' must be the same length"))
     }
-    if (any_NA(t2, t1)) {
+    if (anyNA(t2) || anyNA(t1)) {
       stop(gettext("'t2' and 't1' cannot contain NAs"))
     }
   } else {
     if (different_lengths(t2, t1, p2, p1, f)) {
       stop(gettext("'t2', 't1', 'p2', 'p1', and 'f' must be the same length"))
     }
-    if (any_NA(t2, t1, f)) {
+    if (anyNA(t2) || anyNA(t1) || anyNA(f)) {
       stop(gettext("'t2', 't1', and 'f' cannot contain NAs"))
     }
     f <- as.factor(f)

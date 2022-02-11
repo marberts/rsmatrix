@@ -47,13 +47,13 @@ Type 'q()' to quit R.
 > 
 > #---- Tests for matrices ----
 > identical(rsmatrix:::.rs_z(integer(0), character(0)), 
-+           matrix(integer(0), ncol = 0))
++           matrix(numeric(0), ncol = 0))
 [1] TRUE
 > identical(rsmatrix:::.rs_z(integer(0), character(0), logical(0)), 
-+           matrix(integer(0), ncol = 0))
++           matrix(numeric(0), ncol = 0))
 [1] TRUE
 > identical(rsmatrix:::.rs_z(rep("a", 2), rep("a", 2)), 
-+           matrix(0L, ncol = 1, nrow = 2, dimnames = list(1:2, "a")))
++           matrix(0, ncol = 1, nrow = 2, dimnames = list(1:2, "a")))
 [1] TRUE
 Warning message:
 In rsmatrix:::.rs_z(rep("a", 2), rep("a", 2)) :
