@@ -3,7 +3,7 @@
 \title{Shiller's repeat-sales matrices}
 
 \description{
-Create a function to compute the \eqn{Z}{Z}, \eqn{X}{X}, \eqn{y}{y}, and \eqn{Y}{Y} matrices in Shiller (1991, sections I-II) from sales-pair data to calculate a repeat-sales price index.
+Create a function to compute the \eqn{Z}{Z}, \eqn{X}{X}, \eqn{y}{y}, and \eqn{Y}{Y} matrices in Shiller (1991, sections I-II) from sales-pair data in order to calculate a repeat-sales price index.
 }
 
 \usage{
@@ -17,7 +17,7 @@ rs_matrix(t2, t1, p2, p1, f = NULL, sparse = FALSE)
 
 \item{f}{An optional factor the same length as \code{t1} and \code{t2}, or a vector to be turned into a factor, that is used to group sales.}
 
-\item{sparse}{Should sparse matrices from the \pkg{Matrix} package be returned (faster for large datasets), or regular dense matrices?}
+\item{sparse}{Should sparse matrices from the \pkg{Matrix} package be returned (faster for large datasets), or regular dense matrices (the default)?}
 }
 
 \details{

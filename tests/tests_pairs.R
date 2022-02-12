@@ -57,6 +57,15 @@ typeof(rs_pairs(x, y))
 
 rs_pairs(numeric(0), character(0))
 
+# Should return 1:10
+rs_pairs(rep(1, 10), 1:10)
+
+# Should return c(1, 1:9)
+rs_pairs(1:10, rep(1, 10))
+
+# Should return 1
+rs_pairs(1, 1)
+
 # Test against an older implementation
 set.seed(4321)
 
