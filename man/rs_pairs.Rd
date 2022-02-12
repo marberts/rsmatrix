@@ -18,7 +18,7 @@ rs_pairs(period, product)
 }
 
 \value{
-A numeric vector of indices giving the position of the previous sale for each \code{product}, with the convention that the previous sale for the first sale is itself.
+A numeric vector of indices giving the position of the previous sale for each \code{product}, with the convention that the previous sale for the first sale is itself. The first position is returned in the case of ties.
 }
 
 \seealso{

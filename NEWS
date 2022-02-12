@@ -1,5 +1,7 @@
 Changes in version 0.2.1
 
+- rs_pairs() is now much faster.
+
 Changes in version 0.2.0
 
 - rs_pairs() has been reworked to be much faster and more general, while rs_unpair() has been removed. These changes are not backwards compatible.
