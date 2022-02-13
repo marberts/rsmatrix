@@ -11,7 +11,7 @@ rs_matrix(t2, t1, p2, p1, f = NULL, sparse = FALSE)
 }
 
 \arguments{
-\item{t2, t1}{A pair of vectors giving the time period of the second and first sale, respectively. Usually a vector of dates, but other values are possible if they can be sorted in chronological order (i.e., with \code{\link[=sort]{sort()}}).}
+\item{t2, t1}{A pair of vectors giving the time period of the second and first sale, respectively. Usually a vector of dates, but other values are possible if they can be coerced to character and sorted in chronological order (i.e., with \code{\link[=order]{order()}}).}
 
 \item{p2, p1}{A pair of numeric vectors giving the price of the second and first sale, respectively.}
 

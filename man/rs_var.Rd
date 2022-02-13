@@ -1,13 +1,13 @@
 \name{rs_var}
 \alias{rs_var}
-\title{Robust variance matrix for repeat-sales index}
+\title{Robust variance matrix for repeat-sales indexes}
 
 \description{
 Compute a cluster-robust variance matrix for a linear regression, with or without instruments, where clustering occurs along one dimension. Useful for calculating a variance matrix when a regression is calculated manually.
 }
 
 \usage{
-rs_var(u, Z, X = Z, ids = seq_len(nrow(X)), df = sss(nrow(X), ncol(X), nlevels(ids)))
+rs_var(u, Z, X = Z, ids = seq_len(nrow(X)), df = NULL)
 }
 
 \arguments{

@@ -131,7 +131,7 @@ Type 'q()' to quit R.
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: rs_var
-> ### Title: Robust variance matrix for repeat-sales index
+> ### Title: Robust variance matrix for repeat-sales indexes
 > ### Aliases: rs_var
 > 
 > ### ** Examples

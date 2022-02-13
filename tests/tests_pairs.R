@@ -70,7 +70,7 @@ rs_pairs(1, 1)
 set.seed(4321)
 
 all(replicate(100, {
-  x <- replace(sample(1e3), sample(1e3, 25), NA)
+  x <- as.character(replace(sample(1e3), sample(1e3, 25), NA))
   y <- replace(sample(letters, 1e3, TRUE), sample(1e3, 100), NA)
   all.equal(rs_pairs(x, y), rs_pairs2(x, y))
 }))

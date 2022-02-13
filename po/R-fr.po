@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: rsmatrix 0.1.2.9003\n"
-"POT-Creation-Date: 2021-10-06 23:29\n"
+"POT-Creation-Date: 2022-02-12 22:56\n"
 "PO-Revision-Date: 2021-10-06\n"
 "Last-Translator: Steve Martin <stevemartin041@gmail.com>\n"
 "Language-Team: none\n"
@@ -10,9 +10,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-
-msgid "all elements of 't2' should be greater than the corresponding elements in 't1'"
-msgstr "tous les éléments de 't2' doivent être supérieurs aux éléments correspondants de 't1' "
+msgid ""
+"all elements of 't2' should be greater than the corresponding elements in "
+"'t1'"
+msgstr ""
+"tous les éléments de 't2' doivent être supérieurs aux éléments "
+"correspondants de 't1' "
 
 msgid "'t2', 't1', 'p2', and 'p1' must be the same length"
 msgstr "'t2', 't1', 'p2' et 'p1' doivent avoir la même longueur"
@@ -28,6 +31,3 @@ msgstr "'t2', 't1', et 'f' ne peuvent pas contenir de NA"
 
 msgid "'period' and 'product' must be the same length"
 msgstr "'period' et 'product/ doivent avoir la même longueur"
-
-msgid "there are duplicated period-product pairs"
-msgstr "il existe des paires période-produit en double"

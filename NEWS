@@ -1,6 +1,6 @@
 Changes in version 0.2.1
 
-- rs_pairs() is now much faster.
+- rs_pairs() and rs_matrix() are now faster, and less picky about their inputs for time periods.
 
 Changes in version 0.2.0
 

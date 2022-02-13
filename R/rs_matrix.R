@@ -4,13 +4,24 @@ different_lengths <- function(...) {
   any(res != res[1L])
 }
 
+union2 <- function(x, y) {
+  x <- unique(x)
+  y <- unique(y)
+  unique(c(as.character(x), as.character(y)))
+}
+
+any_negative <- function(...) {
+  min(..., 1, na.rm = TRUE) <= 0 # the 1 stops the warnings with length-0 inputs
+}
+
 #---- Z matrix (internal) ----
 .rs_z <- function(t2, t1, f = NULL, sparse = FALSE) {
-  lev <- sort(unique(c(as.character(t2), as.character(t1))))
+  lev <- union2(t2, t1) # usually faster than base::union()
+  lev <- lev[order(lev)]
   t2 <- factor(t2, lev)
   t1 <- factor(t1, lev)
   # something is probably wrong if t2 <= t1
-  if (any(as.numeric(t2) <= as.numeric(t1), na.rm = TRUE)) {
+  if (any_negative(as.numeric(t2) - as.numeric(t1))) {
     warning(gettext("all elements of 't2' should be greater than the corresponding elements in 't1'"))
   } 
   # make row names before interacting with f
@@ -80,6 +91,8 @@ rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
            Z = z[, -seq_len(n), drop = FALSE],
            X = .rs_x(z[, -seq_len(n), drop = FALSE], p2, p1),
            y = structure(log(p2 / p1), names = rownames(z)),
+           # rowSums() gets the single value in the base period
+           # for each group
            Y = -rowSums(.rs_x(z[, seq_len(n), drop = FALSE], p2, p1)))
   }
 }
