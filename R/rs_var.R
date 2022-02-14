@@ -6,7 +6,11 @@ sss <- function(n, k, g) {
 #---- Variance matrix ----
 rs_var <- function(u, Z, X = Z, ids = seq_len(nrow(X)), df = NULL) {
   ids <- as.factor(ids)
-  if (is.null(df)) df <- sss(nrow(X), ncol(X), nlevels(ids))
+  df <- if (is.null(df)) {
+    sss(nrow(X), ncol(X), nlevels(ids))
+  } else {
+    as.numeric(df)
+  }
   # the meat
   ug <- split.data.frame(u, ids)
   Zg <- split.data.frame(Z, ids)

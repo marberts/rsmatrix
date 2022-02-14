@@ -17,7 +17,7 @@ rs_matrix(t2, t1, p2, p1, f = NULL, sparse = FALSE)
 
 \item{f}{An optional factor the same length as \code{t1} and \code{t2}, or a vector to be turned into a factor, that is used to group sales.}
 
-\item{sparse}{Should sparse matrices from the \pkg{Matrix} package be returned (faster for large datasets), or regular dense matrices (the default)?}
+\item{sparse}{Should sparse matrices from the \pkg{Matrix} package be used (faster for large datasets), or regular dense matrices (the default)?}
 }
 
 \details{

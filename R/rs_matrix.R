@@ -57,7 +57,7 @@ any_negative <- function(...) {
     rownames(z) <- nm
   }
   # remove model.matrix attributes
-  attributes(z)[c('assign', 'contrasts')] <- NULL
+  attributes(z)[c("assign", "contrasts")] <- NULL
   z
 }
 
@@ -84,9 +84,9 @@ rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
   }
   z <- .rs_z(t2, t1, f, sparse)
   # number of columns that need to be removed for base period
-  n <- max(nlevels(f), min(1L, ncol(z)))
+  n <- max(1L, nlevels(f)) * (ncol(z) > 0)
   # return value
-  function(matrix = c("Z", "X", "y", "Y")) {
+  res <- function(matrix = c("Z", "X", "y", "Y")) {
     switch(match.arg(matrix),
            Z = z[, -seq_len(n), drop = FALSE],
            X = .rs_x(z[, -seq_len(n), drop = FALSE], p2, p1),
@@ -95,4 +95,8 @@ rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
            # for each group
            Y = -rowSums(.rs_x(z[, seq_len(n), drop = FALSE], p2, p1)))
   }
+  # clean up enclosing environment
+  enc <- list(z = z, n = n, p2 = p2, p1 = p1)
+  environment(res) <- list2env(enc, parent = getNamespace("rsmatrix"))
+  res
 }

@@ -113,6 +113,12 @@ In rsmatrix:::.rs_z(as.Date(c("2017-02-01", "2017-03-01", "2017-01-01")),  :
 > identical(rs_matrix(integer(0), character(0), integer(0), double(0))("X"), 
 +           matrix(double(0), ncol = 0))
 [1] TRUE
+> identical(rs_matrix(integer(0), character(0), integer(0), double(0), factor(integer(0), letters))("X"), 
++           matrix(double(0), ncol = 0))
+[1] TRUE
+> identical(rs_matrix(integer(0), character(0), integer(0), double(0), factor(integer(0), letters))("Y"), 
++           double(0))
+[1] TRUE
 > identical(rs_matrix(integer(0), character(0), integer(0), double(0))("Y"), double(0))
 [1] TRUE
 > identical(rs_matrix(c(2, 4), 1:2, c(2, 5), 1:2)("X"), 

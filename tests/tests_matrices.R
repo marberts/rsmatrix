@@ -61,6 +61,10 @@ all(rowSums(abs(rsmatrix:::.rs_z(t2, t1))) == 2)
 # tests for other matrices
 identical(rs_matrix(integer(0), character(0), integer(0), double(0))("X"), 
           matrix(double(0), ncol = 0))
+identical(rs_matrix(integer(0), character(0), integer(0), double(0), factor(integer(0), letters))("X"), 
+          matrix(double(0), ncol = 0))
+identical(rs_matrix(integer(0), character(0), integer(0), double(0), factor(integer(0), letters))("Y"), 
+          double(0))
 identical(rs_matrix(integer(0), character(0), integer(0), double(0))("Y"), double(0))
 identical(rs_matrix(c(2, 4), 1:2, c(2, 5), 1:2)("X"), 
           matrix(c(2, -2, 0, 5), ncol = 2, dimnames = list(1:2, c(2, 4))))
