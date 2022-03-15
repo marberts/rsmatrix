@@ -1,4 +1,4 @@
-Changes in version 0.2.2
+Changes in version 0.2.3
 
 - Making the "Y" vector with rs_matrix() no longer gives an error with length-0 inputs and a factor with non-empty levels.
 

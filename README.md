@@ -32,8 +32,8 @@ devtools::install_github("marberts/rsmatrix")
 library(rsmatrix)
 
 # Make some data
-sales <- data.frame(id = c(1, 1, 1, 2, 2), 
-                    date = c(1, 2, 3, 1, 3), 
+sales <- data.frame(id =    c(1, 1, 1, 2, 2), 
+                    date =  c(1, 2, 3, 1, 3), 
                     price = c(1, 3, 2, 1, 1))
 
 # Turn into sales pairs
