@@ -14,10 +14,7 @@ rs_var <- function(u, Z, X = Z, ids = seq_len(nrow(X)), df = NULL) {
   # the meat
   ug <- split.data.frame(u, ids)
   Zg <- split.data.frame(Z, ids)
-  V <- lapply(seq_along(ug), 
-              function(i) {
-                tcrossprod(crossprod(Zg[[i]], ug[[i]]))
-              })
+  V <- Map(function(x, y) tcrossprod(crossprod(x, y)), Zg, ug)
   V <- Reduce(`+`, V)
   # the bread
   B <- solve(crossprod(Z, X))
