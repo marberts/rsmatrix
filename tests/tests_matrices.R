@@ -74,17 +74,17 @@ identical(rs_matrix(c(2, 4), 1:2, c(2, 5), 1:2)("Y"),
           c("1" = 1, "2" = 0))
 # tests for sparse
 identical(rsmatrix:::.rs_z(integer(0), integer(0), sparse = TRUE),
-          as(matrix(integer(0), ncol = 0), "dgCMatrix"))
+          rsmatrix:::dense_to_sparse(matrix(integer(0), ncol = 0)))
 identical(rsmatrix:::.rs_z(1, 1, sparse = TRUE),
-          as(matrix(0, ncol = 1, dimnames = list(1, 1)), "dgCMatrix"))
+          rsmatrix:::dense_to_sparse(matrix(0, ncol = 1, dimnames = list(1, 1))))
 identical(rsmatrix:::.rs_z(c(a = "a"), "a", sparse = TRUE),
-          as(matrix(0, ncol = 1, dimnames = list("a", "a")), "dgCMatrix"))
+          rsmatrix:::dense_to_sparse(matrix(0, ncol = 1, dimnames = list("a", "a"))))
 identical(rsmatrix:::.rs_z(c(2, 2), c(1, 1), c("a", "b"), TRUE),
-          as(matrix(c(-1, 0, 0, -1, 1, 0, 0, 1), ncol = 4, dimnames = list(1:2, c("a.1", "b.1", "a.2", "b.2"))), "dgCMatrix"))
+          rsmatrix:::dense_to_sparse(matrix(c(-1, 0, 0, -1, 1, 0, 0, 1), ncol = 4, dimnames = list(1:2, c("a.1", "b.1", "a.2", "b.2")))))
 identical(rsmatrix:::.rs_z(t2, t1, sparse = TRUE), 
           Matrix::Matrix(rsmatrix:::.rs_z(t2, t1), sparse = TRUE))
 identical(rs_matrix(integer(0), integer(0), integer(0), integer(0), sparse = TRUE)("X"),
-          as(matrix(double(0), ncol = 0), "dgCMatrix"))
+          rsmatrix:::dense_to_sparse(matrix(double(0), ncol = 0)))
 identical(rs_matrix(t2, t1, p2, p1, sparse = TRUE)("X"), 
           Matrix::Matrix(rs_matrix(t2, t1, p2, p1)("X"), sparse = TRUE))
 identical(rs_matrix(integer(0), integer(0), integer(0), integer(0), sparse = TRUE)("Y"),
