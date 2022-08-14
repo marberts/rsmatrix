@@ -24,6 +24,8 @@ dense_to_sparse <- function(x) {
 
 #---- Z matrix (internal) ----
 .rs_z <- function(t2, t1, f = NULL, sparse = FALSE) {
+  # it's important to coerce t2 and t1 into characters prior to taking the union
+  # so that both dates and factors are treated the same
   lev <- union2(t2, t1) # usually faster than base::union()
   lev <- lev[order(lev)]
   t2 <- factor(t2, lev)

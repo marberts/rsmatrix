@@ -19,14 +19,18 @@ mats <- with(x, rs_matrix(date, date_prev, price, price_prev, sparse = TRUE))
 matg <- with(x, rs_matrix(date, date_prev, price, price_prev, id2))
 mata <- with(subset(x, id2 == "a"),
              rs_matrix(date, date_prev, price, price_prev))
+matb <- with(subset(x, id2 == "b"),
+             rs_matrix(date, date_prev, price, price_prev))
 
 b <- solve(crossprod(mat("Z")), crossprod(mat("Z"), mat("y")))
 bg <- solve(crossprod(matg("Z")), crossprod(matg("Z"), matg("y")))
 ba <- solve(crossprod(mata("Z")), crossprod(mata("Z"), mata("y")))
+bb <- solve(crossprod(matb("Z")), crossprod(matb("Z"), matb("y")))
 
 g <- solve(crossprod(mat("Z"), mat("X")), crossprod(mat("Z"), mat("Y")))
 gg <- solve(crossprod(matg("Z"), matg("X")), crossprod(matg("Z"), matg("Y")))
 ga <- solve(crossprod(mata("Z"), mata("X")), crossprod(mata("Z"), mata("Y")))
+gb <- solve(crossprod(matb("Z"), matb("X")), crossprod(matb("Z"), matb("Y")))
 
 #---- Tests for matrices ----
 identical(rsmatrix:::.rs_z(integer(0), character(0)), 
@@ -94,6 +98,8 @@ identical(rs_matrix(c(2, 4), 1:2, c(2, 5), 1:2, sparse = TRUE)("Y"),
 # test results
 identical(as.numeric(ba[, 1]), as.numeric(bg[seq(1, 4, 2), 1]))
 identical(as.numeric(ga[, 1]), as.numeric(gg[seq(1, 4, 2), 1]))
+identical(as.numeric(bb[, 1]), as.numeric(bg[seq(2, 4, 2), 1]))
+identical(as.numeric(gb[, 1]), as.numeric(gg[seq(2, 4, 2), 1]))
 # results from lm
 all.equal(as.numeric(b), c(1.306078088475809, 0.943826746689325))
 # results from vcovHC
