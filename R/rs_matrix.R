@@ -10,15 +10,11 @@ union2 <- function(x, y) {
   unique(c(as.character(x), as.character(y)))
 }
 
-any_negative <- function(...) {
-  min(..., 1, na.rm = TRUE) <= 0 # the 1 stops the warnings with length-0 inputs
-}
-
 dense_to_sparse <- function(x) {
   if (packageVersion("Matrix") < package_version("1.4-2")) {
     as(x, "dgCMatrix")
   } else {
-    as(as(as(x, "dMatrix"), "generalMatrix"), "CsparseMatrix")
+    as(as(x, "generalMatrix"), "CsparseMatrix")
   }
 }
 
@@ -31,8 +27,10 @@ dense_to_sparse <- function(x) {
   t2 <- factor(t2, lev)
   t1 <- factor(t1, lev)
   # something is probably wrong if t2 <= t1
-  if (any_negative(as.numeric(t2) - as.numeric(t1))) {
-    warning(gettext("all elements of 't2' should be greater than the corresponding elements in 't1'"))
+  if (any(as.numeric(t2) <= as.numeric(t1))) {
+    warning(
+      gettext("all elements of 't2' should be greater than the corresponding elements in 't1'")
+    )
   } 
   # make row names before interacting with f
   nm <- if (!is.null(names(t2))) {
@@ -55,7 +53,6 @@ dense_to_sparse <- function(x) {
     # return a nx1 matrix of 0's if there's only one level
     # return a 0x0 matrix if there are no levels
     z <- matrix(rep(0, length(t2)), ncol = nlevels(t2))
-    # from Matrix:::.as.via.virtual()
     if (sparse) z <- dense_to_sparse(z)
   } else {
     # model matrix otherwise
@@ -63,7 +60,7 @@ dense_to_sparse <- function(x) {
     z <- mm(~ t2 - 1, contrasts.arg = list(t2 = "contr.treatment")) - 
       mm(~ t1 - 1, contrasts.arg = list(t1 = "contr.treatment"))
   }
-  if (nlevels(t2)) {
+  if (nlevels(t2) > 0L) {
     colnames(z) <- levels(t2)
     rownames(z) <- nm
   }
@@ -98,13 +95,15 @@ rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
   n <- max(1L, nlevels(f)) * (ncol(z) > 0)
   # return value
   res <- function(matrix = c("Z", "X", "y", "Y")) {
-    switch(match.arg(matrix),
-           Z = z[, -seq_len(n), drop = FALSE],
-           X = .rs_x(z[, -seq_len(n), drop = FALSE], p2, p1),
-           y = structure(log(p2 / p1), names = rownames(z)),
-           # rowSums() gets the single value in the base period
-           # for each group
-           Y = -rowSums(.rs_x(z[, seq_len(n), drop = FALSE], p2, p1)))
+    switch(
+      match.arg(matrix),
+      Z = z[, -seq_len(n), drop = FALSE],
+      X = .rs_x(z[, -seq_len(n), drop = FALSE], p2, p1),
+      y = structure(log(p2 / p1), names = rownames(z)),
+      # rowSums() gets the single value in the base period
+      # for each group
+      Y = -rowSums(.rs_x(z[, seq_len(n), drop = FALSE], p2, p1))
+    )
   }
   # clean up enclosing environment
   enc <- list(z = z, n = n, p2 = p2, p1 = p1)
