@@ -14,7 +14,7 @@ rs_pairs(period, product)
 \arguments{
 \item{period}{A vector that gives the time period for each sale. Usually a vector of dates, but other values are possible if they can be sorted in chronological order (i.e., with \code{\link[=order]{order()}}).}
 
-\item{product}{A factor, or a vector to be turned into a factor, that gives the product identifier for each sale.}
+\item{product}{A vector that gives the product identifier for each sale.}
 }
 
 \value{
