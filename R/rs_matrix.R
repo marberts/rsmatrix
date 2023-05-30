@@ -11,7 +11,7 @@ union2 <- function(x, y) {
 }
 
 dense_to_sparse <- function(x) {
-  if (packageVersion("Matrix") < package_version("1.4-2")) {
+  if (packageVersion("Matrix") < package_version("1.5-0")) {
     as(x, "dgCMatrix")
   } else {
     as(as(x, "generalMatrix"), "CsparseMatrix")
@@ -22,19 +22,17 @@ dense_to_sparse <- function(x) {
 .rs_z <- function(t2, t1, f = NULL, sparse = FALSE) {
   # it's important to coerce t2 and t1 into characters prior to taking the union
   # so that both dates and factors are treated the same
-  lev <- union2(t2, t1) # usually faster than base::union()
-  lev <- lev[order(lev)]
+  lev <- sort.int(union2(t2, t1)) # usually faster than base::union()
   t2 <- factor(t2, lev)
   t1 <- factor(t1, lev)
-  # something is probably wrong if t2 <= t1
   if (any(as.numeric(t2) <= as.numeric(t1))) {
-    warning(
-      gettext("all elements of 't2' should be greater than the corresponding elements in 't1'")
-    )
-  } 
+    warning("all elements of 't2' should be greater than the corresponding ",
+            "elements in 't1'")
+  }
+  
   # make row names before interacting with f
   nm <- if (!is.null(names(t2))) {
-      names(t2) 
+      names(t2)
     } else if (!is.null(names(t1))) {
       names(t1)
     } else if (!is.null(names(f))) {
@@ -42,22 +40,25 @@ dense_to_sparse <- function(x) {
     } else {
       seq_along(t2)
     }
-  # interact with f
+  
   if (!is.null(f)) {
     f <- as.factor(f)
     t2 <- interaction(f, t2)
     t1 <- interaction(f, t1)
   }
+  
   # calculate Z
   if (nlevels(t2) < 2L) {
     # return a nx1 matrix of 0's if there's only one level
     # return a 0x0 matrix if there are no levels
-    z <- matrix(rep(0, length(t2)), ncol = nlevels(t2))
-    if (sparse) z <- dense_to_sparse(z)
+    z <- matrix(rep.int(0, length(t2)), ncol = nlevels(t2))
+    if (sparse) {
+      z <- dense_to_sparse(z)
+    }
   } else {
     # model matrix otherwise
     mm <- if (sparse) sparse.model.matrix else model.matrix
-    z <- mm(~ t2 - 1, contrasts.arg = list(t2 = "contr.treatment")) - 
+    z <- mm(~ t2 - 1, contrasts.arg = list(t2 = "contr.treatment")) -
       mm(~ t1 - 1, contrasts.arg = list(t1 = "contr.treatment"))
   }
   if (nlevels(t2) > 0L) {
@@ -76,17 +77,17 @@ dense_to_sparse <- function(x) {
 rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
   if (is.null(f)) {
     if (different_lengths(t2, t1, p2, p1)) {
-      stop(gettext("'t2', 't1', 'p2', and 'p1' must be the same length"))
+      stop("'t2', 't1', 'p2', and 'p1' must be the same length")
     }
     if (anyNA(t2) || anyNA(t1)) {
-      stop(gettext("'t2' and 't1' cannot contain NAs"))
+      stop("'t2' and 't1' cannot contain NAs")
     }
   } else {
     if (different_lengths(t2, t1, p2, p1, f)) {
-      stop(gettext("'t2', 't1', 'p2', 'p1', and 'f' must be the same length"))
+      stop("'t2', 't1', 'p2', 'p1', and 'f' must be the same length")
     }
     if (anyNA(t2) || anyNA(t1) || anyNA(f)) {
-      stop(gettext("'t2', 't1', and 'f' cannot contain NAs"))
+      stop("'t2', 't1', and 'f' cannot contain NAs")
     }
     f <- as.factor(f)
   }
