@@ -12,13 +12,17 @@ rs_pairs(period, product)
 }
 
 \arguments{
-\item{period}{A vector that gives the time period for each sale. Usually a vector of dates, but other values are possible if they can be sorted in chronological order (i.e., with \code{\link[=order]{order()}}).}
+\item{period}{A vector that gives the time period for each sale. Usually a date vector, or a factor with the levels in chronological order, but other values are possible if they can be sorted in chronological order (i.e., with \code{\link[=order]{order()}}).}
 
-\item{product}{A vector that gives the product identifier for each sale.}
+\item{product}{A vector that gives the product identifier for each sale. Usually a factor or vector of integer codes for each product.}
 }
 
 \value{
 A numeric vector of indices giving the position of the previous sale for each \code{product}, with the convention that the previous sale for the first sale is itself. The first position is returned in the case of ties.
+}
+
+\note{
+\code{\link[=order]{order()}}) is the workhorse of \code{rs_pairs()}, so performance can be sensitive to the types of \code{period} and \code{product}, and can be slow for large character vectors.
 }
 
 \seealso{

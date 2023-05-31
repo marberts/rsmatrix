@@ -19,7 +19,7 @@ dense_to_sparse <- function(x) {
 }
 
 #---- Z matrix (internal) ----
-.rs_z <- function(t2, t1, f = NULL, sparse = FALSE) {
+rs_z_ <- function(t2, t1, f = NULL, sparse = FALSE) {
   # it's important to coerce t2 and t1 into characters prior to taking the union
   # so that both dates and factors are treated the same
   lev <- sort.int(union2(t2, t1)) # usually faster than base::union()
@@ -29,7 +29,7 @@ dense_to_sparse <- function(x) {
     warning("all elements of 't2' should be greater than the corresponding ",
             "elements in 't1'")
   }
-  
+
   # make row names before interacting with f
   nm <- if (!is.null(names(t2))) {
       names(t2)
@@ -40,13 +40,13 @@ dense_to_sparse <- function(x) {
     } else {
       seq_along(t2)
     }
-  
+
   if (!is.null(f)) {
     f <- as.factor(f)
     t2 <- interaction(f, t2)
     t1 <- interaction(f, t1)
   }
-  
+
   # calculate Z
   if (nlevels(t2) < 2L) {
     # return a nx1 matrix of 0's if there's only one level
@@ -71,7 +71,7 @@ dense_to_sparse <- function(x) {
 }
 
 #---- X matrix (internal) ----
-.rs_x <- function(z, p2, p1) (z > 0) * p2 - (z < 0) * p1
+rs_x_ <- function(z, p2, p1) (z > 0) * p2 - (z < 0) * p1
 
 #---- All matrices ----
 rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
@@ -83,15 +83,15 @@ rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
       stop("'t2' and 't1' cannot contain NAs")
     }
   } else {
+    f <- as.factor(f)
     if (different_lengths(t2, t1, p2, p1, f)) {
       stop("'t2', 't1', 'p2', 'p1', and 'f' must be the same length")
     }
     if (anyNA(t2) || anyNA(t1) || anyNA(f)) {
       stop("'t2', 't1', and 'f' cannot contain NAs")
     }
-    f <- as.factor(f)
   }
-  z <- .rs_z(t2, t1, f, sparse)
+  z <- rs_z_(t2, t1, f, sparse)
   # number of columns that need to be removed for base period
   n <- max(1L, nlevels(f)) * (ncol(z) > 0)
   # return value
@@ -99,11 +99,11 @@ rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
     switch(
       match.arg(matrix),
       Z = z[, -seq_len(n), drop = FALSE],
-      X = .rs_x(z[, -seq_len(n), drop = FALSE], p2, p1),
+      X = rs_x_(z[, -seq_len(n), drop = FALSE], p2, p1),
       y = structure(log(p2 / p1), names = rownames(z)),
       # rowSums() gets the single value in the base period
       # for each group
-      Y = -rowSums(.rs_x(z[, seq_len(n), drop = FALSE], p2, p1))
+      Y = -rowSums(rs_x_(z[, seq_len(n), drop = FALSE], p2, p1))
     )
   }
   # clean up enclosing environment

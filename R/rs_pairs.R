@@ -1,5 +1,10 @@
 rs_pairs <- function(period, product) {
   n <- length(period)
+
+  # != is slow for factors with many levels
+  if (is.factor(product)) {
+    attributes(product) <- NULL
+  }
   if (length(product) != n) {
     stop("'period' and 'product' must be the same length")
   }

@@ -1,4 +1,4 @@
-test_that("An easy example works", {
+test_that("an easy example works", {
   # An easy-to-verify test
   # y x  x_prev pos
   # b 1  1      1
@@ -12,27 +12,27 @@ test_that("An easy example works", {
   # c 11 10     2
   # c 7  7      10
   # d 1  1      8
-  
+
   x <- c(1, 10, 1:3, 3:2, 1, 11, 7, 1)
-  y <- letters[c(2, 3, 1, 1, 1, 2, 2, 4, 3, 3, 4)]
-  
+  y <- factor(letters[c(2, 3, 1, 1, 1, 2, 2, 4, 3, 3, 4)])
+
   expect_identical(
     rs_pairs(x, y),
     c(1L, 10L, 3L, 3L, 4L, 7L, 1L, 8L, 2L, 10L, 8L)
   )
-  
+
   x[2] <- NA
   expect_identical(
     rs_pairs(x, y),
     c(1L, NA, 3L, 3L, 4L, 7L, 1L, 8L, 10L, 10L, 8L)
   )
-  
+
   y[5] <- NA
   expect_identical(
     rs_pairs(x, y),
     c(1L, NA, 3L, 3L, NA, 7L, 1L, 8L, 10L, 10L, 8L)
   )
-  
+
   x[7] <- NA
   expect_identical(
     rs_pairs(x, y),
@@ -40,7 +40,7 @@ test_that("An easy example works", {
   )
 })
 
-test_that("A more complex example works", {
+test_that("a more complex example works", {
   x <- c(
     "3", "15", "9", "1", NA, "8", NA, "7", NA, NA, "5", NA, "13", "14", "11"
   )
@@ -51,18 +51,14 @@ test_that("A more complex example works", {
   )
 })
 
-test_that("Corner cases work", {
+test_that("corner cases work", {
   expect_identical(rs_pairs(numeric(0), character(0)), integer(0))
-  
   expect_identical(rs_pairs(1, 1), 1L)
-
   expect_identical(rs_pairs(rep(1, 10), 1:10), 1:10)
-  
   expect_identical(rs_pairs(1:10, rep(1, 10)), c(1L, 1:9))
-  
   expect_identical(rs_pairs(c(1, 2, 3, 2), rep(1, 4)), c(1L, 1L, 4L, 2L))
 })
 
-test_that("Different length inputs is an error", {
+test_that("different length inputs is an error", {
   expect_error(rs_pairs(1:3, 1:2))
 })
