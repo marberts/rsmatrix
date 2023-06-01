@@ -4,25 +4,13 @@ different_lengths <- function(...) {
   any(res != res[1L])
 }
 
-union2 <- function(x, y) {
-  x <- unique(x)
-  y <- unique(y)
-  unique(c(as.character(x), as.character(y)))
-}
-
-dense_to_sparse <- function(x) {
-  if (packageVersion("Matrix") < package_version("1.5-0")) {
-    as(x, "dgCMatrix")
-  } else {
-    as(as(x, "generalMatrix"), "CsparseMatrix")
-  }
-}
-
 #---- Z matrix (internal) ----
 rs_z_ <- function(t2, t1, f = NULL, sparse = FALSE) {
-  # it's important to coerce t2 and t1 into characters prior to taking the union
+  # coerce t2 and t1 into characters prior to taking the union
   # so that both dates and factors are treated the same
-  lev <- sort.int(union2(t2, t1)) # usually faster than base::union()
+  lev2 <- as.character(unique(t2))
+  lev1 <- as.character(unique(t1))
+  lev <- sort.int(unique(c(lev2, lev1))) # usually faster than base::union()
   t2 <- factor(t2, lev)
   t1 <- factor(t1, lev)
   if (any(as.numeric(t2) <= as.numeric(t1))) {
@@ -53,7 +41,7 @@ rs_z_ <- function(t2, t1, f = NULL, sparse = FALSE) {
     # return a 0x0 matrix if there are no levels
     z <- matrix(rep.int(0, length(t2)), ncol = nlevels(t2))
     if (sparse) {
-      z <- dense_to_sparse(z)
+      z <- as(as(z, "generalMatrix"), "CsparseMatrix")
     }
   } else {
     # model matrix otherwise

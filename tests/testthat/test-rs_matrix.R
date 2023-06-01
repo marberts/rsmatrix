@@ -1,3 +1,11 @@
+dense_to_sparse <- function(x) {
+  if (packageVersion("Matrix") < package_version("1.5-0")) {
+    as(x, "dgCMatrix")
+  } else {
+    as(as(x, "generalMatrix"), "CsparseMatrix")
+  }
+}
+
 # data for computations
 x <- data.frame(date = c(3, 2, 3, 2, 3, 3),
                 date_prev = c(1, 1, 2, 1, 2, 1),
@@ -136,18 +144,18 @@ test_that("Z matrix works correctly", {
 
 test_that("sparse matrices work correctly", {
   expect_identical(rsmatrix:::rs_z_(integer(0), integer(0), sparse = TRUE),
-                   rsmatrix:::dense_to_sparse(matrix(integer(0), ncol = 0)))
+                   dense_to_sparse(matrix(integer(0), ncol = 0)))
   expect_identical(
     suppressWarnings(rsmatrix:::rs_z_(1, 1, sparse = TRUE)),
-    rsmatrix:::dense_to_sparse(matrix(0, ncol = 1, dimnames = list(1, 1)))
+    dense_to_sparse(matrix(0, ncol = 1, dimnames = list(1, 1)))
   )
   expect_identical(
     suppressWarnings(rsmatrix:::rs_z_(c(a = "a"), "a", sparse = TRUE)),
-    rsmatrix:::dense_to_sparse(matrix(0, ncol = 1, dimnames = list("a", "a")))
+    dense_to_sparse(matrix(0, ncol = 1, dimnames = list("a", "a")))
   )
   expect_identical(
     rsmatrix:::rs_z_(c(2, 2), c(1, 1), c("a", "b"), TRUE),
-    rsmatrix:::dense_to_sparse(
+    dense_to_sparse(
       matrix(c(-1, 0, 0, -1, 1, 0, 0, 1), ncol = 4,
              dimnames = list(1:2, c("a.1", "b.1", "a.2", "b.2"))))
     )

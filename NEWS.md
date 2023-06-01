@@ -1,6 +1,6 @@
-## Changes in version 0.2.5
+## Changes in version 0.2.6
 
-- Updated to work with Matrix >= 1.4-2.
+- Updated to work with Matrix >= 1.5-0.
 
 ## Changes in version 0.2.3
 

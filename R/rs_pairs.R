@@ -1,7 +1,7 @@
 rs_pairs <- function(period, product) {
   n <- length(period)
 
-  # != is slow for factors with many levels
+  # != is slow for factors with many levels, so use the integer codes
   if (is.factor(product)) {
     attributes(product) <- NULL
   }
