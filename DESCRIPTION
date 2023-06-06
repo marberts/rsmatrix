@@ -10,6 +10,6 @@ Imports: Matrix (>= 1.5-0), methods, stats
 Suggests: testthat (>= 3.0.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
-URL: https://github.com/marberts/rsmatrix
+URL: https://marberts.github.io/rsmatrix, https://github.com/marberts/rsmatrix
 BugReports: https://github.com/marberts/rsmatrix/issues
 Config/testthat/edition: 3
