@@ -7,9 +7,13 @@ Authors@R: c(
 Description: A small package for calculating the matrices in Shiller (1991, <doi:10.1016/S1051-1377(05)80028-2>) that serve as the foundation for many repeat-sales price indexes.
 Depends: R (>= 4.0)
 Imports: Matrix (>= 1.5-0), methods, stats
-Suggests: testthat (>= 3.0.0)
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 URL: https://marberts.github.io/rsmatrix, https://github.com/marberts/rsmatrix
 BugReports: https://github.com/marberts/rsmatrix/issues
 Config/testthat/edition: 3
+VignetteBuilder: knitr
