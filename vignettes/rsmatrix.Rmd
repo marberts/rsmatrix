@@ -25,59 +25,106 @@ Shiller, 1987, 1989; Abraham and Schauman, 1991; Calhoun, 1996). In all cases th
 
 ## Some data
 
+Let's start with some fictitious data on house sales for five cities over a ten-year period. These data won't make an interesting price index, but they're broadly representative of the type of data used to make a housing price index in practice.
+
 ```{r data}
 set.seed(15243)
 
 periods <- seq(as.Date("2010-01-01"), as.Date("2019-12-31"), "day")
 
-prices <- data.frame(period = sample(periods, 1e5, TRUE),
-                     property = sprintf("%05d", sample(1:5e4, 1e5, TRUE)),
-                     price = round(rlnorm(1e5) * 5e5, -3))
+prices <- data.frame(sale = sample(periods, 5e5, TRUE),
+                     property = factor(sprintf("%05d", sample(1:5e4, 5e5, TRUE))),
+                     city = factor(sample(1:5, 1e5, TRUE)),
+                     price = round(rlnorm(5e5) * 5e5, -3))
 
-prices <- prices[order(prices$property, prices$period), ]
+prices <- prices[order(prices$city, prices$property, prices$sale), ]
 row.names(prices) <- NULL
 
-prices
-```
-
-
-```{r duplicates}
-quantile(table(prices$property))
+head(prices)
 ```
 
 ## Preparing to make the matrices
 
-```{r pairs}
-prices$period <- cut(prices$period, "month")
+The repeat-sales method uses multiple sales for the same property over time to identify the change in housing prices. The major step to prepare the data for this method is to make pairs of consecutive sales (sales pars). Note that this will remove the sizable chunk of properties for which there is only one sale.
 
-sales_pairs <- rs_pairs(prices$period, prices$property)
-prices[c("period_prev", "price_prev")] <- prices[sales_pairs, c("period", "price")]
-
-prices
+```{r duplicates}
+interaction(prices$city, prices$property, drop = TRUE) |>
+  tabulate() |>
+  quantile()
 ```
 
-```{r removal}
+We'll be making a monthly index, and it's useful to turn sale dates into year months before constructing sales pairs. (Using, say, the `yearmon` class from `zoo` instead of a factor means this can be done after making sales pairs.)
+
+```{r yearmon}
+prices$period <- cut(prices$sale, "month")
+```
+
+The `rs_pairs()` function gives the position of the previous sale for each property in each city in the data.
+
+```{r pairs}
+sales_pairs <- rs_pairs(prices$sale, interaction(prices$city, prices$property))
+prices[c("period_prev", "price_prev")] <- prices[sales_pairs, c("period", "price")]
+
+head(prices)
+```
+
+Now that the data are oriented as sales pairs, we can remove pairs of transactions that don't belong in the calculation. The goal is to help motivate the assumption that it is only time-invariant differences in quality that confound a change in housing prices with a change in the composition of housing that sells over time.
+
+It's normal to remove pairs of transactions that are close together (e.g., less than two months apart), as these properties may be flips or the result of financial difficulty that is not indicative of what the property would have otherwise sold for. Note that this filters out properties that only sell once.
+
+```{r removal1}
 prices$holding_period <- with(prices, as.numeric(period) - as.numeric(period_prev))
 
 prices <- subset(prices, holding_period > 2)
+```
 
+Properties with a very large change in price may have undergone major improvements or depreciation that similarly undermine the assumptions of the repeat-sales method. There are many ways to try and filter out these transactions, but a simple approach is to remove pairs of sales where the monthly return for a property is greater than 2.5 median absolute deviations from the median. (The `gpindex` package has several other methods for dealing with extreme changes in prices.)
+
+```{r removal2}
 monthly_return <- with(prices, (price / price_prev)^(1 / holding_period))
 
-prices <- subset(prices, abs(monthly_return - median(monthly_return)) < 2.5 * mad(monthly_return))
+robust_z <- gpindex::grouped(gpindex::robust_z)
+prices <- subset(prices, !robust_z(monthly_return, group = city))
 
-prices
+head(prices)
 ```
 
 ## Calculating a repeat-sales index
 
-```{r grs}
-matrices <- with(prices, rs_matrix(period, period_prev, price, price_prev))
+With the data in the right form, and potentially problematic transactions removed from the data, we can now make the repeat-sales matrices and calculate a housing price index. The strategy is to make a constructor function based on the sales-pair data that can be used to make the matrices in Shiller (1991). These matrices are naturally spare, and the volume of transactions means we'll benefit for using sparse matrices.
 
+```{r matrices}
+matrices <- with(
+  prices,
+  rs_matrix(period, period_prev, price, price_prev, city, sparse = TRUE)
+)
+```
+
+The simplest repeat-sales index in the geometric repeat sales (GRS) index of Bailey et al. (1963).^[The GRS index is simply the first-difference estimator for the linear model of log price with property fixed effects. This is easy enough to compute with a panel-data package like `plm`, but Shiller's matrices are more convenient when working with sales pairs.]
+
+```{r grs}
 Z <- matrices("Z")
 y <- matrices("y")
 
 grs <- exp(solve(crossprod(Z), crossprod(Z, y)))
+head(grs)
+```
 
+There are various inverse-variance weighting schemes found in the literature. These weights are the result of regressing the residuals from the GRS model against a function of the holding period. The most well-known weights are due to Case and Shiller (1987).
+
+```{r weights}
+grs_resid <- y - Z %*% log(grs)
+
+mdl <- lm(as.numeric(grs_resid)^2 ~ prices$holding_period)
+W <- Diagonal(x = 1 / fitted.values(mdl))
+
+grs_cs <- exp(solve(crossprod(Z, W %*% Z), crossprod(Z, W %*% y)))
+head(grs_cs)
+```
+
+Adding the square of the holding period to the model for the variance gives the weighting scheme due to Abraham and Schauman (1991). Removing the intercept from the Abraham and Schauman gives another scheme due to Calhoun (1996).
+
+```{r ars}
 X <- matrices("X")
 Y <- matrices("Y")
 
@@ -85,3 +132,15 @@ ars <- 1 / solve(crossprod(Z, X), crossprod(Z, Y))
 ```
 
 ## Weighting schemes
+
+## 
+
+This form for the index may seem inconvenient, but it's useful to construct the various inverse-variance weights that are sometimes used with repeat-sales indexes. The index can be handled in a more convenient manner with `piar`.
+
+```{r reshape}
+# rn <- strsplit(rownames(grs), ".", fixed = TRUE) |>
+#   do.call(what = rbind)
+# 
+# grs2 <- piar::elemental_index(grs[, 1], rn[, 2], rn[, 1])
+# head(grs2)
+```
