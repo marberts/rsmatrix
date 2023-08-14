@@ -20,8 +20,7 @@ library(Matrix)
 ```
 
 The repeat-sales method is an approach to construct property price indexes by exploiting multiple sales for the same property over time to control for time-invariant differences in quality between properties. In practice, repeat-sales indexes come in a number of different flavors. There are two broad classes
-of repeat-sales price indices---the geometric repeat-sales index (GRS index) proposed by Bailey et al. (1963) and the arithmetic repeat-sales index (ARS index) proposed by Shiller (1991)---along with various weighting schemes that can be used to weight the prices in the index calculation (e.g., Case and
-Shiller, 1987, 1989; Abraham and Schauman, 1991; Calhoun, 1996). In all cases these indexes can be calculated a linear estimators using the matrices in Shiller (1991, sections I-II). The purpose of the *rsmatrix* package is to make is easy to make these matrices and compute a repeat-sales index.
+of repeat-sales price indices---the geometric repeat-sales index (GRS index) proposed and the arithmetic repeat-sales index (ARS index)---along with various weighting schemes that can be used to weight the prices in the index calculation. In all cases these indexes can be calculated a linear estimator using a few different matrices. The purpose of the *rsmatrix* package is to make is easy to make these matrices and compute a repeat-sales index.
 
 ## Some data
 
@@ -81,9 +80,10 @@ prices <- subset(prices, holding_period > 2)
 Properties with a very large change in price may have undergone major improvements or depreciation that similarly undermine the assumptions of the repeat-sales method. There are many ways to try and filter out these transactions, but a simple approach is to remove pairs of sales where the monthly return for a property is greater than 2.5 median absolute deviations from the median. (The `gpindex` package has several other methods for dealing with extreme changes in prices.)
 
 ```{r removal2}
+library(gpindex)
 monthly_return <- with(prices, (price / price_prev)^(1 / holding_period))
 
-robust_z <- gpindex::grouped(gpindex::robust_z)
+robust_z <- grouped(robust_z)
 prices <- subset(prices, !robust_z(monthly_return, group = city))
 
 head(prices)
@@ -91,7 +91,7 @@ head(prices)
 
 ## Calculating a repeat-sales index
 
-With the data in the right form, and potentially problematic transactions removed from the data, we can now make the repeat-sales matrices and calculate a housing price index. The strategy is to make a constructor function based on the sales-pair data that can be used to make the matrices in Shiller (1991). These matrices are naturally spare, and the volume of transactions means we'll benefit for using sparse matrices.
+With the data in the right form, and potentially problematic transactions removed from the data, we can now make the repeat-sales matrices and calculate a housing price index. The strategy is to make a constructor function based on the sales-pair data that can be used to make the repeat-sales matrices. These matrices are naturally spare, and the volume of transactions means we'll benefit for using sparse matrices.
 
 ```{r matrices}
 matrices <- with(
@@ -100,7 +100,7 @@ matrices <- with(
 )
 ```
 
-The simplest repeat-sales index in the geometric repeat sales (GRS) index of Bailey et al. (1963).^[The GRS index is simply the first-difference estimator for the linear model of log price with property fixed effects. This is easy enough to compute with a panel-data package like `plm`, but Shiller's matrices are more convenient when working with sales pairs.]
+The simplest repeat-sales index in the geometric repeat sales (GRS) index.^[The GRS index is simply the first-difference estimator for the linear model of log price with property fixed effects. This is easy enough to compute with a panel-data package like `plm`, but the repeat-sales matrices are more convenient when working with sales pairs.] This index uses the $Z$ and $y$ matrices.
 
 ```{r grs}
 Z <- matrices("Z")
@@ -110,7 +110,7 @@ grs <- exp(solve(crossprod(Z), crossprod(Z, y)))
 head(grs)
 ```
 
-There are various inverse-variance weighting schemes found in the literature. These weights are the result of regressing the residuals from the GRS model against a function of the holding period. The most well-known weights are due to Case and Shiller (1987).
+There are various inverse-variance (or interval) weighting schemes found in the literature. These weights are the result of regressing the residuals from the GRS model against a function of the holding period. The most well-known of these weights, the Case-Shiller weights, model variance as a linear function of holding period.
 
 ```{r weights}
 grs_resid <- y - Z %*% log(grs)
@@ -122,25 +122,61 @@ grs_cs <- exp(solve(crossprod(Z, W %*% Z), crossprod(Z, W %*% y)))
 head(grs_cs)
 ```
 
-Adding the square of the holding period to the model for the variance gives the weighting scheme due to Abraham and Schauman (1991). Removing the intercept from the Abraham and Schauman gives another scheme due to Calhoun (1996).
+Adding the square of the holding period to the model for the variance, with or without an intercept, is common variation for the interval weights. These weights can all be extended to account for the same house selling more than twice.
+
+Another type of repeat-sales index is the arithmetic repeat sales (ARS) index. This index uses the $Z$, $X$, and $Y$ matrices.
 
 ```{r ars}
 X <- matrices("X")
 Y <- matrices("Y")
 
 ars <- 1 / solve(crossprod(Z, X), crossprod(Z, Y))
+head(ars)
 ```
 
-## Weighting schemes
+Like the GRS index, the ARS index can be calculated with inverse-variance weights.
 
-## 
+```{r weights2}
+ars_resid <- Y - X %*% (1 / ars)
 
-This form for the index may seem inconvenient, but it's useful to construct the various inverse-variance weights that are sometimes used with repeat-sales indexes. The index can be handled in a more convenient manner with `piar`.
+mdl <- lm(as.numeric(ars_resid)^2 ~ prices$holding_period)
+W <- Diagonal(x = 1 / fitted.values(mdl))
 
-```{r reshape}
-# rn <- strsplit(rownames(grs), ".", fixed = TRUE) |>
-#   do.call(what = rbind)
-# 
-# grs2 <- piar::elemental_index(grs[, 1], rn[, 2], rn[, 1])
-# head(grs2)
+ars_cs <- 1 / solve(crossprod(Z, W %*% X), crossprod(Z, W %*% Y))
+head(ars_cs)
+```
+
+Dividing the $$X$$ and $$Y$$ matrices by the price of the first sale for each row produces an equally-weighted arithmetic index (as opposed to value-weighted index).
+
+```{r weights3}
+ars_ew <- with(
+  prices,
+  1 / solve(crossprod(Z, X / price_prev), crossprod(Z, Y / price_prev))
+)
+```
+
+## Sales pair contributions
+
+Repeat-sales indexes have a simple interpretation as a type of efficient back-price imputation. It's best to include the base period of the index prior to doing such an imputation.
+
+```{r contrib}
+grs <- c(setNames(rep(1, 5), paste(1:5, "2010-01-01", sep = ".")), grs[, 1])
+```
+
+The GRS index at a point in time is simply the geometric mean of imputed price relatives. This makes it easy to calculate the percent-change contribution of each property at a point in time.
+
+```{r}
+impute_back <- with(
+  subset(prices, period == "2011-01-01" & city == 5),
+  price / (price_prev / grs[paste(city, period_prev, sep = ".")])
+)
+
+impute_forward <- with(
+  subset(prices, period_prev == "2011-01-01" & city == 5),
+  price_prev / (price / grs[paste(city, period, sep = ".")])
+)
+
+geometric_contributions(c(impute_back, impute_forward)) |>
+  density() |>
+  plot(main = "Percent-change sales pair contributions")
 ```
