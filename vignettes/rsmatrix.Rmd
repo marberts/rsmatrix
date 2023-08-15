@@ -165,7 +165,7 @@ grs <- c(setNames(rep(1, 5), paste(1:5, "2010-01-01", sep = ".")), grs[, 1])
 
 The GRS index at a point in time is simply the geometric mean of imputed price relatives. This makes it easy to calculate the percent-change contribution of each property at a point in time.
 
-```{r}
+```{r, fig.width=6, fig.height=4}
 impute_back <- with(
   subset(prices, period == "2011-01-01" & city == 5),
   price / (price_prev / grs[paste(city, period_prev, sep = ".")])
@@ -178,5 +178,5 @@ impute_forward <- with(
 
 geometric_contributions(c(impute_back, impute_forward)) |>
   density() |>
-  plot(main = "Percent-change sales pair contributions")
+  plot(main = "Percent-change sales pair contributions", xlab = "", ylab = "")
 ```
