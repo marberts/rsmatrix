@@ -1,3 +1,7 @@
+## Changes in version 0.2.7
+
+- Added a vignette.
+
 ## Changes in version 0.2.6
 
 - Updated to work with Matrix >= 1.5-0.
