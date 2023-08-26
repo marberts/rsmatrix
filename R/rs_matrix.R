@@ -4,7 +4,6 @@ different_lengths <- function(...) {
   any(res != res[1L])
 }
 
-#---- Z matrix (internal) ----
 rs_z_ <- function(t2, t1, f = NULL, sparse = FALSE) {
   # coerce t2 and t1 into characters prior to taking the union
   # so that both dates and factors are treated the same
@@ -13,52 +12,56 @@ rs_z_ <- function(t2, t1, f = NULL, sparse = FALSE) {
   lev <- sort.int(unique(c(lev2, lev1))) # usually faster than base::union()
   t2 <- factor(t2, lev)
   t1 <- factor(t1, lev)
-  if (any(as.numeric(t2) <= as.numeric(t1))) {
+  if (any(unclass(t2) <= unclass(t1))) {
     warning("all elements of 't2' should be greater than the corresponding ",
             "elements in 't1'")
   }
 
   # make row names before interacting with f
   nm <- if (!is.null(names(t2))) {
-      names(t2)
-    } else if (!is.null(names(t1))) {
-      names(t1)
-    } else if (!is.null(names(f))) {
-      names(f)
-    } else {
-      seq_along(t2)
-    }
+    names(t2)
+  } else if (!is.null(names(t1))) {
+    names(t1)
+  } else if (!is.null(names(f))) {
+    names(f)
+  } else {
+    seq_along(t2)
+  }
 
   if (!is.null(f)) {
     f <- as.factor(f)
     t2 <- interaction(f, t2)
     t1 <- interaction(f, t1)
+    lev <- levels(t2)
   }
 
   # calculate Z
-  if (nlevels(t2) < 2L) {
-    # return a nx1 matrix of 0's if there's only one level
-    # return a 0x0 matrix if there are no levels
-    z <- matrix(rep.int(0, length(t2)), ncol = nlevels(t2))
-    if (sparse) {
-      z <- as(as(z, "generalMatrix"), "CsparseMatrix")
-    }
+  dims <- c(length(nm), length(lev))
+  attributes(t2) <- NULL
+  attributes(t1) <- NULL
+  non_zero <- which(t2 != t1)
+  i <- seq_along(t2)[non_zero]
+  t2 <- t2[non_zero]
+  t1 <- t1[non_zero]
+  if (sparse) {
+    res <- sparseMatrix(rep.int(i, 2), c(t2, t1),
+                        x = rep(c(1, -1), each = length(i)),
+                        dims = dims)
   } else {
-    # model matrix otherwise
-    mm <- if (sparse) sparse.model.matrix else model.matrix
-    z <- mm(~ t2 - 1, contrasts.arg = list(t2 = "contr.treatment")) -
-      mm(~ t1 - 1, contrasts.arg = list(t1 = "contr.treatment"))
+    res <- rep.int(0, prod(dims))
+    res[(t2 - 1L) * dims[1L] + i] <- 1
+    res[(t1 - 1L) * dims[1L] + i] <- -1
+    dim(res) <- dims
   }
-  if (nlevels(t2) > 0L) {
-    colnames(z) <- levels(t2)
-    rownames(z) <- nm
+
+  if (length(lev) > 0L) {
+    colnames(res) <- lev
+    rownames(res) <- nm
   }
-  # remove model.matrix attributes
-  attributes(z)[c("assign", "contrasts")] <- NULL
-  z
+
+  res
 }
 
-#---- X matrix (internal) ----
 rs_x_ <- function(z, p2, p1) (z > 0) * p2 - (z < 0) * p1
 
 #---- All matrices ----
@@ -80,6 +83,8 @@ rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
     }
   }
   z <- rs_z_(t2, t1, f, sparse)
+  p2 <- as.numeric(p2)
+  p1 <- as.numeric(p1)
   # number of columns that need to be removed for base period
   n <- max(1L, nlevels(f)) * (ncol(z) > 0)
   # return value

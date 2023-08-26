@@ -1,0 +1,230 @@
+
+R version 4.3.1 (2023-06-16) -- "Beagle Scouts"
+Copyright (C) 2023 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> ## ----setup--------------------------------------------------------------------
+> library(rsmatrix)
+> library(Matrix)
+> 
+> ## ----data---------------------------------------------------------------------
+> set.seed(15243)
+> 
+> periods <- seq(as.Date("2010-01-01"), as.Date("2019-12-31"), "day")
+> 
+> prices <- data.frame(sale = sample(periods, 5e5, TRUE),
++                      property = factor(sprintf("%05d", sample(1:5e4, 5e5, TRUE))),
++                      city = factor(sample(1:5, 1e5, TRUE)),
++                      price = round(rlnorm(5e5) * 5e5, -3))
+> 
+> prices <- prices[order(prices$city, prices$property, prices$sale), ]
+> row.names(prices) <- NULL
+> 
+> head(prices)
+        sale property city   price
+1 2012-11-18    00001    1 2831000
+2 2018-10-05    00001    1  290000
+3 2010-09-20    00002    1 1519000
+4 2019-12-19    00002    1  269000
+5 2012-06-25    00003    1  712000
+6 2016-10-15    00003    1  520000
+> 
+> ## ----duplicates---------------------------------------------------------------
+> interaction(prices$city, prices$property, drop = TRUE) |>
++   tabulate() |>
++   quantile()
+  0%  25%  50%  75% 100% 
+   1    1    2    3   11 
+> 
+> ## ----yearmon------------------------------------------------------------------
+> prices$period <- cut(prices$sale, "month")
+> 
+> ## ----pairs--------------------------------------------------------------------
+> sales_pairs <- rs_pairs(prices$sale, interaction(prices$city, prices$property))
+> prices[c("price_prev", "period_prev")] <- prices[sales_pairs, c("price", "period")]
+> 
+> head(prices)
+        sale property city   price     period price_prev period_prev
+1 2012-11-18    00001    1 2831000 2012-11-01    2831000  2012-11-01
+2 2018-10-05    00001    1  290000 2018-10-01    2831000  2012-11-01
+3 2010-09-20    00002    1 1519000 2010-09-01    1519000  2010-09-01
+4 2019-12-19    00002    1  269000 2019-12-01    1519000  2010-09-01
+5 2012-06-25    00003    1  712000 2012-06-01     712000  2012-06-01
+6 2016-10-15    00003    1  520000 2016-10-01     712000  2012-06-01
+> 
+> ## ----removal1-----------------------------------------------------------------
+> prices$holding_period <- with(prices, as.numeric(period) - as.numeric(period_prev))
+> 
+> prices <- subset(prices, holding_period > 2)
+> 
+> ## ----removal2-----------------------------------------------------------------
+> library(gpindex)
+> monthly_return <- with(prices, (price / price_prev)^(1 / holding_period))
+> 
+> robust_z <- grouped(robust_z)
+> prices <- subset(prices, !robust_z(monthly_return, group = city))
+> 
+> head(prices)
+         sale property city  price     period price_prev period_prev
+2  2018-10-05    00001    1 290000 2018-10-01    2831000  2012-11-01
+4  2019-12-19    00002    1 269000 2019-12-01    1519000  2010-09-01
+6  2016-10-15    00003    1 520000 2016-10-01     712000  2012-06-01
+8  2011-07-18    00004    1 305000 2011-07-01      90000  2010-07-01
+9  2013-12-03    00004    1 768000 2013-12-01     305000  2011-07-01
+10 2018-08-02    00004    1 121000 2018-08-01     768000  2013-12-01
+   holding_period
+2              71
+4             111
+6              52
+8              12
+9              29
+10             56
+> 
+> ## ----matrices-----------------------------------------------------------------
+> matrices <- with(
++   prices,
++   rs_matrix(period, period_prev, price, price_prev, city, sparse = TRUE)
++ )
+> 
+> ## ----grs----------------------------------------------------------------------
+> Z <- matrices("Z")
+> y <- matrices("y")
+> 
+> grs <- exp(solve(crossprod(Z), crossprod(Z, y)))
+> head(grs)
+6 x 1 Matrix of class "dgeMatrix"
+                  [,1]
+1.2010-02-01 0.9319471
+2.2010-02-01 1.0682105
+3.2010-02-01 1.0434833
+4.2010-02-01 1.0185787
+5.2010-02-01 0.9715417
+1.2010-03-01 1.0499673
+> 
+> ## ----weights------------------------------------------------------------------
+> grs_resid <- y - Z %*% log(grs)
+> 
+> mdl <- lm(as.numeric(grs_resid)^2 ~ prices$holding_period)
+> W <- Diagonal(x = 1 / fitted.values(mdl))
+> 
+> grs_cs <- exp(solve(crossprod(Z, W %*% Z), crossprod(Z, W %*% y)))
+> head(grs_cs)
+6 x 1 Matrix of class "dgeMatrix"
+                  [,1]
+1.2010-02-01 0.9216778
+2.2010-02-01 1.0395309
+3.2010-02-01 1.0265610
+4.2010-02-01 0.9885539
+5.2010-02-01 0.9611430
+1.2010-03-01 1.0373087
+> 
+> ## ----ars----------------------------------------------------------------------
+> X <- matrices("X")
+> Y <- matrices("Y")
+> 
+> ars <- 1 / solve(crossprod(Z, X), crossprod(Z, Y))
+> head(ars)
+6 x 1 Matrix of class "dgeMatrix"
+                  [,1]
+1.2010-02-01 0.9049071
+2.2010-02-01 1.1567195
+3.2010-02-01 1.0093530
+4.2010-02-01 1.0107540
+5.2010-02-01 0.9458214
+1.2010-03-01 0.9840927
+> 
+> ## ----weights2-----------------------------------------------------------------
+> ars_resid <- Y - X %*% (1 / ars)
+> 
+> mdl <- lm(as.numeric(ars_resid)^2 ~ prices$holding_period)
+> W <- Diagonal(x = 1 / fitted.values(mdl))
+> 
+> ars_cs <- 1 / solve(crossprod(Z, W %*% X), crossprod(Z, W %*% Y))
+> head(ars_cs)
+6 x 1 Matrix of class "dgeMatrix"
+                  [,1]
+1.2010-02-01 0.9040179
+2.2010-02-01 1.1194659
+3.2010-02-01 0.9667189
+4.2010-02-01 0.9549480
+5.2010-02-01 0.9161033
+1.2010-03-01 0.9856805
+> 
+> ## ----weights3-----------------------------------------------------------------
+> ars_ew <- with(
++   prices,
++   1 / solve(crossprod(Z, X / price_prev), crossprod(Z, Y / price_prev))
++ )
+> 
+> head(ars_ew)
+6 x 1 Matrix of class "dgeMatrix"
+                  [,1]
+1.2010-02-01 0.9831875
+2.2010-02-01 1.1454796
+3.2010-02-01 1.1332362
+4.2010-02-01 0.9957358
+5.2010-02-01 0.8859613
+1.2010-03-01 0.9510087
+> 
+> ## ----contrib------------------------------------------------------------------
+> grs <- c(setNames(rep(1, 5), paste(1:5, "2010-01-01", sep = ".")), grs[, 1])
+> ars <- c(setNames(rep(1, 5), paste(1:5, "2010-01-01", sep = ".")), ars[, 1])
+> 
+> ## ---- contrib_grs-------------------------------------------------------------
+> grs_contributions <- Map(
++   \(df, df_prev) {
++     impute_back <- with(df, price_prev / grs[paste(city, period_prev, sep = ".")])
++     names(impute_back) <- row.names(df)
++     impute_forward <- with(df_prev, price / grs[paste(city, period, sep = ".")])
++     names(impute_forward) <- row.names(df_prev)
++     geometric_contributions(
++       c(df$price / impute_back, df_prev$price_prev / impute_forward)
++     )
++   },
++   split(prices, interaction(prices$city, prices$period)),
++   split(prices, interaction(prices$city, prices$period_prev))
++ )
+> 
+> all.equal(sapply(grs_contributions, sum) + 1, grs)
+[1] TRUE
+> 
+> range(unlist(grs_contributions))
+[1] -0.008215347  0.009111019
+> 
+> ## ---- contrib_ars-------------------------------------------------------------
+> ars_contributions <- Map(
++   \(df, df_prev) {
++     impute_back <- with(df, price_prev / ars[paste(city, period_prev, sep = ".")])
++     names(impute_back) <- row.names(df)
++     impute_forward <- with(df_prev, price / ars[paste(city, period, sep = ".")])
++     names(impute_forward) <- row.names(df_prev)
++     arithmetic_contributions(
++       c(df$price / impute_back, df_prev$price_prev / impute_forward),
++       c(impute_back, impute_forward))
++   },
++   split(prices, interaction(prices$city, prices$period)),
++   split(prices, interaction(prices$city, prices$period_prev))
++ )
+> 
+> all.equal(sapply(ars_contributions, sum) + 1, ars)
+[1] TRUE
+> 
+> range(unlist(ars_contributions))
+[1] -0.07041332  0.08316015
+> 
+> 
+> proc.time()
+   user  system elapsed 
+ 12.808   0.949  13.022 

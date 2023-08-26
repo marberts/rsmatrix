@@ -1,11 +1,3 @@
-dense_to_sparse <- function(x) {
-  if (packageVersion("Matrix") < package_version("1.5-0")) {
-    as(x, "dgCMatrix")
-  } else {
-    as(as(x, "generalMatrix"), "CsparseMatrix")
-  }
-}
-
 # data for computations
 x <- data.frame(date = c(3, 2, 3, 2, 3, 3),
                 date_prev = c(1, 1, 2, 1, 2, 1),
@@ -16,7 +8,8 @@ x <- data.frame(date = c(3, 2, 3, 2, 3, 3),
 
 mat <- with(x, rs_matrix(date, date_prev, price, price_prev))
 mats <- with(x, rs_matrix(date, date_prev, price, price_prev, sparse = TRUE))
-matg <- with(x, rs_matrix(date, date_prev, price, price_prev, id2))
+matg <- with(x, rs_matrix(date, date_prev, price, price_prev, id2,
+                          sparse = TRUE))
 mata <- with(subset(x, id2 == "a"),
              rs_matrix(date, date_prev, price, price_prev))
 matb <- with(subset(x, id2 == "b"),
@@ -53,16 +46,48 @@ test_that("corner cases work", {
     factor(integer(0), letters),
     sparse = TRUE
   )
-  expect_identical(
-    ms("Z"),
-    as(as(matrix(double(0), ncol = 0), "generalMatrix"), "CsparseMatrix")
-  )
-  expect_identical(
-    ms("X"),
-    as(as(matrix(double(0), ncol = 0), "generalMatrix"), "CsparseMatrix")
-  )
+  expect_identical(ms("Z"), sparseMatrix(numeric(0), numeric(0), x = 0))
+  expect_identical(ms("X"), sparseMatrix(numeric(0), numeric(0), x = 0))
   expect_identical(ms("Y"), double(0))
   expect_identical(ms("y"), double(0))
+})
+
+test_that("matrices are correct for a simple grouped case", {
+  m <- rs_matrix(c(2, 3, 2, 2, 4), c(1, 1, 1, 1, 3), 1:5, 1:5,
+                 c("a", "b", "a", "b", "a"))
+  expect_identical(
+    m("Z"),
+    matrix(c(1, 0, 1, 0, 0,
+             0, 0, 0, 1, 0,
+             0, 0, 0, 0, -1,
+             0, 1, 0, 0, 0,
+             0, 0, 0, 0, 1,
+             0, 0, 0, 0, 0),
+           ncol = 6,
+           dimnames = list(1:5, c("a.2", "b.2", "a.3", "b.3", "a.4", "b.4")))
+  )
+  expect_identical(
+    m("X"),
+    matrix(c(1, 0, 3, 0, 0,
+             0, 0, 0, 4, 0,
+             0, 0, 0, 0, -5,
+             0, 2, 0, 0, 0,
+             0, 0, 0, 0, 5,
+             0, 0, 0, 0, 0),
+           ncol = 6,
+           dimnames = list(1:5, c("a.2", "b.2", "a.3", "b.3", "a.4", "b.4")))
+  )
+  expect_identical(m("Y"), c("1" = 1, "2" = 2, "3" = 3, "4" = 4, "5" = 0))
+  expect_identical(m("y"), c("1" = log(1), "2" = log(1), "3" = log(1),
+                             "4" = log(1), "5" = log(1)))
+
+  ms <- rs_matrix(c(2, 3, 2, 2, 4), c(1, 1, 1, 1, 3), 1:5, 1:5,
+                  c("a", "b", "a", "b", "a"), TRUE)
+  expect_identical(as.matrix(ms("X")), m("X"))
+  expect_identical(as.matrix(ms("Z")), m("Z"))
+  expect_identical(ms("Y"), c("1" = 1, "2" = 2, "3" = 3, "4" = 4, "5" = 0))
+  expect_identical(ms("y"), c("1" = log(1), "2" = log(1), "3" = log(1),
+                              "4" = log(1), "5" = log(1)))
 })
 
 test_that("matrices are correct for a simple case", {
@@ -77,7 +102,7 @@ test_that("matrices are correct for a simple case", {
   )
   expect_identical(m("Y"), c("1" = 1, "2" = 0))
   expect_identical(m("y"), c("1" = log(2), "2" = log(5 / 2)))
-
+  
   ms <- rs_matrix(c(2, 4), 1:2, c(2, 5), 1:2, sparse = TRUE)
   expect_identical(as.matrix(ms("X")), m("X"))
   expect_identical(as.matrix(ms("Z")), m("Z"))
@@ -144,21 +169,27 @@ test_that("Z matrix works correctly", {
 
 test_that("sparse matrices work correctly", {
   expect_identical(rsmatrix:::rs_z_(integer(0), integer(0), sparse = TRUE),
-                   dense_to_sparse(matrix(integer(0), ncol = 0)))
+                   sparseMatrix(numeric(0), numeric(0), x = 0))
   expect_identical(
     suppressWarnings(rsmatrix:::rs_z_(1, 1, sparse = TRUE)),
-    dense_to_sparse(matrix(0, ncol = 1, dimnames = list(1, 1)))
+    sparseMatrix(numeric(0), numeric(0), x = 0, dims = c(1, 1),
+                 dimnames = list(1, 1))
   )
   expect_identical(
     suppressWarnings(rsmatrix:::rs_z_(c(a = "a"), "a", sparse = TRUE)),
-    dense_to_sparse(matrix(0, ncol = 1, dimnames = list("a", "a")))
+    sparseMatrix(numeric(0), numeric(0), x = 0, dims = c(1, 1),
+                 dimnames = list("a", "a"))
   )
   expect_identical(
     rsmatrix:::rs_z_(c(2, 2), c(1, 1), c("a", "b"), TRUE),
-    dense_to_sparse(
-      matrix(c(-1, 0, 0, -1, 1, 0, 0, 1), ncol = 4,
-             dimnames = list(1:2, c("a.1", "b.1", "a.2", "b.2"))))
-    )
+    sparseMatrix(c(1, 2, 1, 2), 1:4, x = c(-1, -1, 1, 1),
+                 dimnames =  list(1:2, c("a.1", "b.1", "a.2", "b.2")))
+  )
+  expect_identical(
+    suppressWarnings(rsmatrix:::rs_z_(2:1, c(1, 1), sparse = TRUE)),
+    sparseMatrix(c(1, 1), c(1, 2), x = c(-1, 1), dims = c(2, 2),
+                 dimnames = list(1:2, 1:2))
+  )
 })
 
 test_that("grouped indexes work", {
