@@ -157,6 +157,18 @@ ars_ew <- with(
 head(ars_ew)
 ```
 
+Once the index is calculated, it's often easier to turn into a matrix-like object with cities are rows and time periods as columns. The easiest way to do this is with **piar**.
+
+```{r piar}
+library(piar)
+
+dimensions <- do.call(rbind, strsplit(rownames(grs), ".", fixed = TRUE))
+grs_piar <- elemental_index(grs, dimensions[, 2], dimensions[, 1],
+                            chainable = FALSE)
+
+head(grs_piar, c(5, 5))
+```
+
 ## Sales pair contributions
 
 Repeat-sales indexes have a simple interpretation as a type of efficient back-price imputation. It's best to include the base period of the index prior to doing such an imputation.

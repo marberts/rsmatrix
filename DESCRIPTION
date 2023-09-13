@@ -1,6 +1,6 @@
 Package: rsmatrix
 Title: Matrices for Repeat-Sales Price Indexes
-Version: 0.2.7.9001
+Version: 0.2.7.9002
 Authors@R: c(
     person(given = "Steve", family = "Martin", role = c("aut", "cre", "cph"), email = "stevemartin041@gmail.com", comment = c(ORCID = "0000-0003-2544-9480"))
     )
@@ -11,7 +11,8 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),
-    gpindex
+    gpindex,
+    piar (>= 0.5.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 URL: https://marberts.github.io/rsmatrix, https://github.com/marberts/rsmatrix
