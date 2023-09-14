@@ -45,8 +45,8 @@ jobs:
           needs: check
           
       - name: install piar
-      - run: pak::pkg_install("marberts/piar")
-      - shell: Rscript {0}
+        run: pak::pkg_install("marberts/piar")
+        shell: Rscript {0}
 
       - uses: r-lib/actions/check-r-package@v2
         with:
