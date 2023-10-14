@@ -13,8 +13,7 @@ badge](https://marberts.r-universe.dev/badges/rsmatrix)](https://marberts.r-univ
 [![codecov](https://codecov.io/gh/marberts/rsmatrix/branch/master/graph/badge.svg)](https://app.codecov.io/gh/marberts/rsmatrix)
 
 A small package for calculating the matrices in Shiller (1991) that
-serve as the foundation for many repeat-sales price indexes. Builds on
-the ‘rsi’ package by Kirby-McGregor and Martin (2019).
+serve as the foundation for many repeat-sales price indexes.
 
 ## Installation
 
@@ -25,18 +24,36 @@ install.package("rsmatrix")
 Get the development version from GitHub.
 
 ``` r
-devtools::install_github("marberts/rsmatrix")
+pak::pkg_install("marberts/rsmatrix")
+```
+
+Or from R-universe.
+
+``` r
+install.packages(
+  "rsmatrix",
+  repos = c("https://marberts.r-universe.dev", "https://cloud.r-project.org")
+)
 ```
 
 ## Usage
+
+Most repeat-sales price indexes used in practice require the matrices in
+Shiller (1991, sections I-II), e.g., S&P’s Case-Shiller index,
+Teranet-National Bank’s HPI, and formerly Statistics Canada’s RPPI. The
+`rs_matrix()` function produces a function to easily construct these
+matrices. In most cases data need to be structured as sales pairs, which
+can be done with the `rs_pairs()` function.
 
 ``` r
 library(rsmatrix)
 
 # Make some data
-sales <- data.frame(id =    c(1, 1, 1, 2, 2), 
-                    date =  c(1, 2, 3, 1, 3), 
-                    price = c(1, 3, 2, 1, 1))
+sales <- data.frame(
+  id = c(1, 1, 1, 2, 2),
+  date = c(1, 2, 3, 1, 3),
+  price = c(1, 3, 2, 1, 1)
+)
 
 # Turn into sales pairs
 sales[c("date_prev", "price_prev")] <- sales[rs_pairs(sales$date, sales$id), c("date", "price")]
@@ -89,7 +106,16 @@ b <- with(matrices, solve(crossprod(Z, X), crossprod(Z, Y))[, 1])
     ##        2        3 
     ## 240.0000 133.3333
 
+## Contribution
+
+The `McSpatial` package (formerly on CRAN) has some functionality for
+making repeat-sales indices. The functions in this package build off of
+those in the `rsi` package in Kirby-McGregor and Martin (2019), which
+also gives a good background on the theory of repeat-sales indexes.
+
 ## References
+
+ILO, IMF, OECD, UN, World Bank, Eurostat. (2013). . Eurostat.
 
 Kirby-McGregor, M., and Martin, S. (2019). An R package for calculating
 repeat-sale price indices. *Romanian Statistical Review*, 3:17-33.

@@ -15,6 +15,12 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
+> ## ---- include = FALSE---------------------------------------------------------
+> knitr::opts_chunk$set(
++   collapse = TRUE,
++   comment = "#>"
++ )
+> 
 > ## ----setup--------------------------------------------------------------------
 > library(rsmatrix)
 > library(Matrix)
@@ -24,10 +30,12 @@ Type 'q()' to quit R.
 > 
 > periods <- seq(as.Date("2010-01-01"), as.Date("2019-12-31"), "day")
 > 
-> prices <- data.frame(sale = sample(periods, 5e5, TRUE),
-+                      property = factor(sprintf("%05d", sample(1:5e4, 5e5, TRUE))),
-+                      city = factor(sample(1:5, 1e5, TRUE)),
-+                      price = round(rlnorm(5e5) * 5e5, -3))
+> prices <- data.frame(
++   sale = sample(periods, 5e5, TRUE),
++   property = factor(sprintf("%05d", sample(1:5e4, 5e5, TRUE))),
++   city = factor(sample(1:5, 1e5, TRUE)),
++   price = round(rlnorm(5e5) * 5e5, -3)
++ )
 > 
 > prices <- prices[order(prices$city, prices$property, prices$sale), ]
 > row.names(prices) <- NULL
@@ -178,6 +186,23 @@ Type 'q()' to quit R.
 5.2010-02-01 0.8859613
 1.2010-03-01 0.9510087
 > 
+> ## ----piar---------------------------------------------------------------------
+> library(piar)
+> 
+> dimensions <- do.call(rbind, strsplit(rownames(grs), ".", fixed = TRUE))
+> grs_piar <- elemental_index(grs, dimensions[, 2], dimensions[, 1],
++   chainable = FALSE
++ )
+> 
+> head(grs_piar, c(5, 5))
+Fixed-base price index for 5 levels over 5 time periods 
+  2010-02-01 2010-03-01 2010-04-01 2010-05-01 2010-06-01
+1  0.9319471   1.049967  1.0312130  0.9332345  1.0074811
+2  1.0682105   0.984812  1.0840525  1.0113186  0.9645851
+3  1.0434833   1.044671  0.9526141  0.9330665  1.0234300
+4  1.0185787   1.048738  1.0757727  1.1258297  1.0099260
+5  0.9715417   1.025133  1.0648382  1.0387825  1.0930171
+> 
 > ## ----contrib------------------------------------------------------------------
 > grs <- c(setNames(rep(1, 5), paste(1:5, "2010-01-01", sep = ".")), grs[, 1])
 > ars <- c(setNames(rep(1, 5), paste(1:5, "2010-01-01", sep = ".")), ars[, 1])
@@ -212,7 +237,8 @@ Type 'q()' to quit R.
 +     names(impute_forward) <- row.names(df_prev)
 +     arithmetic_contributions(
 +       c(df$price / impute_back, df_prev$price_prev / impute_forward),
-+       c(impute_back, impute_forward))
++       c(impute_back, impute_forward)
++     )
 +   },
 +   split(prices, interaction(prices$city, prices$period)),
 +   split(prices, interaction(prices$city, prices$period_prev))
@@ -227,4 +253,4 @@ Type 'q()' to quit R.
 > 
 > proc.time()
    user  system elapsed 
- 12.808   0.949  13.022 
+ 13.317   0.800  13.432 

@@ -62,8 +62,10 @@ test_that("corner cases work", {
 test_that("sales pairs are back periods", {
   period <- c(3, 3, 4, 2, 2, 1, 4, 1, 1, 3, 2, 4)
   product <- c(1, 3, 2, 3, 2, 1, 1, 2, 3, 2, 1, 3)
-  expect_equal(rs_pairs(period, product),
-               c(11, 4, 10, 9, 8, 6, 1, 8, 9, 5, 6, 2))
+  expect_equal(
+    rs_pairs(period, product),
+    c(11, 4, 10, 9, 8, 6, 1, 8, 9, 5, 6, 2)
+  )
 })
 
 test_that("different length inputs is an error", {

@@ -1,3 +1,9 @@
+## ---- include = FALSE---------------------------------------------------------
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
 ## ----setup--------------------------------------------------------------------
 library(rsmatrix)
 library(Matrix)
@@ -7,10 +13,12 @@ set.seed(15243)
 
 periods <- seq(as.Date("2010-01-01"), as.Date("2019-12-31"), "day")
 
-prices <- data.frame(sale = sample(periods, 5e5, TRUE),
-                     property = factor(sprintf("%05d", sample(1:5e4, 5e5, TRUE))),
-                     city = factor(sample(1:5, 1e5, TRUE)),
-                     price = round(rlnorm(5e5) * 5e5, -3))
+prices <- data.frame(
+  sale = sample(periods, 5e5, TRUE),
+  property = factor(sprintf("%05d", sample(1:5e4, 5e5, TRUE))),
+  city = factor(sample(1:5, 1e5, TRUE)),
+  price = round(rlnorm(5e5) * 5e5, -3)
+)
 
 prices <- prices[order(prices$city, prices$property, prices$sale), ]
 row.names(prices) <- NULL
@@ -91,6 +99,16 @@ ars_ew <- with(
 
 head(ars_ew)
 
+## ----piar---------------------------------------------------------------------
+library(piar)
+
+dimensions <- do.call(rbind, strsplit(rownames(grs), ".", fixed = TRUE))
+grs_piar <- elemental_index(grs, dimensions[, 2], dimensions[, 1],
+  chainable = FALSE
+)
+
+head(grs_piar, c(5, 5))
+
 ## ----contrib------------------------------------------------------------------
 grs <- c(setNames(rep(1, 5), paste(1:5, "2010-01-01", sep = ".")), grs[, 1])
 ars <- c(setNames(rep(1, 5), paste(1:5, "2010-01-01", sep = ".")), ars[, 1])
@@ -123,7 +141,8 @@ ars_contributions <- Map(
     names(impute_forward) <- row.names(df_prev)
     arithmetic_contributions(
       c(df$price / impute_back, df_prev$price_prev / impute_forward),
-      c(impute_back, impute_forward))
+      c(impute_back, impute_forward)
+    )
   },
   split(prices, interaction(prices$city, prices$period)),
   split(prices, interaction(prices$city, prices$period_prev))
