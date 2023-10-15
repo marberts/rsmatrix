@@ -85,12 +85,12 @@ indexes by exploiting multiple sales for the same property over time to
 control for time-invariant differences in quality between properties. In
 practice, repeat-sales indexes come in a number of different flavors.
 There are two broad classes of repeat-sales price indices—the geometric
-repeat-sales index (GRS index) proposed and the arithmetic repeat-sales
-index (ARS index)—along with various weighting schemes that can be used
-to weight the prices in the index calculation. In all cases these
-indexes can be calculated as a linear estimator using a few different
-matrices. The purpose of the <em>rsmatrix</em> package is to make it
-easy to construct these matrices and compute a repeat-sales index.</p>
+repeat-sales index (GRS index) and the arithmetic repeat-sales index
+(ARS index)—along with various weighting schemes that can be used to
+weight the prices in the index calculation. In all cases these indexes
+can be calculated as a linear estimator using a few different matrices.
+The purpose of the <em>rsmatrix</em> package is to make it easy to
+construct these matrices and compute a repeat-sales index.</p>
 <div class="section level2">
 <h2 id="some-data">Some data<a class="anchor" aria-label="anchor" href="#some-data"></a>
 </h2>
@@ -128,8 +128,8 @@ make a housing price index in practice.</p>
 <p>The repeat-sales method uses multiple sales for the same property
 over time to identify the change in housing prices. The major step to
 prepare the data for this method is to make pairs of consecutive sales
-(sales pars). Note that this will remove the sizable chunk of properties
-for which there is only one sale.</p>
+(sales pairs). Note that this will remove the sizable chunk of
+properties for which there is only one sale.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/interaction.html" class="external-link">interaction</a></span><span class="op">(</span><span class="va">prices</span><span class="op">$</span><span class="va">city</span>, <span class="va">prices</span><span class="op">$</span><span class="va">property</span>, drop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/tabulate.html" class="external-link">tabulate</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -174,9 +174,10 @@ properties that only sell once.</p>
 improvements or depreciation that similarly undermine the assumptions of
 the repeat-sales method. There are many ways to try and filter out these
 transactions, but a simple approach is to remove pairs of sales where
-the monthly return for a property is greater than 2.5 median absolute
-deviations from the median. (The <code>gpindex</code> package has
-several other methods for dealing with extreme changes in prices.)</p>
+the monthly return for a property is greater than, say, 2.5 median
+absolute deviations from the median. (The <code>gpindex</code> package
+has several other methods for dealing with extreme changes in
+prices.)</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://marberts.github.io/gpindex/" class="external-link">gpindex</a></span><span class="op">)</span></span>
 <span><span class="va">monthly_return</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">prices</span>, <span class="op">(</span><span class="va">price</span> <span class="op">/</span> <span class="va">price_prev</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="va">holding_period</span><span class="op">)</span><span class="op">)</span></span>

@@ -80,7 +80,8 @@ Usually a factor or vector of integer codes for each product.</p></dd>
 
 <p>A numeric vector of indices giving the position of the previous sale
 for each <code>product</code>, with the convention that the previous sale for the
-first sale is itself. The first position is returned in the case of ties.</p>
+first sale is itself. Ties are resolved according to the order they
+appear in <code>period</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
