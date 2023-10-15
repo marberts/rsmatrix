@@ -19,8 +19,7 @@ library(rsmatrix)
 library(Matrix)
 ```
 
-The repeat-sales method is an approach to construct property price indexes by exploiting multiple sales for the same property over time to control for time-invariant differences in quality between properties. In practice, repeat-sales indexes come in a number of different flavors. There are two broad classes
-of repeat-sales price indices---the geometric repeat-sales index (GRS index) proposed and the arithmetic repeat-sales index (ARS index)---along with various weighting schemes that can be used to weight the prices in the index calculation. In all cases these indexes can be calculated as a linear estimator using a few different matrices. The purpose of the *rsmatrix* package is to make it easy to construct these matrices and compute a repeat-sales index.
+The repeat-sales method is an approach to construct property price indexes by exploiting multiple sales for the same property over time to control for time-invariant differences in quality between properties. In practice, repeat-sales indexes come in a number of different flavors. There are two broad classes of repeat-sales price indices---the geometric repeat-sales index (GRS index) and the arithmetic repeat-sales index (ARS index)---along with various weighting schemes that can be used to weight the prices in the index calculation. In all cases these indexes can be calculated as a linear estimator using a few different matrices. The purpose of the *rsmatrix* package is to make it easy to construct these matrices and compute a repeat-sales index.
 
 ## Some data
 
@@ -46,7 +45,7 @@ head(prices)
 
 ## Preparing to make the matrices
 
-The repeat-sales method uses multiple sales for the same property over time to identify the change in housing prices. The major step to prepare the data for this method is to make pairs of consecutive sales (sales pars). Note that this will remove the sizable chunk of properties for which there is only one sale.
+The repeat-sales method uses multiple sales for the same property over time to identify the change in housing prices. The major step to prepare the data for this method is to make pairs of consecutive sales (sales pairs). Note that this will remove the sizable chunk of properties for which there is only one sale.
 
 ```{r duplicates}
 interaction(prices$city, prices$property, drop = TRUE) |>
@@ -79,7 +78,7 @@ prices$holding_period <- with(prices, as.numeric(period) - as.numeric(period_pre
 prices <- subset(prices, holding_period > 2)
 ```
 
-Properties with a very large change in price may have undergone major improvements or depreciation that similarly undermine the assumptions of the repeat-sales method. There are many ways to try and filter out these transactions, but a simple approach is to remove pairs of sales where the monthly return for a property is greater than 2.5 median absolute deviations from the median. (The `gpindex` package has several other methods for dealing with extreme changes in prices.)
+Properties with a very large change in price may have undergone major improvements or depreciation that similarly undermine the assumptions of the repeat-sales method. There are many ways to try and filter out these transactions, but a simple approach is to remove pairs of sales where the monthly return for a property is greater than, say, 2.5 median absolute deviations from the median. (The `gpindex` package has several other methods for dealing with extreme changes in prices.)
 
 ```{r removal2}
 library(gpindex)

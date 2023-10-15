@@ -21,13 +21,13 @@ serve as the foundation for many repeat-sales price indexes.
 install.package("rsmatrix")
 ```
 
-Get the development version from GitHub.
+Get the development version from GitHub…
 
 ``` r
 pak::pkg_install("marberts/rsmatrix")
 ```
 
-Or from R-universe.
+… or from R-universe.
 
 ``` r
 install.packages(
@@ -38,23 +38,36 @@ install.packages(
 
 ## Usage
 
-Most repeat-sales price indexes used in practice require the matrices in
-Shiller (1991, sections I-II), e.g., S&P’s Case-Shiller index,
-Teranet-National Bank’s HPI, and formerly Statistics Canada’s RPPI. The
-`rs_matrix()` function produces a function to easily construct these
-matrices. In most cases data need to be structured as sales pairs, which
-can be done with the `rs_pairs()` function.
+Most repeat-sales price indexes used in practice are based on the
+matrices in Shiller (1991, sections I-II), e.g., S&P’s Case-Shiller
+index, Teranet-National Bank’s HPI, and formerly Statistics Canada’s
+RPPI. Let’s consider the simplest non-trivial example to see how to make
+and use these matrices.
 
 ``` r
 library(rsmatrix)
 
-# Make some data
+# Make some data for two products selling over three periods
 sales <- data.frame(
   id = c(1, 1, 1, 2, 2),
   date = c(1, 2, 3, 1, 3),
   price = c(1, 3, 2, 1, 1)
 )
 
+sales
+```
+
+    ##   id date price
+    ## 1  1    1     1
+    ## 2  1    2     3
+    ## 3  1    3     2
+    ## 4  2    1     1
+    ## 5  2    3     1
+
+In most cases data need to first be structured as sales pairs, which can
+be done with the `rs_pairs()` function.
+
+``` r
 # Turn into sales pairs
 sales[c("date_prev", "price_prev")] <- sales[rs_pairs(sales$date, sales$id), c("date", "price")]
 
@@ -65,6 +78,9 @@ sales[c("date_prev", "price_prev")] <- sales[rs_pairs(sales$date, sales$id), c("
     ## 2  1    2     3         1          1
     ## 3  1    3     2         2          3
     ## 5  2    3     1         1          1
+
+The `rs_matrix()` function can now be used to produce a function that
+constructs these matrices.
 
 ``` r
 # Calculate matrices
@@ -87,6 +103,9 @@ matrices$X
     ## 1  3 0
     ## 2 -3 2
     ## 3  0 1
+
+Standard repeat-sales indexes are just simple matrix operations using
+these matrices.
 
 ``` r
 # Calculate the GRS index in Bailey, Muth, and Nourse (1963)
@@ -115,7 +134,8 @@ also gives a good background on the theory of repeat-sales indexes.
 
 ## References
 
-ILO, IMF, OECD, UN, World Bank, Eurostat. (2013). . Eurostat.
+ILO, IMF, OECD, UN, World Bank, Eurostat. (2013). *Handbook on
+Residential Property Prices Indices (RPPIs)*. Eurostat.
 
 Kirby-McGregor, M., and Martin, S. (2019). An R package for calculating
 repeat-sale price indices. *Romanian Statistical Review*, 3:17-33.

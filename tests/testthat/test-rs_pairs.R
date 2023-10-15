@@ -53,6 +53,8 @@ test_that("a more complex example works", {
 
 test_that("corner cases work", {
   expect_identical(rs_pairs(numeric(0), character(0)), integer(0))
+  expect_identical(rs_pairs(1:4, rep(NA, 4)), integer(0))
+  expect_identical(rs_pairs(rep(NA, 4), 1:4), integer(0))
   expect_identical(rs_pairs(1, 1), 1L)
   expect_identical(rs_pairs(rep(1, 10), 1:10), 1:10)
   expect_identical(rs_pairs(1:10, rep(1, 10)), c(1L, 1:9))

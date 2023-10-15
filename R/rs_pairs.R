@@ -12,7 +12,8 @@
 #' Usually a factor or vector of integer codes for each product.
 #' @return A numeric vector of indices giving the position of the previous sale
 #' for each `product`, with the convention that the previous sale for the
-#' first sale is itself. The first position is returned in the case of ties.
+#' first sale is itself. Ties are resolved according to the order they 
+#' appear in `period`.
 #' @note [`order()`] is the workhorse of `rs_pairs()`,
 #' so performance can be sensitive to the types of `period` and
 #' `product`, and can be slow for large character vectors.
@@ -34,21 +35,21 @@
 #'
 #' @export rs_pairs
 rs_pairs <- function(period, product) {
-  n <- length(period)
-
+  if (length(product) != length(period)) {
+    stop("'period' and 'product' must be the same length")
+  }
+  
   # != is slow for factors with many levels, so use the integer codes
   if (is.factor(product)) {
     attributes(product) <- NULL
   }
-  if (length(product) != n) {
-    stop("'period' and 'product' must be the same length")
-  }
-  if (n == 0L) {
-    return(integer(0L))
-  }
 
   ord <- order(product, period, na.last = NA)
-  res <- rep.int(NA_integer_, n)
+  if (length(ord) == 0L) {
+    return(integer(0L))
+  }
+  
+  res <- rep.int(NA_integer_, length(period))
   # offset the period by product ordering
   res[ord] <- ord[c(1L, seq_len(length(ord) - 1L))]
   # the first period for each product points to the last period

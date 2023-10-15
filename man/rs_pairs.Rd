@@ -18,7 +18,8 @@ Usually a factor or vector of integer codes for each product.}
 \value{
 A numeric vector of indices giving the position of the previous sale
 for each \code{product}, with the convention that the previous sale for the
-first sale is itself. The first position is returned in the case of ties.
+first sale is itself. Ties are resolved according to the order they
+appear in \code{period}.
 }
 \description{
 Turn repeat-sales data into sales pairs that are suitable for making
