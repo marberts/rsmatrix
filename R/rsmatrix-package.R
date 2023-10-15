@@ -1,3 +1,2 @@
-#' @keywords internal 
+#' @keywords internal
 "_PACKAGE"
-NULL

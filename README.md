@@ -21,19 +21,10 @@ serve as the foundation for many repeat-sales price indexes.
 install.package("rsmatrix")
 ```
 
-Get the development version from GitHub…
+Get the development version from GitHub.
 
 ``` r
 pak::pkg_install("marberts/rsmatrix")
-```
-
-… or from R-universe.
-
-``` r
-install.packages(
-  "rsmatrix",
-  repos = c("https://marberts.r-universe.dev", "https://cloud.r-project.org")
-)
 ```
 
 ## Usage

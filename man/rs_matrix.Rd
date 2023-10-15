@@ -92,8 +92,8 @@ b <- solve(crossprod(mat("Z"), mat("X")), crossprod(mat("Z"), mat("Y")))[, 1]
 
 }
 \references{
-Bailey, M. J., Muth, R. F., and Nourse, H. O. (1963). A
-regression method for real estate price index construction.
+Bailey, M. J., Muth, R. F., and Nourse, H. O. (1963). A regression method
+for real estate price index construction.
 \emph{Journal of the American Statistical Association}, 53(304):933-942.
 
 Shiller, R. J. (1991). Arithmetic repeat sales price estimators.

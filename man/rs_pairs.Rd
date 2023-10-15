@@ -26,9 +26,9 @@ Turn repeat-sales data into sales pairs that are suitable for making
 repeat-sales matrices.
 }
 \note{
-\code{\link[=order]{order()}} is the workhorse of \code{rs_pairs()},
-so performance can be sensitive to the types of \code{period} and
-\code{product}, and can be slow for large character vectors.
+\code{\link[=order]{order()}} is the workhorse of \code{rs_pairs()}, so performance can be
+sensitive to the types of \code{period} and \code{product}, and can be slow for large
+character vectors.
 }
 \examples{
 # Make sales pairs
@@ -46,6 +46,5 @@ x
 
 }
 \seealso{
-\code{\link[=rs_matrix]{rs_matrix()}} for using sales pairs to make a
-repeat-sales index.
+\code{\link[=rs_matrix]{rs_matrix()}} for using sales pairs to make a repeat-sales index.
 }

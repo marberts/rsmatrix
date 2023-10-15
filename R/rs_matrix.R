@@ -5,7 +5,7 @@ different_lengths <- function(...) {
   any(res != res[1L])
 }
 
-#' Compute the Z matrix
+#' Compute the Z matrix (internal)
 #' @noRd
 rs_z_ <- function(t2, t1, f = NULL, sparse = FALSE) {
   # coerce t2 and t1 into characters prior to taking the union
@@ -68,7 +68,7 @@ rs_z_ <- function(t2, t1, f = NULL, sparse = FALSE) {
   res
 }
 
-#' Compute X matrix
+#' Compute X matrix (internal)
 #' @noRd
 rs_x_ <- function(z, p2, p1) (z > 0) * p2 - (z < 0) * p1
 
@@ -98,17 +98,24 @@ rs_x_ <- function(z, p2, p1) (z > 0) * p2 - (z < 0) * p1
 #' vector to be turned into a factor, that is used to group sales.
 #' @param sparse Should sparse matrices from the \pkg{Matrix} package be used
 #' (faster for large datasets), or regular dense matrices (the default)?
-#' @return A function that takes a single argument naming the desired matrix.
+#'
+#' @returns
+#' A function that takes a single argument naming the desired matrix.
 #' It returns one of two matrices (\eqn{Z} and \eqn{X}) or two vectors
 #' (\eqn{y} and \eqn{Y}), either regular matrices if `sparse = FALSE`, or sparse
 #' matrices of class `dgCMatrix` if `sparse = TRUE`.
-#' @seealso [rs_pairs()] for turning sales data into sales pairs.
-#' @references Bailey, M. J., Muth, R. F., and Nourse, H. O. (1963). A
-#' regression method for real estate price index construction.
+#'
+#' @seealso
+#' [rs_pairs()] for turning sales data into sales pairs.
+#'
+#' @references
+#' Bailey, M. J., Muth, R. F., and Nourse, H. O. (1963). A regression method
+#' for real estate price index construction.
 #' *Journal of the American Statistical Association*, 53(304):933-942.
 #'
 #' Shiller, R. J. (1991). Arithmetic repeat sales price estimators.
 #' *Journal of Housing Economics*, 1(1):110-126.
+#'
 #' @examples
 #' # Make some data
 #' x <- data.frame(
@@ -156,7 +163,7 @@ rs_x_ <- function(z, p2, p1) (z > 0) * p2 - (z < 0) * p1
 #' b <- solve(crossprod(mat("Z"), mat("X")), crossprod(mat("Z"), mat("Y")))[, 1]
 #' 100 / b
 #'
-#' @export rs_matrix
+#' @export
 rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
   if (is.null(f)) {
     if (different_lengths(t2, t1, p2, p1)) {

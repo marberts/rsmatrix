@@ -67,8 +67,8 @@ vcov - vcov2
 
 }
 \references{
-Manski, C. (1988). \emph{Analog Estimation Methods in
-Econometrics}. Chapman and Hall.
+Manski, C. (1988). \emph{Analog Estimation Methods in Econometrics}.
+Chapman and Hall.
 
 Shiller, R. J. (1991). Arithmetic repeat sales price estimators.
 \emph{Journal of Housing Economics}, 1(1):110-126.

@@ -1,4 +1,4 @@
-#' Stata's degrees-of-freedom correction
+#' Stata's degrees-of-freedom correction (internal)
 #' @noRd
 sss <- function(n, k, g) {
   g / (g - 1L) * (n - 1L) / (n - k)
@@ -30,15 +30,20 @@ sss <- function(n, k, g) {
 #' belongs to its own group.
 #' @param df An optional degrees of freedom correction. Default is Stata's
 #' small sample degrees of freedom correction.
-#' @return A \eqn{k \times k}{k x k} covariance matrix.
-#' @references Manski, C. (1988). *Analog Estimation Methods in
-#' Econometrics*. Chapman and Hall.
+#'
+#' @returns
+#' A \eqn{k \times k}{k x k} covariance matrix.
+#'
+#' @references
+#' Manski, C. (1988). *Analog Estimation Methods in Econometrics*.
+#' Chapman and Hall.
 #'
 #' Shiller, R. J. (1991). Arithmetic repeat sales price estimators.
 #' *Journal of Housing Economics*, 1(1):110-126.
 #'
 #' White, H. (2001). *Asymptotic Theory for Econometricians* (revised
 #' edition). Emerald Publishing.
+#'
 #' @examples
 #' # Makes some groups in mtcars
 #' mtcars$clust <- letters[1:4]
