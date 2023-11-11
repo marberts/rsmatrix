@@ -11,20 +11,29 @@ status](https://www.r-pkg.org/badges/version/rsmatrix)](https://cran.r-project.o
 badge](https://marberts.r-universe.dev/badges/rsmatrix)](https://marberts.r-universe.dev)
 [![R-CMD-check](https://github.com/marberts/rsmatrix/workflows/R-CMD-check/badge.svg)](https://github.com/marberts/rsmatrix/actions)
 [![codecov](https://codecov.io/gh/marberts/rsmatrix/branch/master/graph/badge.svg)](https://app.codecov.io/gh/marberts/rsmatrix)
+[![DOI](https://zenodo.org/badge/283389699.svg)](https://zenodo.org/doi/10.5281/zenodo.10110159)
 
 A small package for calculating the matrices in Shiller (1991) that
 serve as the foundation for many repeat-sales price indexes.
 
 ## Installation
 
+Get the stable release from CRAN.
+
 ``` r
 install.package("rsmatrix")
 ```
 
-Get the development version from GitHub.
+Install the development version from R-Universe
 
 ``` r
-pak::pkg_install("marberts/rsmatrix")
+install.packages("rsmatrix", repos = c("https://marberts.r-universe.dev", "https://cloud.r-project.org"))
+```
+
+or directly from GitHub.
+
+``` r
+pak::pak("marberts/rsmatrix")
 ```
 
 ## Usage
@@ -118,9 +127,9 @@ b <- with(matrices, solve(crossprod(Z, X), crossprod(Z, Y))[, 1])
 
 ## Contribution
 
-The `McSpatial` package (formerly on CRAN) has some functionality for
+The **McSpatial** package (formerly on CRAN) has some functionality for
 making repeat-sales indices. The functions in this package build off of
-those in the `rsi` package in Kirby-McGregor and Martin (2019), which
+those in the **rsi** package in Kirby-McGregor and Martin (2019), which
 also gives a good background on the theory of repeat-sales indexes.
 
 ## References
