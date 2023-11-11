@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 [![codecov](https://codecov.io/gh/marberts/rsmatrix/branch/master/graph/badge.svg)](https://app.codecov.io/gh/marberts/rsmatrix)
 [![DOI](https://zenodo.org/badge/283389699.svg)](https://zenodo.org/doi/10.5281/zenodo.10110159)
 
-A small package for calculating the matrices in Shiller (1991) that serve as the foundation for many repeat-sales price indexes.
+Calculate the matrices in Shiller (1991) that serve as the foundation for many repeat-sales price indexes.
 
 ## Installation
 
@@ -89,7 +89,7 @@ b <- with(matrices, solve(crossprod(Z, X), crossprod(Z, Y))[, 1])
 (ars <- 100 / b)
 ```
 
-## Contribution
+## Prior work
 
 The **McSpatial** package (formerly on CRAN) has some functionality for making repeat-sales indices. The functions in this package build off of those in the **rsi** package in Kirby-McGregor and Martin (2019), which also gives a good background on the theory of repeat-sales indexes.
 

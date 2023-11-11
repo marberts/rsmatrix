@@ -6,7 +6,7 @@
 \alias{rsmatrix-package}
 \title{rsmatrix: Matrices for Repeat-Sales Price Indexes}
 \description{
-A small package for calculating the matrices in Shiller (1991, \doi{10.1016/S1051-1377(05)80028-2}) that serve as the foundation for many repeat-sales price indexes.
+Calculate the matrices in Shiller (1991, \doi{10.1016/S1051-1377(05)80028-2}) that serve as the foundation for many repeat-sales price indexes.
 }
 \seealso{
 Useful links:
