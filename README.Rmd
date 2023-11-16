@@ -8,7 +8,7 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Matrices for repeat-sales price indexes
+# Matrices for repeat-sales price indexes <a href="https:// marberts.github.io/rsmatrix"><img src="man/figures/logo.png" align="right" height="139" alt="rsmatrix website" /></a>
 
 <!-- Badges -->
 [![CRAN status](https://www.r-pkg.org/badges/version/rsmatrix)](https://cran.r-project.org/package=rsmatrix)

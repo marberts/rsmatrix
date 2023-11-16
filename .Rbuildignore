@@ -10,3 +10,5 @@
 ^docs$
 ^pkgdown$
 ^inst/slowTests$
+^inst/logo\.R$
+^man/figures$
