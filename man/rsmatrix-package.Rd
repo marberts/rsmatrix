@@ -13,7 +13,7 @@ Calculate the matrices in Shiller (1991, \doi{10.1016/S1051-1377(05)80028-2}) th
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://marberts.github.io/rsmatrix}
+  \item \url{https://marberts.github.io/rsmatrix/}
   \item \url{https://github.com/marberts/rsmatrix}
   \item Report bugs at \url{https://github.com/marberts/rsmatrix/issues}
 }
