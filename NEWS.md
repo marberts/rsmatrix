@@ -1,3 +1,7 @@
+## Changes in version 0.2.9
+
+- Updated maintainer email.
+
 ## Changes in version 0.2.8
 
 - Added a vignette.

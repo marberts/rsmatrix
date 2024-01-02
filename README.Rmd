@@ -91,7 +91,7 @@ b <- with(matrices, solve(crossprod(Z, X), crossprod(Z, Y))[, 1])
 
 ## Prior work
 
-The **McSpatial** package (formerly on CRAN) has some functionality for making repeat-sales indices. The functions in this package build off of those in the **rsi** package in Kirby-McGregor and Martin (2019), which also gives a good background on the theory of repeat-sales indexes.
+The **hpiR** package has some functionality for making repeat-sales indexes, as does the **McSpatial** package (formerly on CRAN). Although easier to use, these packages lack the flexibility to compute a number of indexes found literature (e.g., any of the arithmetic repeat-sales indexes). The functions in this package build off of those in the **rsi** package in Kirby-McGregor and Martin (2019), which also gives a good background on the theory of repeat-sales indexes.
 
 ## References
 

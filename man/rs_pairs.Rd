@@ -47,4 +47,7 @@ x
 }
 \seealso{
 \code{\link[=rs_matrix]{rs_matrix()}} for using sales pairs to make a repeat-sales index.
+
+\code{rtCreateTrans()} in the \pkg{hpiR} package for a feature-rich but
+slower and less flexible function to make sales pairs.
 }

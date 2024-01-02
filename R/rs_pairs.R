@@ -23,6 +23,9 @@
 #'
 #' @seealso
 #' [rs_matrix()] for using sales pairs to make a repeat-sales index.
+#' 
+#' `rtCreateTrans()` in the \pkg{hpiR} package for a feature-rich but
+#' slower and less flexible function to make sales pairs.
 #'
 #' @examples
 #' # Make sales pairs
