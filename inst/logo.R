@@ -2,8 +2,9 @@ library(ggplot2)
 library(hexSticker)
 
 gg <- ggplot() +
-  geom_hline(yintercept = 1:3) +
-  geom_vline(xintercept = 1:4) + 
+  geom_line(aes(x, y), data = data.frame(x = c(0, 1.5, 3), y = c(2, 3, 2))) +
+  geom_hline(yintercept = 0:2) +
+  geom_vline(xintercept = 0:3) + 
   theme_void()
 
 sticker(gg,
@@ -13,6 +14,6 @@ sticker(gg,
         s_width = 1,
         p_size = 18,
         p_family = "mono",
-        p_color = "#FF5733",
+        p_color = "#c42300",
         h_fill = "#80d280",
-        h_color = "#FF5733")
+        h_color = "#c42300")
