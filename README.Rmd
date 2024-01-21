@@ -10,12 +10,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Matrices for repeat-sales price indexes <a href="https://marberts.github.io/rsmatrix/"><img src="man/figures/logo.png" align="right" height="139" alt="rsmatrix website" /></a>
 
-<!-- Badges -->
+<!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/rsmatrix)](https://cran.r-project.org/package=rsmatrix)
 [![rsmatrix status badge](https://marberts.r-universe.dev/badges/rsmatrix)](https://marberts.r-universe.dev)
 [![R-CMD-check](https://github.com/marberts/rsmatrix/workflows/R-CMD-check/badge.svg)](https://github.com/marberts/rsmatrix/actions)
-[![codecov](https://codecov.io/gh/marberts/rsmatrix/branch/master/graph/badge.svg)](https://app.codecov.io/gh/marberts/rsmatrix)
+[![codecov](https://codecov.io/gh/marberts/rsmatrix/graph/badge.svg?token=2UBM5VYMH2)](https://codecov.io/gh/marberts/rsmatrix)
 [![DOI](https://zenodo.org/badge/283389699.svg)](https://zenodo.org/doi/10.5281/zenodo.10110159)
+<!-- badges: start -->
 
 Calculate the matrices in Shiller (1991) that serve as the foundation for many repeat-sales price indexes.
 
