@@ -1,42 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https:// marberts.github.io/rsmatrix/404.html</loc>
-  </url>
-  <url>
-    <loc>https:// marberts.github.io/rsmatrix/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https:// marberts.github.io/rsmatrix/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https:// marberts.github.io/rsmatrix/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https:// marberts.github.io/rsmatrix/articles/rsmatrix.html</loc>
-  </url>
-  <url>
-    <loc>https:// marberts.github.io/rsmatrix/authors.html</loc>
-  </url>
-  <url>
-    <loc>https:// marberts.github.io/rsmatrix/index.html</loc>
-  </url>
-  <url>
-    <loc>https:// marberts.github.io/rsmatrix/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https:// marberts.github.io/rsmatrix/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https:// marberts.github.io/rsmatrix/reference/rs_matrix.html</loc>
-  </url>
-  <url>
-    <loc>https:// marberts.github.io/rsmatrix/reference/rs_pairs.html</loc>
-  </url>
-  <url>
-    <loc>https:// marberts.github.io/rsmatrix/reference/rs_var.html</loc>
-  </url>
-  <url>
-    <loc>https:// marberts.github.io/rsmatrix/reference/rsmatrix-package.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://marberts.github.io/rsmatrix/404.html</loc></url>
+<url><loc>https://marberts.github.io/rsmatrix/LICENSE-text.html</loc></url>
+<url><loc>https://marberts.github.io/rsmatrix/LICENSE.html</loc></url>
+<url><loc>https://marberts.github.io/rsmatrix/articles/index.html</loc></url>
+<url><loc>https://marberts.github.io/rsmatrix/articles/rsmatrix.html</loc></url>
+<url><loc>https://marberts.github.io/rsmatrix/authors.html</loc></url>
+<url><loc>https://marberts.github.io/rsmatrix/index.html</loc></url>
+<url><loc>https://marberts.github.io/rsmatrix/news/index.html</loc></url>
+<url><loc>https://marberts.github.io/rsmatrix/reference/index.html</loc></url>
+<url><loc>https://marberts.github.io/rsmatrix/reference/rs_matrix.html</loc></url>
+<url><loc>https://marberts.github.io/rsmatrix/reference/rs_pairs.html</loc></url>
+<url><loc>https://marberts.github.io/rsmatrix/reference/rs_var.html</loc></url>
+<url><loc>https://marberts.github.io/rsmatrix/reference/rsmatrix-package.html</loc></url>
 </urlset>
+
