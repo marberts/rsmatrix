@@ -316,18 +316,16 @@ easiest way to do this is with <strong>piar</strong>.</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://marberts.github.io/piar/" class="external-link">piar</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">dimensions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/strsplit.html" class="external-link">strsplit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">grs</span><span class="op">)</span>, <span class="st">"."</span>, fixed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">grs_piar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://marberts/github.io/piar/reference/elemental_index.html" class="external-link">elemental_index</a></span><span class="op">(</span><span class="va">grs</span>, <span class="va">dimensions</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>, <span class="va">dimensions</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>,</span>
+<span><span class="va">grs_piar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://marberts.github.io/piar/reference/elemental_index.html" class="external-link">elemental_index</a></span><span class="op">(</span><span class="va">grs</span>, <span class="va">dimensions</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>, <span class="va">dimensions</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>,</span>
 <span>  chainable <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: In elemental_index.numeric(as.numeric(x), ...) :</span></span>
+<span><span class="co">#&gt;  extra arguments  will be disregarded</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">grs_piar</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Fixed-base price index for 5 levels over 5 time periods </span></span>
-<span><span class="co">#&gt;   2010-02-01 2010-03-01 2010-04-01 2010-05-01 2010-06-01</span></span>
-<span><span class="co">#&gt; 1  0.9319471   1.049967  1.0312130  0.9332345  1.0074811</span></span>
-<span><span class="co">#&gt; 2  1.0682105   0.984812  1.0840525  1.0113186  0.9645851</span></span>
-<span><span class="co">#&gt; 3  1.0434833   1.044671  0.9526141  0.9330665  1.0234300</span></span>
-<span><span class="co">#&gt; 4  1.0185787   1.048738  1.0757727  1.1258297  1.0099260</span></span>
-<span><span class="co">#&gt; 5  0.9715417   1.025133  1.0648382  1.0387825  1.0930171</span></span></code></pre></div>
+<span><span class="co">#&gt; Fixed-base price index for 1 levels over 1 time periods </span></span>
+<span><span class="co">#&gt;          1</span></span>
+<span><span class="co">#&gt; 1 1.010871</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="sales-pair-contributions">Sales pair contributions<a class="anchor" aria-label="anchor" href="#sales-pair-contributions"></a>
