@@ -4,7 +4,7 @@
 \alias{rs_pairs}
 \title{Sales pairs}
 \usage{
-rs_pairs(period, product)
+rs_pairs(period, product, match_first = TRUE)
 }
 \arguments{
 \item{period}{A vector that gives the time period for each sale. Usually a
@@ -14,12 +14,15 @@ values are possible if they can be sorted in chronological order (i.e., with
 
 \item{product}{A vector that gives the product identifier for each sale.
 Usually a factor or vector of integer codes for each product.}
+
+\item{match_first}{Should products in the first period match with
+themselves (the default)?}
 }
 \value{
 A numeric vector of indices giving the position of the previous sale
 for each \code{product}, with the convention that the previous sale for the
-first sale is itself. Ties are resolved according to the order they
-appear in \code{period}.
+first sale is itself if \code{match_first = TRUE}, \code{NA} otherwise. Ties are
+resolved according to the order they appear in \code{period}.
 }
 \description{
 Turn repeat-sales data into sales pairs that are suitable for making
