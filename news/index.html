@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">rsmatrix</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.8.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.8.9002</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,7 +34,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.9" id="changes-in-version-029">Changes in version 0.2.9<a class="anchor" aria-label="anchor" href="#changes-in-version-029"></a></h2>
-<ul><li>Updated maintainer email.</li>
+<ul><li><p>Updated maintainer email.</p></li>
+<li><p><code><a href="../reference/rs_pairs.html">rs_pairs()</a></code> gets a new argument <code>match_first</code> to control if products in the first period match to themselves (<a href="https://github.com/marberts/rsmatrix/issues/1" class="external-link">#1</a>).</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.8" id="changes-in-version-028">Changes in version 0.2.8<a class="anchor" aria-label="anchor" href="#changes-in-version-028"></a></h2><p class="text-muted">CRAN release: 2023-11-19</p>
@@ -47,16 +48,17 @@
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.3" id="changes-in-version-023">Changes in version 0.2.3<a class="anchor" aria-label="anchor" href="#changes-in-version-023"></a></h2><p class="text-muted">CRAN release: 2022-03-15</p>
-<ul><li><p>Making the “Y” vector with rs_matrix() no longer gives an error with length-0 inputs and a factor with non-empty levels.</p></li>
-<li><p>rs_matrix() cleans up the enclosing environment of its result.</p></li>
+<ul><li><p>Making the <code>"Y"</code> vector with <code><a href="../reference/rs_matrix.html">rs_matrix()</a></code> no longer gives an error with length-0 inputs and a factor with non-empty levels.</p></li>
+<li><p><code><a href="../reference/rs_matrix.html">rs_matrix()</a></code> cleans up the enclosing environment of its result.</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.1" id="changes-in-version-021">Changes in version 0.2.1<a class="anchor" aria-label="anchor" href="#changes-in-version-021"></a></h2><p class="text-muted">CRAN release: 2022-02-13</p>
-<ul><li>rs_pairs() and rs_matrix() are now faster, and less picky about their inputs for time periods.</li>
+<ul><li>
+<code><a href="../reference/rs_pairs.html">rs_pairs()</a></code> and <code><a href="../reference/rs_matrix.html">rs_matrix()</a></code> are now faster, and less picky about their inputs for time periods.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="changes-in-version-020">Changes in version 0.2.0<a class="anchor" aria-label="anchor" href="#changes-in-version-020"></a></h2><p class="text-muted">CRAN release: 2021-10-08</p>
-<ul><li><p>rs_pairs() has been reworked to be much faster and more general, while rs_unpair() has been removed. These changes are not backwards compatible.</p></li>
+<ul><li><p><code><a href="../reference/rs_pairs.html">rs_pairs()</a></code> has been reworked to be much faster and more general, while <code>rs_unpair()</code> has been removed. These changes are not backwards compatible.</p></li>
 <li><p>Added French translations.</p></li>
 <li><p>Fixed the NOTE about LazyData from CRAN.</p></li>
 </ul></div>
