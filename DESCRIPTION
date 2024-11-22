@@ -1,6 +1,6 @@
 Package: rsmatrix
 Title: Matrices for Repeat-Sales Price Indexes
-Version: 0.2.8.9001
+Version: 0.2.8.9002
 Authors@R: c(
     person(given = "Steve", family = "Martin", role = c("aut", "cre", "cph"),
            email = "marberts@protonmail.com",
@@ -23,5 +23,5 @@ URL: https://marberts.github.io/rsmatrix/, https://github.com/marberts/rsmatrix
 BugReports: https://github.com/marberts/rsmatrix/issues
 Config/testthat/edition: 3
 VignetteBuilder: knitr
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)

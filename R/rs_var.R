@@ -78,14 +78,14 @@ rs_var <- function(u, Z, X = Z, ids = seq_len(nrow(X)), df = NULL) {
   } else {
     as.numeric(df)
   }
-  # the meat
+  # The meat.
   ug <- split.data.frame(u, ids)
   Zg <- split.data.frame(Z, ids)
   V <- Map(function(x, y) tcrossprod(crossprod(x, y)), Zg, ug)
   V <- Reduce(`+`, V)
-  # the bread
+  # The bread.
   B <- solve(crossprod(Z, X))
-  # put the sandwich together
+  # Put the sandwich together.
   vcov <- tcrossprod(B %*% V, B)
   df * vcov
 }

@@ -8,10 +8,10 @@ different_lengths <- function(...) {
 #' Compute the Z matrix (internal)
 #' @noRd
 rs_z_ <- function(t2, t1, f = NULL, sparse = FALSE) {
-  # coerce t2 and t1 into characters prior to taking the union
-  # so that both dates and factors are treated the same
-  lev2 <- as.character(unique(t2))
-  lev1 <- as.character(unique(t1))
+  # t2 and t1 are coerced into characters prior to taking the union
+  # so that both dates and factors are treated the same.
+  lev2 <- unique(as.character(t2))
+  lev1 <- unique(as.character(t1))
   lev <- sort.int(unique(c(lev2, lev1))) # usually faster than base::union()
   t2 <- factor(t2, lev)
   t1 <- factor(t1, lev)
@@ -22,7 +22,7 @@ rs_z_ <- function(t2, t1, f = NULL, sparse = FALSE) {
     )
   }
 
-  # make row names before interacting with f
+  # Make row names before interacting with f.
   nm <- if (!is.null(names(t2))) {
     names(t2)
   } else if (!is.null(names(t1))) {
@@ -40,7 +40,7 @@ rs_z_ <- function(t2, t1, f = NULL, sparse = FALSE) {
     lev <- levels(t2)
   }
 
-  # calculate Z
+  # Calculate Z.
   dims <- c(length(nm), length(lev))
   attributes(t2) <- NULL
   attributes(t1) <- NULL
@@ -70,7 +70,9 @@ rs_z_ <- function(t2, t1, f = NULL, sparse = FALSE) {
 
 #' Compute X matrix (internal)
 #' @noRd
-rs_x_ <- function(z, p2, p1) (z > 0) * p2 - (z < 0) * p1
+rs_x_ <- function(z, p2, p1) {
+  (z > 0) * p2 - (z < 0) * p1
+} 
 
 #' Shiller's repeat-sales matrices
 #'
@@ -165,6 +167,11 @@ rs_x_ <- function(z, p2, p1) (z > 0) * p2 - (z < 0) * p1
 #'
 #' @export
 rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
+  t2 <- as.character(t2)
+  t1 <- as.character(t1)
+  p2 <- as.numeric(p2)
+  p1 <- as.numeric(p1)
+  
   if (is.null(f)) {
     if (different_lengths(t2, t1, p2, p1)) {
       stop("'t2', 't1', 'p2', and 'p1' must be the same length")
@@ -181,23 +188,23 @@ rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
       stop("'t2', 't1', and 'f' cannot contain NAs")
     }
   }
+  
   z <- rs_z_(t2, t1, f, sparse)
-  p2 <- as.numeric(p2)
-  p1 <- as.numeric(p1)
-  # number of columns that need to be removed for base period
+  # Number of columns that need to be removed for base period.
   n <- max(1L, nlevels(f)) * (ncol(z) > 0)
-  # return value
+
   res <- function(matrix = c("Z", "X", "y", "Y")) {
     switch(match.arg(matrix),
       Z = z[, -seq_len(n), drop = FALSE],
       X = rs_x_(z[, -seq_len(n), drop = FALSE], p2, p1),
       y = structure(log(p2 / p1), names = rownames(z)),
       # rowSums() gets the single value in the base period
-      # for each group
+      # for each group.
       Y = -Matrix::rowSums(rs_x_(z[, seq_len(n), drop = FALSE], p2, p1))
     )
   }
-  # clean up enclosing environment
+  
+  # Clean up enclosing environment.
   enc <- list(z = z, n = n, p2 = p2, p1 = p1)
   environment(res) <- list2env(enc, parent = getNamespace("rsmatrix"))
   res

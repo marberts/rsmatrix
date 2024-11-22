@@ -20,6 +20,11 @@ test_that("an easy example works", {
     rs_pairs(x, y),
     c(1L, 10L, 3L, 3L, 4L, 7L, 1L, 8L, 2L, 10L, 8L)
   )
+  
+  expect_equal(
+    rs_pairs(x, y, match_first = FALSE),
+    c(NA, 10, NA, 3, 4, 7, 1, NA, 2, NA, NA)
+  )
 
   x[2] <- NA
   expect_identical(
@@ -53,9 +58,14 @@ test_that("a more complex example works", {
 
 test_that("corner cases work", {
   expect_identical(rs_pairs(numeric(0), character(0)), integer(0))
+  expect_identical(
+    rs_pairs(numeric(0), character(0), match_first = FALSE),
+    integer(0)
+  )
   expect_identical(rs_pairs(1:4, rep(NA, 4)), integer(0))
   expect_identical(rs_pairs(rep(NA, 4), 1:4), integer(0))
   expect_identical(rs_pairs(1, 1), 1L)
+  expect_identical(rs_pairs(1, 1, match_first = FALSE), NA_integer_)
   expect_identical(rs_pairs(rep(1, 10), 1:10), 1:10)
   expect_identical(rs_pairs(1:10, rep(1, 10)), c(1L, 1:9))
   expect_identical(rs_pairs(c(1, 2, 3, 2), rep(1, 4)), c(1L, 1L, 4L, 2L))
@@ -67,6 +77,11 @@ test_that("sales pairs are back periods", {
   expect_equal(
     rs_pairs(period, product),
     c(11, 4, 10, 9, 8, 6, 1, 8, 9, 5, 6, 2)
+  )
+  
+  expect_equal(
+    rs_pairs(period, product, match_first = FALSE),
+    c(11, 4, 10, 9, 8, NA, 1, NA, NA, 5, 6, 2)
   )
 })
 

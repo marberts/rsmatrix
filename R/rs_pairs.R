@@ -9,12 +9,14 @@
 #' [order()]).
 #' @param product A vector that gives the product identifier for each sale.
 #' Usually a factor or vector of integer codes for each product.
+#' @param match_first Should products in the first period match with
+#' themselves (the default)?
 #'
 #' @returns
 #' A numeric vector of indices giving the position of the previous sale
 #' for each `product`, with the convention that the previous sale for the
-#' first sale is itself. Ties are resolved according to the order they
-#' appear in `period`.
+#' first sale is itself if `match_first = TRUE`, `NA` otherwise. Ties are
+#' resolved according to the order they appear in `period`.
 #'
 #' @note
 #' [`order()`] is the workhorse of `rs_pairs()`, so performance can be
@@ -42,12 +44,12 @@
 #' x
 #'
 #' @export
-rs_pairs <- function(period, product) {
+rs_pairs <- function(period, product, match_first = TRUE) {
   if (length(product) != length(period)) {
     stop("'period' and 'product' must be the same length")
   }
 
-  # != is slow for factors with many levels, so use the integer codes
+  # != is slow for factors with many levels, so use the integer codes.
   if (is.factor(product)) {
     attributes(product) <- NULL
   }
@@ -58,11 +60,15 @@ rs_pairs <- function(period, product) {
   }
 
   res <- rep.int(NA_integer_, length(period))
-  # offset the period by product ordering
+  # Offset the period by product ordering.
   res[ord] <- ord[c(1L, seq_len(length(ord) - 1L))]
-  # the first period for each product points to the last period
-  # for the previous product
+  # The first period for each product points to the last period
+  # for the previous product.
   first <- which(product[res] != product)
   res[first] <- first
+  
+  if (!match_first) {
+    res[period[res] == period] <- NA
+  }
   res
 }
