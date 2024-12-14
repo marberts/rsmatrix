@@ -1,9 +1,8 @@
 ## Test environments
 
-- local Ubuntu 20.04 installation, R 4.3.1
+- local Ubuntu 24.04 installation, R 4.4.2
 - win-builder (devel, release, oldrelease)
 - mac-builder
-- R-hub (fedora-clang devel)
 
 ## R CMD check results
 

@@ -1,6 +1,6 @@
 Package: rsmatrix
 Title: Matrices for Repeat-Sales Price Indexes
-Version: 0.2.8.9002
+Version: 0.2.9
 Authors@R: c(
     person(given = "Steve", family = "Martin", role = c("aut", "cre", "cph"),
            email = "marberts@protonmail.com",

@@ -10,7 +10,7 @@ status](https://www.r-pkg.org/badges/version/rsmatrix)](https://cran.r-project.o
 [![rsmatrix status
 badge](https://marberts.r-universe.dev/badges/rsmatrix)](https://marberts.r-universe.dev)
 [![R-CMD-check](https://github.com/marberts/rsmatrix/workflows/R-CMD-check/badge.svg)](https://github.com/marberts/rsmatrix/actions)
-[![codecov](https://codecov.io/gh/marberts/rsmatrix/graph/badge.svg?token=2UBM5VYMH2)](https://codecov.io/gh/marberts/rsmatrix)
+[![codecov](https://codecov.io/gh/marberts/rsmatrix/graph/badge.svg?token=2UBM5VYMH2)](https://app.codecov.io/gh/marberts/rsmatrix)
 [![DOI](https://zenodo.org/badge/283389699.svg)](https://zenodo.org/doi/10.5281/zenodo.10110159)
 <!-- badges: start -->
 

@@ -3,3 +3,4 @@ url: https://marberts.github.io/rsmatrix
 template:
   bootstrap: 5
   bootswatch: united
+  math-rendering: mathjax
