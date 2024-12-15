@@ -16,7 +16,7 @@
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Making repeat-sales indexes">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="../deps/MathJax-3.2.2/tex-chtml.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Making repeat-sales indexes">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">rsmatrix</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.8.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,8 +77,8 @@ repeat-sales index (GRS index) and the arithmetic repeat-sales index
 (ARS index)—along with various weighting schemes that can be used to
 weight the prices in the index calculation. In all cases these indexes
 can be calculated as a linear estimator using a few different matrices.
-The purpose of the <em>rsmatrix</em> package is to make it easy to
-construct these matrices and compute a repeat-sales index.</p>
+The purpose of the <strong>rsmatrix</strong> package is to make it easy
+to construct these matrices and compute a repeat-sales index.</p>
 <div class="section level2">
 <h2 id="some-data">Some data<a class="anchor" aria-label="anchor" href="#some-data"></a>
 </h2>
@@ -126,7 +126,7 @@ properties for which there is only one sale.</p>
 <span><span class="co">#&gt;    1    1    2    3   11</span></span></code></pre></div>
 <p>We’ll be making a monthly index, and it’s useful to turn sale dates
 into year months before constructing sales pairs. (Using, say, the
-<code>yearmon</code> class from <code>zoo</code> instead of a factor
+<code>yearmon</code> class from <strong>zoo</strong> instead of a factor
 means this can be done after making sales pairs.)</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prices</span><span class="op">$</span><span class="va">period</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span><span class="va">prices</span><span class="op">$</span><span class="va">sale</span>, <span class="st">"month"</span><span class="op">)</span></span></code></pre></div>
@@ -163,8 +163,8 @@ improvements or depreciation that similarly undermine the assumptions of
 the repeat-sales method. There are many ways to try and filter out these
 transactions, but a simple approach is to remove pairs of sales where
 the monthly return for a property is greater than, say, 2.5 median
-absolute deviations from the median. (The <code>gpindex</code> package
-has several other methods for dealing with extreme changes in
+absolute deviations from the median. (The <strong>gpindex</strong>
+package has several other methods for dealing with extreme changes in
 prices.)</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://marberts.github.io/gpindex/" class="external-link">gpindex</a></span><span class="op">)</span></span>
@@ -196,8 +196,8 @@ prices.)</p>
 transactions gone, we can now make the repeat-sales matrices and
 calculate a housing price index. The strategy is to make a constructor
 function based on the sales-pair data that can be used to make the
-repeat-sales matrices. These matrices are naturally spare, and the
-volume of transactions means we’ll benefit for using sparse
+repeat-sales matrices. These matrices are naturally sparse, and the
+large volume of transactions means we’ll benefit for using sparse
 matrices.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">matrices</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span></span>
@@ -207,14 +207,10 @@ matrices.</p>
 <p>The simplest repeat-sales index in the geometric repeat sales (GRS)
 index.<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;The GRS index is simply the first-difference estimator
 for the linear model of log price with property fixed effects. This is
-easy enough to compute with a panel-data package like &lt;code&gt;plm&lt;/code&gt;,
-but the repeat-sales matrices are more convenient when working with
-sales pairs.&lt;/p&gt;"><sup>1</sup></a>
-This index uses the
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math>
-and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>
-matrices.</p>
+easy enough to compute with a panel-data package like
+&lt;strong&gt;plm&lt;/strong&gt;, but the repeat-sales matrices are more convenient
+when working with sales pairs.&lt;/p&gt;"><sup>1</sup></a>
+This index uses the <span class="math inline">\(Z\)</span> and <span class="math inline">\(y\)</span> matrices.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Z</span> <span class="op">&lt;-</span> <span class="fu">matrices</span><span class="op">(</span><span class="st">"Z"</span><span class="op">)</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">matrices</span><span class="op">(</span><span class="st">"y"</span><span class="op">)</span></span>
@@ -255,12 +251,8 @@ variance, with or without an intercept, is a common variation for the
 interval weights. These weights can all be extended to account for the
 same house selling more than twice.</p>
 <p>Another type of repeat-sales index is the arithmetic repeat sales
-(ARS) index. This index uses the
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math>,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>,
-and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>
-matrices.</p>
+(ARS) index. This index uses the <span class="math inline">\(Z\)</span>,
+<span class="math inline">\(X\)</span>, and <span class="math inline">\(Y\)</span> matrices.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu">matrices</span><span class="op">(</span><span class="st">"X"</span><span class="op">)</span></span>
 <span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="fu">matrices</span><span class="op">(</span><span class="st">"Y"</span><span class="op">)</span></span>
@@ -293,13 +285,9 @@ inverse-variance weights.</p>
 <span><span class="co">#&gt; 4.2010-02-01 0.9549480</span></span>
 <span><span class="co">#&gt; 5.2010-02-01 0.9161033</span></span>
 <span><span class="co">#&gt; 1.2010-03-01 0.9856805</span></span></code></pre></div>
-<p>Dividing the
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>
-and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>
-matrices by the price of the first sale for each row produces an
-equally-weighted arithmetic index (as opposed to value-weighted
-index).</p>
+<p>Dividing the <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> matrices by the price of the first sale
+for each row produces an equally-weighted arithmetic index (as opposed
+to value-weighted index).</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ars_ew</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span></span>
 <span>  <span class="va">prices</span>,</span>
@@ -316,22 +304,27 @@ index).</p>
 <span><span class="co">#&gt; 5.2010-02-01 0.8859613</span></span>
 <span><span class="co">#&gt; 1.2010-03-01 0.9510087</span></span></code></pre></div>
 <p>Once the index is calculated, it’s often easier to turn into a
-matrix-like object with cities are rows and time periods as columns. The
-easiest way to do this is with <strong>piar</strong>.</p>
+matrix-like object with cities as rows and time periods as columns. The
+easiest way to do this is with the <strong>piar</strong> package.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://marberts.github.io/piar/" class="external-link">piar</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">dimensions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/strsplit.html" class="external-link">strsplit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">grs</span><span class="op">)</span>, <span class="st">"."</span>, fixed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">grs_piar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://marberts.github.io/piar/reference/elemental_index.html" class="external-link">elemental_index</a></span><span class="op">(</span><span class="va">grs</span>, <span class="va">dimensions</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>, <span class="va">dimensions</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>,</span>
+<span><span class="va">grs_piar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://marberts.github.io/piar/reference/elemental_index.html" class="external-link">elemental_index</a></span><span class="op">(</span></span>
+<span>  <span class="va">grs</span>,</span>
+<span>  period <span class="op">=</span> <span class="va">dimensions</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>,</span>
+<span>  ea <span class="op">=</span> <span class="va">dimensions</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>,</span>
 <span>  chainable <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: In elemental_index.numeric(as.numeric(x), ...) :</span></span>
-<span><span class="co">#&gt;  extra arguments  will be disregarded</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">grs_piar</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Fixed-base price index for 1 levels over 1 time periods </span></span>
-<span><span class="co">#&gt;          1</span></span>
-<span><span class="co">#&gt; 1 1.010871</span></span></code></pre></div>
+<span><span class="co">#&gt; Fixed-base price index for 5 levels over 5 time periods </span></span>
+<span><span class="co">#&gt;   2010-02-01 2010-03-01 2010-04-01 2010-05-01 2010-06-01</span></span>
+<span><span class="co">#&gt; 1  0.9319471   1.049967  1.0312130  0.9332345  1.0074811</span></span>
+<span><span class="co">#&gt; 2  1.0682105   0.984812  1.0840525  1.0113186  0.9645851</span></span>
+<span><span class="co">#&gt; 3  1.0434833   1.044671  0.9526141  0.9330665  1.0234300</span></span>
+<span><span class="co">#&gt; 4  1.0185787   1.048738  1.0757727  1.1258297  1.0099260</span></span>
+<span><span class="co">#&gt; 5  0.9715417   1.025133  1.0648382  1.0387825  1.0930171</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="sales-pair-contributions">Sales pair contributions<a class="anchor" aria-label="anchor" href="#sales-pair-contributions"></a>
