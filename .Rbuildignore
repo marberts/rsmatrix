@@ -10,3 +10,4 @@
 ^docs$
 ^pkgdown$
 ^inst/logo\.R$
+^CITATION\.cff$
