@@ -20,7 +20,7 @@ test_that("an easy example works", {
     rs_pairs(x, y),
     c(1L, 10L, 3L, 3L, 4L, 7L, 1L, 8L, 2L, 10L, 8L)
   )
-  
+
   expect_equal(
     rs_pairs(x, y, match_first = FALSE),
     c(NA, 10, NA, 3, 4, 7, 1, NA, 2, NA, NA)
@@ -47,7 +47,21 @@ test_that("an easy example works", {
 
 test_that("a more complex example works", {
   x <- c(
-    "3", "15", "9", "1", NA, "8", NA, "7", NA, NA, "5", NA, "13", "14", "11"
+    "3",
+    "15",
+    "9",
+    "1",
+    NA,
+    "8",
+    NA,
+    "7",
+    NA,
+    NA,
+    "5",
+    NA,
+    "13",
+    "14",
+    "11"
   )
   y <- c("c", "b", NA, "b", "b", "b", "a", "b", NA, "c", "b", "c", "b", "b", NA)
   expect_identical(
@@ -78,7 +92,7 @@ test_that("sales pairs are back periods", {
     rs_pairs(period, product),
     c(11, 4, 10, 9, 8, 6, 1, 8, 9, 5, 6, 2)
   )
-  
+
   expect_equal(
     rs_pairs(period, product, match_first = FALSE),
     c(11, 4, 10, 9, 8, NA, 1, NA, NA, 5, 6, 2)

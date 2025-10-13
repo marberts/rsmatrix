@@ -22,14 +22,14 @@ sss <- function(n, k, g) {
 #' = 'group')` from the \pkg{plm} package.
 #'
 #' @param u An \eqn{n \times 1}{n x 1} vector of residuals from a linear
-#' regression.
+#'   regression.
 #' @param Z An \eqn{n \times k}{n x k} matrix of instruments.
 #' @param X An \eqn{n \times k}{n x k} matrix of covariates.
 #' @param ids A factor of length \eqn{n}, or something that can be coerced into
-#' one, that groups observations in `u`. By default each observation
-#' belongs to its own group.
+#'   one, that groups observations in `u`. By default each observation
+#'   belongs to its own group.
 #' @param df An optional degrees of freedom correction. Default is Stata's
-#' small sample degrees of freedom correction.
+#'   small sample degrees of freedom correction.
 #'
 #' @returns
 #' A \eqn{k \times k}{k x k} covariance matrix.

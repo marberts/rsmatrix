@@ -11,3 +11,6 @@
 ^pkgdown$
 ^inst/logo\.R$
 ^CITATION\.cff$
+^[.]?air[.]toml$
+^\.vscode$
+^CONTRIBUTING\.md$

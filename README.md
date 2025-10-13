@@ -28,7 +28,10 @@ install.package("rsmatrix")
 Install the development version from R-Universe
 
 ``` r
-install.packages("rsmatrix", repos = c("https://marberts.r-universe.dev", "https://cloud.r-project.org"))
+install.packages(
+  "rsmatrix",
+  repos = c("https://marberts.r-universe.dev", "https://cloud.r-project.org")
+)
 ```
 
 or directly from GitHub.
@@ -70,7 +73,10 @@ be done with the `rs_pairs()` function.
 
 ``` r
 # Turn into sales pairs
-sales[c("date_prev", "price_prev")] <- sales[rs_pairs(sales$date, sales$id), c("date", "price")]
+sales[c("date_prev", "price_prev")] <- sales[
+  rs_pairs(sales$date, sales$id),
+  c("date", "price")
+]
 
 (sales <- subset(sales, date > date_prev))
 ```
@@ -135,6 +141,12 @@ of indexes found literature (e.g., any of the arithmetic repeat-sales
 indexes). The functions in this package build off of those in the
 **rsi** package in Kirby-McGregor and Martin (2019), which also gives a
 good background on the theory of repeat-sales indexes.
+
+## Contributing
+
+All contributions are welcome. Please start by opening an issue on
+GitHub to report any bugs or suggest improvements and new features. See
+the contribution guidelines for this project for more information.
 
 ## References
 

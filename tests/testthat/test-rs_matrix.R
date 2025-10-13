@@ -10,9 +10,10 @@ x <- data.frame(
 
 mat <- with(x, rs_matrix(date, date_prev, price, price_prev))
 mats <- with(x, rs_matrix(date, date_prev, price, price_prev, sparse = TRUE))
-matg <- with(x, rs_matrix(date, date_prev, price, price_prev, id2,
-  sparse = TRUE
-))
+matg <- with(
+  x,
+  rs_matrix(date, date_prev, price, price_prev, id2, sparse = TRUE)
+)
 mata <- with(
   subset(x, id2 == "a"),
   rs_matrix(date, date_prev, price, price_prev)
@@ -61,19 +62,46 @@ test_that("corner cases work", {
 
 test_that("matrices are correct for a simple grouped case", {
   m <- rs_matrix(
-    c(2, 3, 2, 2, 4), c(1, 1, 1, 1, 3), 1:5, 1:5,
+    c(2, 3, 2, 2, 4),
+    c(1, 1, 1, 1, 3),
+    1:5,
+    1:5,
     c("a", "b", "a", "b", "a")
   )
   expect_identical(
     m("Z"),
     matrix(
       c(
-        1, 0, 1, 0, 0,
-        0, 0, 0, 1, 0,
-        0, 0, 0, 0, -1,
-        0, 1, 0, 0, 0,
-        0, 0, 0, 0, 1,
-        0, 0, 0, 0, 0
+        1,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -1,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
       ),
       ncol = 6,
       dimnames = list(1:5, c("a.2", "b.2", "a.3", "b.3", "a.4", "b.4"))
@@ -83,34 +111,74 @@ test_that("matrices are correct for a simple grouped case", {
     m("X"),
     matrix(
       c(
-        1, 0, 3, 0, 0,
-        0, 0, 0, 4, 0,
-        0, 0, 0, 0, -5,
-        0, 2, 0, 0, 0,
-        0, 0, 0, 0, 5,
-        0, 0, 0, 0, 0
+        1,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -5,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        5,
+        0,
+        0,
+        0,
+        0,
+        0
       ),
       ncol = 6,
       dimnames = list(1:5, c("a.2", "b.2", "a.3", "b.3", "a.4", "b.4"))
     )
   )
   expect_identical(m("Y"), c("1" = 1, "2" = 2, "3" = 3, "4" = 4, "5" = 0))
-  expect_identical(m("y"), c(
-    "1" = log(1), "2" = log(1), "3" = log(1),
-    "4" = log(1), "5" = log(1)
-  ))
+  expect_identical(
+    m("y"),
+    c(
+      "1" = log(1),
+      "2" = log(1),
+      "3" = log(1),
+      "4" = log(1),
+      "5" = log(1)
+    )
+  )
 
   ms <- rs_matrix(
-    c(2, 3, 2, 2, 4), c(1, 1, 1, 1, 3), 1:5, 1:5,
-    c("a", "b", "a", "b", "a"), TRUE
+    c(2, 3, 2, 2, 4),
+    c(1, 1, 1, 1, 3),
+    1:5,
+    1:5,
+    c("a", "b", "a", "b", "a"),
+    TRUE
   )
   expect_identical(as.matrix(ms("X")), m("X"))
   expect_identical(as.matrix(ms("Z")), m("Z"))
   expect_identical(ms("Y"), c("1" = 1, "2" = 2, "3" = 3, "4" = 4, "5" = 0))
-  expect_identical(ms("y"), c(
-    "1" = log(1), "2" = log(1), "3" = log(1),
-    "4" = log(1), "5" = log(1)
-  ))
+  expect_identical(
+    ms("y"),
+    c(
+      "1" = log(1),
+      "2" = log(1),
+      "3" = log(1),
+      "4" = log(1),
+      "5" = log(1)
+    )
+  )
 })
 
 test_that("matrices are correct for a simple case", {
@@ -166,14 +234,16 @@ test_that("Z matrix works correctly", {
   )
   expect_identical(
     rsmatrix:::rs_z_(c(a = 2, b = 2), c(1, 1), c("a", "b")),
-    matrix(c(-1, 0, 0, -1, 1, 0, 0, 1),
+    matrix(
+      c(-1, 0, 0, -1, 1, 0, 0, 1),
       ncol = 4,
       dimnames = list(c("a", "b"), c("a.1", "b.1", "a.2", "b.2"))
     )
   )
   expect_identical(
     rsmatrix:::rs_z_(factor(c(3:2, 2)), c(2:1, 1), letters[c(1, 1, 2)]),
-    matrix(c(0, -1, 0, 0, 0, -1, -1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0),
+    matrix(
+      c(0, -1, 0, 0, 0, -1, -1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0),
       ncol = 6,
       dimnames = list(1:3, c("a.1", "b.1", "a.2", "b.2", "a.3", "b.3"))
     )
@@ -199,7 +269,8 @@ test_that("Z matrix works correctly", {
         as.Date(c("2017-01-01", "2017-02-01", "2017-01-01"))
       )
     ),
-    matrix(c(-1, 0, 0, 1, -1, 0, 0, 1, 0),
+    matrix(
+      c(-1, 0, 0, 1, -1, 0, 0, 1, 0),
       ncol = 3,
       dimnames = list(1:3, c("2017-01-01", "2017-02-01", "2017-03-01"))
     )
@@ -213,29 +284,40 @@ test_that("sparse matrices work correctly", {
   )
   expect_identical(
     suppressWarnings(rsmatrix:::rs_z_(1, 1, sparse = TRUE)),
-    Matrix::sparseMatrix(numeric(0), numeric(0),
-      x = 0, dims = c(1, 1),
+    Matrix::sparseMatrix(
+      numeric(0),
+      numeric(0),
+      x = 0,
+      dims = c(1, 1),
       dimnames = list(1, 1)
     )
   )
   expect_identical(
     suppressWarnings(rsmatrix:::rs_z_(c(a = "a"), "a", sparse = TRUE)),
-    Matrix::sparseMatrix(numeric(0), numeric(0),
-      x = 0, dims = c(1, 1),
+    Matrix::sparseMatrix(
+      numeric(0),
+      numeric(0),
+      x = 0,
+      dims = c(1, 1),
       dimnames = list("a", "a")
     )
   )
   expect_identical(
     rsmatrix:::rs_z_(c(2, 2), c(1, 1), c("a", "b"), TRUE),
-    Matrix::sparseMatrix(c(1, 2, 1, 2), 1:4,
+    Matrix::sparseMatrix(
+      c(1, 2, 1, 2),
+      1:4,
       x = c(-1, -1, 1, 1),
       dimnames = list(1:2, c("a.1", "b.1", "a.2", "b.2"))
     )
   )
   expect_identical(
     suppressWarnings(rsmatrix:::rs_z_(2:1, c(1, 1), sparse = TRUE)),
-    Matrix::sparseMatrix(c(1, 1), c(1, 2),
-      x = c(-1, 1), dims = c(2, 2),
+    Matrix::sparseMatrix(
+      c(1, 1),
+      c(1, 2),
+      x = c(-1, 1),
+      dims = c(2, 2),
       dimnames = list(1:2, 1:2)
     )
   )
@@ -256,8 +338,10 @@ test_that("index calculation agrees with regressions", {
     unname(rs_var(mat("y") - mat("Z") %*% b, mat("Z"))),
     matrix(
       c(
-        0.0904705916756374, 0.1445215722595884,
-        0.1445215722595884, 0.2748117902801680
+        0.0904705916756374,
+        0.1445215722595884,
+        0.1445215722595884,
+        0.2748117902801680
       ),
       ncol = 2
     )
@@ -274,8 +358,10 @@ test_that("index calculation agrees with regressions", {
     unname(rs_var(mat("Y") - mat("X") %*% g, mat("Z"), mat("X"))),
     matrix(
       c(
-        0.00358699951171875, 0.00703212890625000,
-        0.00703212890625000, 0.01743984374999999
+        0.00358699951171875,
+        0.00703212890625000,
+        0.00703212890625000,
+        0.01743984374999999
       ),
       ncol = 2
     )

@@ -63,7 +63,10 @@ The `rs_pairs()` function gives the position of the previous sale for each prope
 
 ```{r pairs}
 sales_pairs <- rs_pairs(prices$sale, interaction(prices$city, prices$property))
-prices[c("price_prev", "period_prev")] <- prices[sales_pairs, c("price", "period")]
+prices[c("price_prev", "period_prev")] <- prices[
+  sales_pairs,
+  c("price", "period")
+]
 
 head(prices)
 ```
@@ -73,7 +76,10 @@ Now that the data are oriented as sales pairs, we can remove pairs of transactio
 It's normal to remove pairs of transactions that are close together (e.g., less than two months apart), as these properties may be flips or the result of financial difficulty that is not indicative of what the property would have otherwise sold for. Note that this filters out properties that only sell once.
 
 ```{r removal1}
-prices$holding_period <- with(prices, as.numeric(period) - as.numeric(period_prev))
+prices$holding_period <- with(
+  prices,
+  as.numeric(period) - as.numeric(period_prev)
+)
 
 prices <- subset(prices, holding_period > 2)
 ```
@@ -188,7 +194,10 @@ The GRS index at a point in time is simply the geometric mean of imputed price r
 ```{r, contrib_grs}
 grs_contributions <- Map(
   \(df, df_prev) {
-    impute_back <- with(df, price_prev / grs[paste(city, period_prev, sep = ".")])
+    impute_back <- with(
+      df,
+      price_prev / grs[paste(city, period_prev, sep = ".")]
+    )
     names(impute_back) <- row.names(df)
     impute_forward <- with(df_prev, price / grs[paste(city, period, sep = ".")])
     names(impute_forward) <- row.names(df_prev)
@@ -210,7 +219,10 @@ The same applies to the ARS index, noting that it is a weighted arithmetic mean 
 ```{r, contrib_ars}
 ars_contributions <- Map(
   \(df, df_prev) {
-    impute_back <- with(df, price_prev / ars[paste(city, period_prev, sep = ".")])
+    impute_back <- with(
+      df,
+      price_prev / ars[paste(city, period_prev, sep = ".")]
+    )
     names(impute_back) <- row.names(df)
     impute_forward <- with(df_prev, price / ars[paste(city, period, sep = ".")])
     names(impute_forward) <- row.names(df_prev)

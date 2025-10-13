@@ -49,7 +49,9 @@ rs_z_ <- function(t2, t1, f = NULL, sparse = FALSE) {
   t2 <- t2[non_zero]
   t1 <- t1[non_zero]
   if (sparse) {
-    res <- Matrix::sparseMatrix(rep.int(i, 2), c(t2, t1),
+    res <- Matrix::sparseMatrix(
+      rep.int(i, 2),
+      c(t2, t1),
       x = rep(c(1, -1), each = length(i)),
       dims = dims
     )
@@ -72,7 +74,7 @@ rs_z_ <- function(t2, t1, f = NULL, sparse = FALSE) {
 #' @noRd
 rs_x_ <- function(z, p2, p1) {
   (z > 0) * p2 - (z < 0) * p1
-} 
+}
 
 #' Shiller's repeat-sales matrices
 #'
@@ -91,15 +93,15 @@ rs_x_ <- function(z, p2, p1) {
 #' a warning is given.
 #'
 #' @param t2,t1 A pair of vectors giving the time period of the second and
-#' first sale, respectively. Usually a vector of dates, but other values are
-#' possible if they can be coerced to character vectors and sorted in
-#' chronological order (i.e., with [`order()`]).
+#'   first sale, respectively. Usually a vector of dates, but other values are
+#'   possible if they can be coerced to character vectors and sorted in
+#'   chronological order (i.e., with [`order()`]).
 #' @param p2,p1 A pair of numeric vectors giving the price of the second and
-#' first sale, respectively.
+#'   first sale, respectively.
 #' @param f An optional factor the same length as `t1` and `t2`, or a
-#' vector to be turned into a factor, that is used to group sales.
+#'   vector to be turned into a factor, that is used to group sales.
 #' @param sparse Should sparse matrices from the \pkg{Matrix} package be used
-#' (faster for large datasets), or regular dense matrices (the default)?
+#'   (faster for large datasets), or regular dense matrices (the default)?
 #'
 #' @returns
 #' A function that takes a single argument naming the desired matrix.
@@ -171,7 +173,7 @@ rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
   t1 <- as.character(t1)
   p2 <- as.numeric(p2)
   p1 <- as.numeric(p1)
-  
+
   if (is.null(f)) {
     if (different_lengths(t2, t1, p2, p1)) {
       stop("'t2', 't1', 'p2', and 'p1' must be the same length")
@@ -188,13 +190,14 @@ rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
       stop("'t2', 't1', and 'f' cannot contain NAs")
     }
   }
-  
+
   z <- rs_z_(t2, t1, f, sparse)
   # Number of columns that need to be removed for base period.
   n <- max(1L, nlevels(f)) * (ncol(z) > 0)
 
   res <- function(matrix = c("Z", "X", "y", "Y")) {
-    switch(match.arg(matrix),
+    switch(
+      match.arg(matrix),
       Z = z[, -seq_len(n), drop = FALSE],
       X = rs_x_(z[, -seq_len(n), drop = FALSE], p2, p1),
       y = structure(log(p2 / p1), names = rownames(z)),
@@ -203,7 +206,7 @@ rs_matrix <- function(t2, t1, p2, p1, f = NULL, sparse = FALSE) {
       Y = -Matrix::rowSums(rs_x_(z[, seq_len(n), drop = FALSE], p2, p1))
     )
   }
-  
+
   # Clean up enclosing environment.
   enc <- list(z = z, n = n, p2 = p2, p1 = p1)
   environment(res) <- list2env(enc, parent = getNamespace("rsmatrix"))

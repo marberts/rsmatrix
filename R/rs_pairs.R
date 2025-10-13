@@ -4,13 +4,13 @@
 #' repeat-sales matrices.
 #'
 #' @param period A vector that gives the time period for each sale. Usually a
-#' date vector, or a factor with the levels in chronological order, but other
-#' values are possible if they can be sorted in chronological order (i.e., with
-#' [order()]).
+#'   date vector, or a factor with the levels in chronological order, but other
+#'   values are possible if they can be sorted in chronological order (i.e.,
+#'   with [order()]).
 #' @param product A vector that gives the product identifier for each sale.
-#' Usually a factor or vector of integer codes for each product.
+#'   Usually a factor or vector of integer codes for each product.
 #' @param match_first Should products in the first period match with
-#' themselves (the default)?
+#'   themselves (the default)?
 #'
 #' @returns
 #' A numeric vector of indices giving the position of the previous sale
@@ -25,7 +25,7 @@
 #'
 #' @seealso
 #' [rs_matrix()] for using sales pairs to make a repeat-sales index.
-#' 
+#'
 #' `rtCreateTrans()` in the \pkg{hpiR} package for a feature-rich but
 #' slower and less flexible function to make sales pairs.
 #'
@@ -66,7 +66,7 @@ rs_pairs <- function(period, product, match_first = TRUE) {
   # for the previous product.
   first <- which(product[res] != product)
   res[first] <- first
-  
+
   if (!match_first) {
     res[period[res] == period] <- NA
   }
