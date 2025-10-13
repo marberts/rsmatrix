@@ -6,17 +6,22 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Making repeat-sales indexes • rsmatrix</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
+<!-- mathjax math --><script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script><script>
+  window.MathJax = {
+    chtml: {
+      fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
+    }
+  };
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="../deps/MathJax-3.2.2/tex-chtml.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Making repeat-sales indexes">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Making repeat-sales indexes">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -26,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">rsmatrix</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -134,7 +139,10 @@ means this can be done after making sales pairs.)</p>
 previous sale for each property in each city in the data.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sales_pairs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rs_pairs.html">rs_pairs</a></span><span class="op">(</span><span class="va">prices</span><span class="op">$</span><span class="va">sale</span>, <span class="fu"><a href="https://rdrr.io/r/base/interaction.html" class="external-link">interaction</a></span><span class="op">(</span><span class="va">prices</span><span class="op">$</span><span class="va">city</span>, <span class="va">prices</span><span class="op">$</span><span class="va">property</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">prices</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"price_prev"</span>, <span class="st">"period_prev"</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">prices</span><span class="op">[</span><span class="va">sales_pairs</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"price"</span>, <span class="st">"period"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">prices</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"price_prev"</span>, <span class="st">"period_prev"</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">prices</span><span class="op">[</span></span>
+<span>  <span class="va">sales_pairs</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"price"</span>, <span class="st">"period"</span><span class="op">)</span></span>
+<span><span class="op">]</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">prices</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         sale property city   price     period price_prev period_prev</span></span>
@@ -155,7 +163,10 @@ the result of financial difficulty that is not indicative of what the
 property would have otherwise sold for. Note that this filters out
 properties that only sell once.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">prices</span><span class="op">$</span><span class="va">holding_period</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">prices</span>, <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">period</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">period_prev</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">prices</span><span class="op">$</span><span class="va">holding_period</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span></span>
+<span>  <span class="va">prices</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">period</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">period_prev</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">prices</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">prices</span>, <span class="va">holding_period</span> <span class="op">&gt;</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <p>Properties with a very large change in price may have undergone major
@@ -310,7 +321,7 @@ easiest way to do this is with the <strong>piar</strong> package.</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://marberts.github.io/piar/" class="external-link">piar</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">dimensions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/strsplit.html" class="external-link">strsplit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">grs</span><span class="op">)</span>, <span class="st">"."</span>, fixed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">grs_piar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://marberts.github.io/piar/reference/elemental_index.html" class="external-link">elemental_index</a></span><span class="op">(</span></span>
+<span><span class="va">grs_piar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://marberts.github.io/piar/reference/elementary_index.html" class="external-link">elemental_index</a></span><span class="op">(</span></span>
 <span>  <span class="va">grs</span>,</span>
 <span>  period <span class="op">=</span> <span class="va">dimensions</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>,</span>
 <span>  ea <span class="op">=</span> <span class="va">dimensions</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>,</span>
@@ -319,12 +330,13 @@ easiest way to do this is with the <strong>piar</strong> package.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">grs_piar</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Fixed-base price index for 5 levels over 5 time periods </span></span>
-<span><span class="co">#&gt;   2010-02-01 2010-03-01 2010-04-01 2010-05-01 2010-06-01</span></span>
-<span><span class="co">#&gt; 1  0.9319471   1.049967  1.0312130  0.9332345  1.0074811</span></span>
-<span><span class="co">#&gt; 2  1.0682105   0.984812  1.0840525  1.0113186  0.9645851</span></span>
-<span><span class="co">#&gt; 3  1.0434833   1.044671  0.9526141  0.9330665  1.0234300</span></span>
-<span><span class="co">#&gt; 4  1.0185787   1.048738  1.0757727  1.1258297  1.0099260</span></span>
-<span><span class="co">#&gt; 5  0.9715417   1.025133  1.0648382  1.0387825  1.0930171</span></span></code></pre></div>
+<span><span class="co">#&gt;       time</span></span>
+<span><span class="co">#&gt; levels 2010-02-01 2010-03-01 2010-04-01 2010-05-01 2010-06-01</span></span>
+<span><span class="co">#&gt;      1  0.9319471   1.049967  1.0312130  0.9332345  1.0074811</span></span>
+<span><span class="co">#&gt;      2  1.0682105   0.984812  1.0840525  1.0113186  0.9645851</span></span>
+<span><span class="co">#&gt;      3  1.0434833   1.044671  0.9526141  0.9330665  1.0234300</span></span>
+<span><span class="co">#&gt;      4  1.0185787   1.048738  1.0757727  1.1258297  1.0099260</span></span>
+<span><span class="co">#&gt;      5  0.9715417   1.025133  1.0648382  1.0387825  1.0930171</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="sales-pair-contributions">Sales pair contributions<a class="anchor" aria-label="anchor" href="#sales-pair-contributions"></a>
@@ -341,7 +353,10 @@ percent-change contribution of each property at each point in time.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">grs_contributions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Map</a></span><span class="op">(</span></span>
 <span>  \<span class="op">(</span><span class="va">df</span>, <span class="va">df_prev</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">impute_back</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">price_prev</span> <span class="op">/</span> <span class="va">grs</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">city</span>, <span class="va">period_prev</span>, sep <span class="op">=</span> <span class="st">"."</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span>    <span class="va">impute_back</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span></span>
+<span>      <span class="va">df</span>,</span>
+<span>      <span class="va">price_prev</span> <span class="op">/</span> <span class="va">grs</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">city</span>, <span class="va">period_prev</span>, sep <span class="op">=</span> <span class="st">"."</span><span class="op">)</span><span class="op">]</span></span>
+<span>    <span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">impute_back</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/row.names.html" class="external-link">row.names</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span>    <span class="va">impute_forward</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">df_prev</span>, <span class="va">price</span> <span class="op">/</span> <span class="va">grs</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">city</span>, <span class="va">period</span>, sep <span class="op">=</span> <span class="st">"."</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">impute_forward</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/row.names.html" class="external-link">row.names</a></span><span class="op">(</span><span class="va">df_prev</span><span class="op">)</span></span>
@@ -363,7 +378,10 @@ arithmetic mean of imputed price relatives.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ars_contributions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Map</a></span><span class="op">(</span></span>
 <span>  \<span class="op">(</span><span class="va">df</span>, <span class="va">df_prev</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">impute_back</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">price_prev</span> <span class="op">/</span> <span class="va">ars</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">city</span>, <span class="va">period_prev</span>, sep <span class="op">=</span> <span class="st">"."</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span>    <span class="va">impute_back</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span></span>
+<span>      <span class="va">df</span>,</span>
+<span>      <span class="va">price_prev</span> <span class="op">/</span> <span class="va">ars</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">city</span>, <span class="va">period_prev</span>, sep <span class="op">=</span> <span class="st">"."</span><span class="op">)</span><span class="op">]</span></span>
+<span>    <span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">impute_back</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/row.names.html" class="external-link">row.names</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span>    <span class="va">impute_forward</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">df_prev</span>, <span class="va">price</span> <span class="op">/</span> <span class="va">ars</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">city</span>, <span class="va">period</span>, sep <span class="op">=</span> <span class="st">"."</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">impute_forward</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/row.names.html" class="external-link">row.names</a></span><span class="op">(</span><span class="va">df_prev</span><span class="op">)</span></span>
@@ -394,7 +412,7 @@ arithmetic mean of imputed price relatives.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>
