@@ -16,12 +16,12 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
     gpindex,
-    piar (>= 0.8.0)
+    piar (>= 0.8.2)
 License: MIT + file LICENSE
 Encoding: UTF-8
 URL: https://marberts.github.io/rsmatrix/, https://github.com/marberts/rsmatrix
 BugReports: https://github.com/marberts/rsmatrix/issues
 Config/testthat/edition: 3
 VignetteBuilder: knitr
-RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
+Config/roxygen2/version: 8.0.0

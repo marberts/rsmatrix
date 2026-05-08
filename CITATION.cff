@@ -8,7 +8,7 @@ message: 'To cite package "rsmatrix" in publications use:'
 type: software
 license: MIT
 title: 'rsmatrix: Matrices for Repeat-Sales Price Indexes'
-version: 0.2.9.9001
+version: 0.2.10
 doi: 10.5281/zenodo.10110159
 identifiers:
 - type: doi
@@ -28,10 +28,10 @@ preferred-citation:
     given-names: Steve
     orcid: https://orcid.org/0000-0003-2544-9480
     email: marberts@protonmail.com
-  year: '2024'
+  year: '2026'
   doi: 10.5281/zenodo.10110159
   url: https://cran.r-project.org/package=rsmatrix
-  notes: R package version 0.2.9.9001
+  notes: R package version 0.2.10
 repository: https://CRAN.R-project.org/package=rsmatrix
 repository-code: https://github.com/marberts/rsmatrix
 url: https://marberts.github.io/rsmatrix/
@@ -176,5 +176,5 @@ references:
     orcid: https://orcid.org/0000-0003-2544-9480
   year: '2026'
   doi: 10.32614/CRAN.package.piar
-  version: '>= 0.6.0'
+  version: '>= 0.8.2'
 
