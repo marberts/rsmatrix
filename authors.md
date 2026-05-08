@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/marberts/rsmatrix/blob/main/inst/CITATION)
+[`inst/CITATION`](https://github.com/marberts/rsmatrix/blob/v0.2.10/inst/CITATION)
 
 Martin S (2026). *rsmatrix: Matrices for Repeat-Sales Price Indexes*.
 [doi:10.5281/zenodo.10110159](https://doi.org/10.5281/zenodo.10110159).
