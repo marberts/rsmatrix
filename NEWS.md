@@ -1,3 +1,7 @@
+## rsmatrix 0.2.10
+
+- Fixed failing check on CRAN.
+
 ## rsmatrix 0.2.9
 
 - Updated maintainer email.

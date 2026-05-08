@@ -170,14 +170,14 @@ Once the index is calculated, it's often easier to turn into a matrix-like objec
 library(piar)
 
 dimensions <- do.call(rbind, strsplit(rownames(grs), ".", fixed = TRUE))
-grs_piar <- elemental_index(
+grs_piar <- elementary_index(
   grs,
   period = dimensions[, 2],
   ea = dimensions[, 1],
   chainable = FALSE
 )
 
-head(grs_piar, c(5, 5))
+grs_piar[1:5, 1:5]
 ```
 
 ## Sales pair contributions

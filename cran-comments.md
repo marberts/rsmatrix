@@ -1,8 +1,7 @@
 ## Test environments
 
-- local Ubuntu 24.04 installation, R 4.4.2
+- local Ubuntu 24.04 installation, R 4.5.3
 - win-builder (devel, release, oldrelease)
-- mac-builder
 
 ## R CMD check results
 
