@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">rsmatrix</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.10</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -321,14 +321,14 @@ easiest way to do this is with the <strong>piar</strong> package.</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://marberts.github.io/piar/" class="external-link">piar</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">dimensions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/strsplit.html" class="external-link">strsplit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">grs</span><span class="op">)</span>, <span class="st">"."</span>, fixed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">grs_piar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://marberts.github.io/piar/reference/elementary_index.html" class="external-link">elemental_index</a></span><span class="op">(</span></span>
+<span><span class="va">grs_piar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://marberts.github.io/piar/reference/elementary_index.html" class="external-link">elementary_index</a></span><span class="op">(</span></span>
 <span>  <span class="va">grs</span>,</span>
 <span>  period <span class="op">=</span> <span class="va">dimensions</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>,</span>
 <span>  ea <span class="op">=</span> <span class="va">dimensions</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>,</span>
 <span>  chainable <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">grs_piar</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">grs_piar</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
 <span><span class="co">#&gt; Fixed-base price index for 5 levels over 5 time periods </span></span>
 <span><span class="co">#&gt;       time</span></span>
 <span><span class="co">#&gt; levels 2010-02-01 2010-03-01 2010-04-01 2010-05-01 2010-06-01</span></span>
@@ -412,7 +412,7 @@ arithmetic mean of imputed price relatives.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
