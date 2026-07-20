@@ -1,18 +1,10 @@
 ---
 title: "Making repeat-sales indexes"
-output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Making repeat-sales indexes}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{litedown::vignette}
   %\VignetteEncoding{UTF-8}
 ---
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
 
 ```{r setup}
 library(rsmatrix)

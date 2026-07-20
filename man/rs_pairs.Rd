@@ -7,16 +7,17 @@
 rs_pairs(period, product, match_first = TRUE)
 }
 \arguments{
-\item{period}{A vector that gives the time period for each sale. Usually a
+\item{period}{\verb{[Date | factor]} A vector that gives the time period for each
+sale. Usually a
 date vector, or a factor with the levels in chronological order, but other
 values are possible if they can be sorted in chronological order (i.e.,
 with \code{\link[=order]{order()}}).}
 
-\item{product}{A vector that gives the product identifier for each sale.
-Usually a factor or vector of integer codes for each product.}
+\item{product}{\verb{[factor]} A vector that gives the product identifier for each
+sale. Usually a factor or vector of integer codes for each product.}
 
-\item{match_first}{Should products in the first period match with
-themselves (the default)?}
+\item{match_first}{\verb{[logical(1)]} Should products in the first period match
+with themselves (the default)?}
 }
 \value{
 A numeric vector of indices giving the position of the previous sale
@@ -46,7 +47,6 @@ pairs <- rs_pairs(x$date, x$id)
 x[c("date_prev", "price_prev")] <- x[c("date", "price")][pairs, ]
 
 x
-
 }
 \seealso{
 \code{\link[=rs_matrix]{rs_matrix()}} for using sales pairs to make a repeat-sales index.

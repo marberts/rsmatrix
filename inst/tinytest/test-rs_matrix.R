@@ -1,3 +1,5 @@
+library(rsmatrix)
+library(Matrix)
 # data for computations
 x <- data.frame(
   date = c(3, 2, 3, 2, 3, 3),
@@ -33,7 +35,8 @@ gg <- solve(crossprod(matg("Z"), matg("X")), crossprod(matg("Z"), matg("Y")))
 ga <- solve(crossprod(mata("Z"), mata("X")), crossprod(mata("Z"), mata("Y")))
 gb <- solve(crossprod(matb("Z"), matb("X")), crossprod(matb("Z"), matb("Y")))
 
-test_that("corner cases work", {
+# Corner cases work.
+local({
   m <- rs_matrix(
     integer(0),
     character(0),
@@ -60,7 +63,8 @@ test_that("corner cases work", {
   expect_identical(ms("y"), double(0))
 })
 
-test_that("matrices are correct for a simple grouped case", {
+# Matrices are correct for a simple grouped case.
+local({
   m <- rs_matrix(
     c(2, 3, 2, 2, 4),
     c(1, 1, 1, 1, 3),
@@ -181,7 +185,8 @@ test_that("matrices are correct for a simple grouped case", {
   )
 })
 
-test_that("matrices are correct for a simple case", {
+# Matrices are correct for a simple case.
+local({
   m <- rs_matrix(c(2, 4), 1:2, c(2, 5), 1:2)
   expect_identical(
     m("X"),
@@ -201,39 +206,40 @@ test_that("matrices are correct for a simple case", {
   expect_identical(ms("y"), c("1" = log(2), "2" = log(5 / 2)))
 })
 
-test_that("Z matrix works correctly", {
+# Z matrix works correctly.
+local({
   expect_identical(
-    rsmatrix:::rs_z_(integer(0), character(0)),
+    rsmatrix:::.rs_z(integer(0), character(0)),
     matrix(numeric(0), ncol = 0)
   )
   expect_identical(
-    rsmatrix:::rs_z_(integer(0), character(0), logical(0)),
+    rsmatrix:::.rs_z(integer(0), character(0), logical(0)),
     matrix(numeric(0), ncol = 0)
   )
   expect_identical(
-    suppressWarnings(rsmatrix:::rs_z_(rep("a", 2), rep("a", 2))),
+    suppressWarnings(rsmatrix:::.rs_z(rep("a", 2), rep("a", 2))),
     matrix(0, ncol = 1, nrow = 2, dimnames = list(1:2, "a"))
   )
   expect_identical(
     suppressWarnings(
-      rsmatrix:::rs_z_(c(a = rep("a", 2)), c(b = rep("a", 2)), 1:2)
+      rsmatrix:::.rs_z(c(a = rep("a", 2)), c(b = rep("a", 2)), 1:2)
     ),
     matrix(rep(0, 4), ncol = 2, dimnames = list(c("a1", "a2"), c("1.a", "2.a")))
   )
   expect_identical(
-    suppressWarnings(rsmatrix:::rs_z_(c(a = 2:1), 2:1)),
+    suppressWarnings(rsmatrix:::.rs_z(c(a = 2:1), 2:1)),
     matrix(c(0, 0, 0, 0), ncol = 2, dimnames = list(c("a1", "a2"), 1:2))
   )
   expect_identical(
-    suppressWarnings(rsmatrix:::rs_z_(1:2, c(a = 2:1))),
+    suppressWarnings(rsmatrix:::.rs_z(1:2, c(a = 2:1))),
     matrix(c(1, -1, -1, 1), ncol = 2, dimnames = list(c("a1", "a2"), 1:2))
   )
   expect_identical(
-    rsmatrix:::rs_z_(3:2, 2:1),
+    rsmatrix:::.rs_z(3:2, 2:1),
     matrix(c(0, -1, -1, 1, 1, 0), ncol = 3, dimnames = list(1:2, 1:3))
   )
   expect_identical(
-    rsmatrix:::rs_z_(c(a = 2, b = 2), c(1, 1), c("a", "b")),
+    rsmatrix:::.rs_z(c(a = 2, b = 2), c(1, 1), c("a", "b")),
     matrix(
       c(-1, 0, 0, -1, 1, 0, 0, 1),
       ncol = 4,
@@ -241,7 +247,7 @@ test_that("Z matrix works correctly", {
     )
   )
   expect_identical(
-    rsmatrix:::rs_z_(factor(c(3:2, 2)), c(2:1, 1), letters[c(1, 1, 2)]),
+    rsmatrix:::.rs_z(factor(c(3:2, 2)), c(2:1, 1), letters[c(1, 1, 2)]),
     matrix(
       c(0, -1, 0, 0, 0, -1, -1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0),
       ncol = 6,
@@ -249,22 +255,22 @@ test_that("Z matrix works correctly", {
     )
   )
   expect_identical(
-    rsmatrix:::rs_z_(factor(3:2), 2:1),
-    rsmatrix:::rs_z_(3:2, 2:1)
+    rsmatrix:::.rs_z(factor(3:2), 2:1),
+    rsmatrix:::.rs_z(3:2, 2:1)
   )
   expect_identical(
     suppressWarnings(
-      rsmatrix:::rs_z_(factor(2:1, levels = 1:3), factor(c(a = 1, b = 1)))
+      rsmatrix:::.rs_z(factor(2:1, levels = 1:3), factor(c(a = 1, b = 1)))
     ),
     matrix(c(-1, 0, 1, 0), ncol = 2, dimnames = list(c("a", "b"), 1:2))
   )
   expect_identical(
-    rsmatrix:::rs_z_(factor(letters[3:2]), factor(letters[2:1])),
-    rsmatrix:::rs_z_(letters[3:2], letters[2:1])
+    rsmatrix:::.rs_z(factor(letters[3:2]), factor(letters[2:1])),
+    rsmatrix:::.rs_z(letters[3:2], letters[2:1])
   )
   expect_identical(
     suppressWarnings(
-      rsmatrix:::rs_z_(
+      rsmatrix:::.rs_z(
         as.Date(c("2017-02-01", "2017-03-01", "2017-01-01")),
         as.Date(c("2017-01-01", "2017-02-01", "2017-01-01"))
       )
@@ -277,13 +283,14 @@ test_that("Z matrix works correctly", {
   )
 })
 
-test_that("sparse matrices work correctly", {
+# Sparse matrices work correctly.
+local({
   expect_identical(
-    rsmatrix:::rs_z_(integer(0), integer(0), sparse = TRUE),
+    rsmatrix:::.rs_z(integer(0), integer(0), sparse = TRUE),
     Matrix::sparseMatrix(numeric(0), numeric(0), x = 0)
   )
   expect_identical(
-    suppressWarnings(rsmatrix:::rs_z_(1, 1, sparse = TRUE)),
+    suppressWarnings(rsmatrix:::.rs_z(1, 1, sparse = TRUE)),
     Matrix::sparseMatrix(
       numeric(0),
       numeric(0),
@@ -293,7 +300,7 @@ test_that("sparse matrices work correctly", {
     )
   )
   expect_identical(
-    suppressWarnings(rsmatrix:::rs_z_(c(a = "a"), "a", sparse = TRUE)),
+    suppressWarnings(rsmatrix:::.rs_z(c(a = "a"), "a", sparse = TRUE)),
     Matrix::sparseMatrix(
       numeric(0),
       numeric(0),
@@ -303,7 +310,7 @@ test_that("sparse matrices work correctly", {
     )
   )
   expect_identical(
-    rsmatrix:::rs_z_(c(2, 2), c(1, 1), c("a", "b"), TRUE),
+    rsmatrix:::.rs_z(c(2, 2), c(1, 1), c("a", "b"), TRUE),
     Matrix::sparseMatrix(
       c(1, 2, 1, 2),
       1:4,
@@ -312,7 +319,7 @@ test_that("sparse matrices work correctly", {
     )
   )
   expect_identical(
-    suppressWarnings(rsmatrix:::rs_z_(2:1, c(1, 1), sparse = TRUE)),
+    suppressWarnings(rsmatrix:::.rs_z(2:1, c(1, 1), sparse = TRUE)),
     Matrix::sparseMatrix(
       c(1, 1),
       c(1, 2),
@@ -323,14 +330,16 @@ test_that("sparse matrices work correctly", {
   )
 })
 
-test_that("grouped indexes work", {
+# Grouped indexes work.
+local({
   expect_equal(as.numeric(ba[, 1]), as.numeric(bg[seq(1, 4, 2), 1]))
   expect_equal(as.numeric(ga[, 1]), as.numeric(gg[seq(1, 4, 2), 1]))
   expect_equal(as.numeric(bb[, 1]), as.numeric(bg[seq(2, 4, 2), 1]))
   expect_equal(as.numeric(gb[, 1]), as.numeric(gg[seq(2, 4, 2), 1]))
 })
 
-test_that("index calculation agrees with regressions", {
+# Index calculation agrees with regressions.
+local({
   # results from lm
   expect_equal(as.numeric(b), c(1.306078088475809, 0.943826746689325))
   # results from vcovHC
@@ -372,7 +381,8 @@ test_that("index calculation agrees with regressions", {
   )
 })
 
-test_that("errors work", {
+# Errors work.
+local({
   expect_error(rs_matrix(1:4, 1:3, 1:4, 1:4))
   expect_error(rs_matrix(1:4, 1:4, 1:4, 1:4, 1:5))
   expect_error(rs_matrix(c(1:3, NA), 1:4, 1:4, 1:4))

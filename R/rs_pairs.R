@@ -3,14 +3,17 @@
 #' Turn repeat-sales data into sales pairs that are suitable for making
 #' repeat-sales matrices.
 #'
-#' @param period A vector that gives the time period for each sale. Usually a
+#' @export
+#'
+#' @param period `[Date | factor]` A vector that gives the time period for each
+#'   sale. Usually a
 #'   date vector, or a factor with the levels in chronological order, but other
 #'   values are possible if they can be sorted in chronological order (i.e.,
 #'   with [order()]).
-#' @param product A vector that gives the product identifier for each sale.
-#'   Usually a factor or vector of integer codes for each product.
-#' @param match_first Should products in the first period match with
-#'   themselves (the default)?
+#' @param product `[factor]` A vector that gives the product identifier for each
+#'   sale. Usually a factor or vector of integer codes for each product.
+#' @param match_first `[logical(1)]` Should products in the first period match
+#'   with themselves (the default)?
 #'
 #' @returns
 #' A numeric vector of indices giving the position of the previous sale
@@ -42,11 +45,9 @@
 #' x[c("date_prev", "price_prev")] <- x[c("date", "price")][pairs, ]
 #'
 #' x
-#'
-#' @export
 rs_pairs <- function(period, product, match_first = TRUE) {
   if (length(product) != length(period)) {
-    stop("'period' and 'product' must be the same length")
+    stop("`period` and `product` must be the same length")
   }
 
   # != is slow for factors with many levels, so use the integer codes.
