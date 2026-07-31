@@ -40,6 +40,6 @@ When making a pull request, please:
 
 3. Use `roxygen2` for documentation;
 
-4. Use `testthat` for unit tests;
+4. Use `tinytest` for unit tests;
 
 5. Ensure your changes pass `R CMD check`.

@@ -1,3 +1,7 @@
+## rsmatrix 0.2.11
+
+- Now using {litedown} and {tinytest}. No user-facing changes.
+
 ## rsmatrix 0.2.10
 
 - Fixed failing check on CRAN.

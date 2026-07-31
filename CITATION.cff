@@ -8,7 +8,7 @@ message: 'To cite package "rsmatrix" in publications use:'
 type: software
 license: MIT
 title: 'rsmatrix: Matrices for Repeat-Sales Price Indexes'
-version: 0.2.10
+version: 0.2.11
 doi: 10.5281/zenodo.10110159
 identifiers:
 - type: doi
@@ -31,7 +31,7 @@ preferred-citation:
   year: '2026'
   doi: 10.5281/zenodo.10110159
   url: https://cran.r-project.org/package=rsmatrix
-  notes: R package version 0.2.10
+  notes: R package version 0.2.11
 repository: https://CRAN.R-project.org/package=rsmatrix
 repository-code: https://github.com/marberts/rsmatrix
 url: https://marberts.github.io/rsmatrix/
@@ -84,19 +84,6 @@ references:
   doi: 10.32614/CRAN.package.Matrix
   version: '>= 1.5-0'
 - type: software
-  title: gpindex
-  abstract: 'gpindex: Generalized Price and Quantity Indexes'
-  notes: Suggests
-  url: https://marberts.github.io/gpindex/
-  repository: https://CRAN.R-project.org/package=gpindex
-  authors:
-  - family-names: Martin
-    given-names: Steve
-    email: marberts@protonmail.com
-    orcid: https://orcid.org/0000-0003-2544-9480
-  year: '2026'
-  doi: 10.32614/CRAN.package.gpindex
-- type: software
   title: litedown
   abstract: 'litedown: A Lightweight Version of R Markdown'
   notes: Suggests
@@ -122,7 +109,22 @@ references:
     orcid: https://orcid.org/0000-0003-2544-9480
   year: '2026'
   doi: 10.32614/CRAN.package.piar
-  version: '>= 0.8.2'
+- type: software
+  title: spelling
+  abstract: 'spelling: Tools for Spell Checking in R'
+  notes: Suggests
+  url: https://ropensci.r-universe.dev/spelling
+  repository: https://CRAN.R-project.org/package=spelling
+  authors:
+  - family-names: Ooms
+    given-names: Jeroen
+    email: jeroenooms@gmail.com
+    orcid: https://orcid.org/0000-0002-4035-0289
+  - family-names: Hester
+    given-names: Jim
+    email: james.hester@rstudio.com
+  year: '2026'
+  doi: 10.32614/CRAN.package.spelling
 - type: software
   title: tinytest
   abstract: 'tinytest: Lightweight and Feature Complete Unit Testing Framework'

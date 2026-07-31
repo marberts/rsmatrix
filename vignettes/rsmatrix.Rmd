@@ -76,14 +76,16 @@ prices$holding_period <- with(
 prices <- subset(prices, holding_period > 2)
 ```
 
-Properties with a very large change in price may have undergone major improvements or depreciation that similarly undermine the assumptions of the repeat-sales method. There are many ways to try and filter out these transactions, but a simple approach is to remove pairs of sales where the monthly return for a property is greater than, say, 2.5 median absolute deviations from the median. (The **gpindex** package has several other methods for dealing with extreme changes in prices.)
+Properties with a very large change in price may have undergone major improvements or depreciation that similarly undermine the assumptions of the repeat-sales method. There are many ways to try and filter out these transactions, but a simple approach is to remove pairs of sales where the monthly return for a property is greater than, say, 2.5 median absolute deviations from the median. (The **piar** package has several other methods for dealing with extreme changes in prices.)
 
 ```{r removal2}
-library(gpindex)
 monthly_return <- with(prices, (price / price_prev)^(1 / holding_period))
 
-robust_z <- grouped(robust_z)
-prices <- subset(prices, !robust_z(monthly_return, group = city))
+outlier <- split(monthly_return, prices$city) |>
+  lapply(\(x) piar::outliers(x, 2.5, method= "robust-z")) |>
+  unsplit(prices$city)
+
+prices <- subset(prices, !outlier)
 
 head(prices)
 ```
@@ -159,17 +161,17 @@ head(ars_ew)
 Once the index is calculated, it's often easier to turn into a matrix-like object with cities as rows and time periods as columns. The easiest way to do this is with the **piar** package.
 
 ```{r piar}
-library(piar)
-
 dimensions <- do.call(rbind, strsplit(rownames(grs), ".", fixed = TRUE))
-grs_piar <- elementary_index(
-  grs,
-  period = dimensions[, 2],
-  ea = dimensions[, 1],
+grs_piar <- piar::as_index(
+  data.frame(
+    period = dimensions[, 2],
+    city = dimensions[, 1],
+    index =  as.numeric(grs)
+  ),
   chainable = FALSE
 )
 
-grs_piar[1:5, 1:5]
+head(grs_piar, c(5, 5))
 ```
 
 ## Sales pair contributions
@@ -184,6 +186,10 @@ ars <- c(setNames(rep(1, 5), paste(1:5, "2010-01-01", sep = ".")), ars[, 1])
 The GRS index at a point in time is simply the geometric mean of imputed price relatives. This makes it easy to calculate the percent-change contribution of each property at each point in time.
 
 ```{r, contrib_grs}
+geometric_contributions <- function(x) {
+  (x - 1) * piar::transmute_weights(x, order = 0)
+}
+
 grs_contributions <- Map(
   \(df, df_prev) {
     impute_back <- with(
@@ -209,6 +215,10 @@ range(unlist(grs_contributions))
 The same applies to the ARS index, noting that it is a weighted arithmetic mean of imputed price relatives.
 
 ```{r, contrib_ars}
+arithmetic_contributions <- function(x, w) {
+  (x - 1) * piar::transmute_weights(x, w, order = 1)
+}
+
 ars_contributions <- Map(
   \(df, df_prev) {
     impute_back <- with(
