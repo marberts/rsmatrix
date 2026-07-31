@@ -82,7 +82,7 @@ Properties with a very large change in price may have undergone major improvemen
 monthly_return <- with(prices, (price / price_prev)^(1 / holding_period))
 
 outlier <- split(monthly_return, prices$city) |>
-  lapply(\(x) piar::outliers(x, 2.5, method= "robust-z")) |>
+  lapply(\(x) piar::outliers(x, 2.5, method = "robust-z")) |>
   unsplit(prices$city)
 
 prices <- subset(prices, !outlier)
