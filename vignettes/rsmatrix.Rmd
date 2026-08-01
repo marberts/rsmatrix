@@ -106,7 +106,9 @@ matrices <- with(
 )
 ```
 
-The simplest repeat-sales index in the geometric repeat sales (GRS) index.^[The GRS index is simply the first-difference estimator for the linear model of log price with property fixed effects. This is easy enough to compute with a panel-data package like **plm**, but the repeat-sales matrices are more convenient when working with sales pairs.] This index uses the $Z$ and $y$ matrices.
+The simplest repeat-sales index in the geometric repeat sales (GRS) index.[^1] This index uses the $Z$ and $y$ matrices.
+
+[^1]: The GRS index is simply the first-difference estimator for the linear model of log price with property fixed effects. This is easy enough to compute with a panel-data package like **plm**, but the repeat-sales matrices are more convenient when working with sales pairs.
 
 ```{r grs}
 Z <- matrices("Z")
