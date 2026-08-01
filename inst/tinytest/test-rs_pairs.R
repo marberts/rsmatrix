@@ -1,18 +1,17 @@
-test_that("an easy example works", {
-  # An easy-to-verify test
-  # y x  x_prev pos
-  # b 1  1      1
-  # c 10 7      10
-  # a 1  1      3
-  # a 2  1      3
-  # a 3  2      4
-  # b 3  2      7
-  # b 2  1      1
-  # d 1  1      8
-  # c 11 10     2
-  # c 7  7      10
-  # d 1  1      8
-
+# An easy-to-verify test
+# y x  x_prev pos
+# b 1  1      1
+# c 10 7      10
+# a 1  1      3
+# a 2  1      3
+# a 3  2      4
+# b 3  2      7
+# b 2  1      1
+# d 1  1      8
+# c 11 10     2
+# c 7  7      10
+# d 1  1      8
+local({
   x <- c(1, 10, 1:3, 3:2, 1, 11, 7, 1)
   y <- factor(letters[c(2, 3, 1, 1, 1, 2, 2, 4, 3, 3, 4)])
 
@@ -45,7 +44,8 @@ test_that("an easy example works", {
   )
 })
 
-test_that("a more complex example works", {
+# A more complex example works.
+local({
   x <- c(
     "3",
     "15",
@@ -70,7 +70,8 @@ test_that("a more complex example works", {
   )
 })
 
-test_that("corner cases work", {
+# Corner cases work.
+local({
   expect_identical(rs_pairs(numeric(0), character(0)), integer(0))
   expect_identical(
     rs_pairs(numeric(0), character(0), match_first = FALSE),
@@ -85,7 +86,8 @@ test_that("corner cases work", {
   expect_identical(rs_pairs(c(1, 2, 3, 2), rep(1, 4)), c(1L, 1L, 4L, 2L))
 })
 
-test_that("sales pairs are back periods", {
+# Sales pairs are back periods.
+local({
   period <- c(3, 3, 4, 2, 2, 1, 4, 1, 1, 3, 2, 4)
   product <- c(1, 3, 2, 3, 2, 1, 1, 2, 3, 2, 1, 3)
   expect_equal(
@@ -99,6 +101,7 @@ test_that("sales pairs are back periods", {
   )
 })
 
-test_that("different length inputs is an error", {
+# Different length inputs is an error.
+local({
   expect_error(rs_pairs(1:3, 1:2))
 })

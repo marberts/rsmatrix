@@ -1,3 +1,5 @@
+citHeader("To cite rsmatrix in publications use:")
+
 bibentry(
   bibtype  = "Manual",
   title    = "{rsmatrix}: Matrices for Repeat-Sales Price Indexes",

@@ -7,19 +7,21 @@
 rs_matrix(t2, t1, p2, p1, f = NULL, sparse = FALSE)
 }
 \arguments{
-\item{t2, t1}{A pair of vectors giving the time period of the second and
+\item{t2, t1}{\verb{[Date | character]} A pair of vectors giving the time period of
+the second and
 first sale, respectively. Usually a vector of dates, but other values are
 possible if they can be coerced to character vectors and sorted in
 chronological order (i.e., with \code{\link[=order]{order()}}).}
 
-\item{p2, p1}{A pair of numeric vectors giving the price of the second and
-first sale, respectively.}
+\item{p2, p1}{\verb{[numeric > 0]} A pair of numeric vectors giving the price of
+the second and first sale, respectively.}
 
-\item{f}{An optional factor the same length as \code{t1} and \code{t2}, or a
+\item{f}{\verb{[factor]} An optional factor the same length as \code{t1} and \code{t2}, or a
 vector to be turned into a factor, that is used to group sales.}
 
-\item{sparse}{Should sparse matrices from the \pkg{Matrix} package be used
-(faster for large datasets), or regular dense matrices (the default)?}
+\item{sparse}{\verb{[logical(1)]} Should sparse matrices from the \pkg{Matrix}
+package be used (faster for large datasets), or regular dense matrices
+(the default)?}
 }
 \value{
 A function that takes a single argument naming the desired matrix.
@@ -89,7 +91,6 @@ x <- data.frame(
 mat <- with(x, rs_matrix(date, date_prev, price, price_prev, group))
 b <- solve(crossprod(mat("Z"), mat("X")), crossprod(mat("Z"), mat("Y")))[, 1]
 100 / b
-
 }
 \references{
 Bailey, M. J., Muth, R. F., and Nourse, H. O. (1963). A regression method

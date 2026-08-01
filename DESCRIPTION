@@ -1,6 +1,6 @@
 Package: rsmatrix
 Title: Matrices for Repeat-Sales Price Indexes
-Version: 0.2.10
+Version: 0.2.11
 Authors@R: c(
     person(given = "Steve", family = "Martin", role = c("aut", "cre", "cph"),
            email = "marberts@protonmail.com",
@@ -11,17 +11,16 @@ Description: Calculate the matrices in
     foundation for many repeat-sales price indexes.
 Depends: R (>= 4.0)
 Imports: Matrix (>= 1.5-0)
-Suggests: 
-    knitr,
-    rmarkdown,
-    testthat (>= 3.0.0),
-    gpindex,
-    piar (>= 0.8.2)
+Suggests:
+    litedown,
+    piar,
+    spelling,
+    tinytest
 License: MIT + file LICENSE
 Encoding: UTF-8
 URL: https://marberts.github.io/rsmatrix/, https://github.com/marberts/rsmatrix
 BugReports: https://github.com/marberts/rsmatrix/issues
-Config/testthat/edition: 3
-VignetteBuilder: knitr
+VignetteBuilder: litedown
 Roxygen: list(markdown = TRUE)
 Config/roxygen2/version: 8.0.0
+Language: en-US

@@ -1,9 +1,3 @@
-#' Stata's degrees-of-freedom correction (internal)
-#' @noRd
-sss <- function(n, k, g) {
-  g / (g - 1L) * (n - 1L) / (n - k)
-}
-
 #' Robust variance matrix for repeat-sales indexes
 #'
 #' Convenience function to compute a cluster-robust variance matrix for a
@@ -18,18 +12,21 @@ sss <- function(n, k, g) {
 #' matrix proposed by Shiller (1991, section II) when a property sells more
 #' than twice.
 #'
-#' This function gives the same result as `vcovHC(x, type = 'sss', cluster
+#' This function gives the same result as `vcovHC(x, type = "sss", cluster
 #' = 'group')` from the \pkg{plm} package.
 #'
-#' @param u An \eqn{n \times 1}{n x 1} vector of residuals from a linear
-#'   regression.
-#' @param Z An \eqn{n \times k}{n x k} matrix of instruments.
-#' @param X An \eqn{n \times k}{n x k} matrix of covariates.
-#' @param ids A factor of length \eqn{n}, or something that can be coerced into
-#'   one, that groups observations in `u`. By default each observation
-#'   belongs to its own group.
-#' @param df An optional degrees of freedom correction. Default is Stata's
-#'   small sample degrees of freedom correction.
+#' @export rs_var
+#' @importMethodsFrom Matrix solve crossprod tcrossprod
+#'
+#' @param u `[numeric]` An \eqn{n \times 1}{n x 1} vector of residuals from a
+#'   linear regression.
+#' @param Z `[matrix]` An \eqn{n \times k}{n x k} matrix of instruments.
+#' @param X `[matrix]` An \eqn{n \times k}{n x k} matrix of covariates.
+#' @param ids `[factor]` A factor of length \eqn{n}, or something that can be
+#'   coerced into one, that groups observations in `u`. By default each
+#'   observation belongs to its own group.
+#' @param df `[numeric(1) > 0]` An optional degrees of freedom correction.
+#'   Default is Stata's small sample degrees of freedom correction.
 #'
 #' @returns
 #' A \eqn{k \times k}{k x k} covariance matrix.
@@ -68,9 +65,6 @@ sss <- function(n, k, g) {
 #' vcov2 <- vcovHC(mdl, type = "sss", cluster = "group")
 #' vcov - vcov2
 #' }
-#'
-#' @export rs_var
-#' @importMethodsFrom Matrix solve crossprod tcrossprod
 rs_var <- function(u, Z, X = Z, ids = seq_len(nrow(X)), df = NULL) {
   ids <- as.factor(ids)
   df <- if (is.null(df)) {
@@ -88,4 +82,10 @@ rs_var <- function(u, Z, X = Z, ids = seq_len(nrow(X)), df = NULL) {
   # Put the sandwich together.
   vcov <- tcrossprod(B %*% V, B)
   df * vcov
+}
+
+#' Stata's degrees-of-freedom correction (internal)
+#' @noRd
+sss <- function(n, k, g) {
+  g / (g - 1L) * (n - 1L) / (n - k)
 }

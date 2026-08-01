@@ -7,19 +7,19 @@
 rs_var(u, Z, X = Z, ids = seq_len(nrow(X)), df = NULL)
 }
 \arguments{
-\item{u}{An \eqn{n \times 1}{n x 1} vector of residuals from a linear
-regression.}
+\item{u}{\verb{[numeric]} An \eqn{n \times 1}{n x 1} vector of residuals from a
+linear regression.}
 
-\item{Z}{An \eqn{n \times k}{n x k} matrix of instruments.}
+\item{Z}{\verb{[matrix]} An \eqn{n \times k}{n x k} matrix of instruments.}
 
-\item{X}{An \eqn{n \times k}{n x k} matrix of covariates.}
+\item{X}{\verb{[matrix]} An \eqn{n \times k}{n x k} matrix of covariates.}
 
-\item{ids}{A factor of length \eqn{n}, or something that can be coerced into
-one, that groups observations in \code{u}. By default each observation
-belongs to its own group.}
+\item{ids}{\verb{[factor]} A factor of length \eqn{n}, or something that can be
+coerced into one, that groups observations in \code{u}. By default each
+observation belongs to its own group.}
 
-\item{df}{An optional degrees of freedom correction. Default is Stata's
-small sample degrees of freedom correction.}
+\item{df}{\verb{[numeric(1) > 0]} An optional degrees of freedom correction.
+Default is Stata's small sample degrees of freedom correction.}
 }
 \value{
 A \eqn{k \times k}{k x k} covariance matrix.
@@ -38,7 +38,7 @@ when a regression is calculated by hand. This generalizes the variance
 matrix proposed by Shiller (1991, section II) when a property sells more
 than twice.
 
-This function gives the same result as \code{vcovHC(x, type = 'sss', cluster = 'group')} from the \pkg{plm} package.
+This function gives the same result as \code{vcovHC(x, type = "sss", cluster = 'group')} from the \pkg{plm} package.
 }
 \examples{
 # Makes some groups in mtcars
@@ -64,7 +64,6 @@ mdl <- plm(mpg ~ cyl + disp, mtcars, model = "pooling", index = "clust")
 vcov2 <- vcovHC(mdl, type = "sss", cluster = "group")
 vcov - vcov2
 }
-
 }
 \references{
 Manski, C. (1988). \emph{Analog Estimation Methods in Econometrics}.
