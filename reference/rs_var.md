@@ -15,26 +15,27 @@ rs_var(u, Z, X = Z, ids = seq_len(nrow(X)), df = NULL)
 
 - u:
 
-  An \\n \times 1\\ vector of residuals from a linear regression.
+  `[numeric]` An \\n \times 1\\ vector of residuals from a linear
+  regression.
 
 - Z:
 
-  An \\n \times k\\ matrix of instruments.
+  `[matrix]` An \\n \times k\\ matrix of instruments.
 
 - X:
 
-  An \\n \times k\\ matrix of covariates.
+  `[matrix]` An \\n \times k\\ matrix of covariates.
 
 - ids:
 
-  A factor of length \\n\\, or something that can be coerced into one,
-  that groups observations in `u`. By default each observation belongs
-  to its own group.
+  `[factor]` A factor of length \\n\\, or something that can be coerced
+  into one, that groups observations in `u`. By default each observation
+  belongs to its own group.
 
 - df:
 
-  An optional degrees of freedom correction. Default is Stata's small
-  sample degrees of freedom correction.
+  `[numeric(1) > 0]` An optional degrees of freedom correction. Default
+  is Stata's small sample degrees of freedom correction.
 
 ## Value
 
@@ -50,7 +51,7 @@ proposed by Shiller (1991, section II) when a property sells more than
 twice.
 
 This function gives the same result as
-`vcovHC(x, type = 'sss', cluster = 'group')` from the plm package.
+`vcovHC(x, type = "sss", cluster = 'group')` from the plm package.
 
 ## References
 

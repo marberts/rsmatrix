@@ -14,26 +14,26 @@ rs_matrix(t2, t1, p2, p1, f = NULL, sparse = FALSE)
 
 - t2, t1:
 
-  A pair of vectors giving the time period of the second and first sale,
-  respectively. Usually a vector of dates, but other values are possible
-  if they can be coerced to character vectors and sorted in
-  chronological order (i.e., with
+  `[Date | character]` A pair of vectors giving the time period of the
+  second and first sale, respectively. Usually a vector of dates, but
+  other values are possible if they can be coerced to character vectors
+  and sorted in chronological order (i.e., with
   [`order()`](https://rdrr.io/r/base/order.html)).
 
 - p2, p1:
 
-  A pair of numeric vectors giving the price of the second and first
-  sale, respectively.
+  `[numeric > 0]` A pair of numeric vectors giving the price of the
+  second and first sale, respectively.
 
 - f:
 
-  An optional factor the same length as `t1` and `t2`, or a vector to be
-  turned into a factor, that is used to group sales.
+  `[factor]` An optional factor the same length as `t1` and `t2`, or a
+  vector to be turned into a factor, that is used to group sales.
 
 - sparse:
 
-  Should sparse matrices from the Matrix package be used (faster for
-  large datasets), or regular dense matrices (the default)?
+  `[logical(1)]` Should sparse matrices from the Matrix package be used
+  (faster for large datasets), or regular dense matrices (the default)?
 
 ## Value
 

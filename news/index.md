@@ -1,6 +1,12 @@
 # Changelog
 
+## rsmatrix 0.2.11
+
+- Now using {litedown} and {tinytest}. No user-facing changes.
+
 ## rsmatrix 0.2.10
+
+CRAN release: 2026-05-08
 
 - Fixed failing check on CRAN.
 

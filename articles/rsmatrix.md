@@ -42,14 +42,15 @@ prices <- prices[order(prices$city, prices$property, prices$sale), ]
 row.names(prices) <- NULL
 
 head(prices)
-#>         sale property city   price
-#> 1 2012-11-18    00001    1 2831000
-#> 2 2018-10-05    00001    1  290000
-#> 3 2010-09-20    00002    1 1519000
-#> 4 2019-12-19    00002    1  269000
-#> 5 2012-06-25    00003    1  712000
-#> 6 2016-10-15    00003    1  520000
 ```
+
+    ##         sale property city   price
+    ## 1 2012-11-18    00001    1 2831000
+    ## 2 2018-10-05    00001    1  290000
+    ## 3 2010-09-20    00002    1 1519000
+    ## 4 2019-12-19    00002    1  269000
+    ## 5 2012-06-25    00003    1  712000
+    ## 6 2016-10-15    00003    1  520000
 
 ## Preparing to make the matrices
 
@@ -64,9 +65,10 @@ which there is only one sale.
 interaction(prices$city, prices$property, drop = TRUE) |>
   tabulate() |>
   quantile()
-#>   0%  25%  50%  75% 100% 
-#>    1    1    2    3   11
 ```
+
+    ##   0%  25%  50%  75% 100% 
+    ##    1    1    2    3   11
 
 We’ll be making a monthly index, and it’s useful to turn sale dates into
 year months before constructing sales pairs. (Using, say, the `yearmon`
@@ -92,14 +94,15 @@ prices[c("price_prev", "period_prev")] <- prices[
 ]
 
 head(prices)
-#>         sale property city   price     period price_prev period_prev
-#> 1 2012-11-18    00001    1 2831000 2012-11-01    2831000  2012-11-01
-#> 2 2018-10-05    00001    1  290000 2018-10-01    2831000  2012-11-01
-#> 3 2010-09-20    00002    1 1519000 2010-09-01    1519000  2010-09-01
-#> 4 2019-12-19    00002    1  269000 2019-12-01    1519000  2010-09-01
-#> 5 2012-06-25    00003    1  712000 2012-06-01     712000  2012-06-01
-#> 6 2016-10-15    00003    1  520000 2016-10-01     712000  2012-06-01
 ```
+
+    ##         sale property city   price     period price_prev period_prev
+    ## 1 2012-11-18    00001    1 2831000 2012-11-01    2831000  2012-11-01
+    ## 2 2018-10-05    00001    1  290000 2018-10-01    2831000  2012-11-01
+    ## 3 2010-09-20    00002    1 1519000 2010-09-01    1519000  2010-09-01
+    ## 4 2019-12-19    00002    1  269000 2019-12-01    1519000  2010-09-01
+    ## 5 2012-06-25    00003    1  712000 2012-06-01     712000  2012-06-01
+    ## 6 2016-10-15    00003    1  520000 2016-10-01     712000  2012-06-01
 
 Now that the data are oriented as sales pairs, we can remove pairs of
 transactions that don’t belong in the calculation. The goal is to help
@@ -128,33 +131,36 @@ improvements or depreciation that similarly undermine the assumptions of
 the repeat-sales method. There are many ways to try and filter out these
 transactions, but a simple approach is to remove pairs of sales where
 the monthly return for a property is greater than, say, 2.5 median
-absolute deviations from the median. (The **gpindex** package has
-several other methods for dealing with extreme changes in prices.)
+absolute deviations from the median. (The **piar** package has several
+other methods for dealing with extreme changes in prices.)
 
 ``` r
 
-library(gpindex)
 monthly_return <- with(prices, (price / price_prev)^(1 / holding_period))
 
-robust_z <- grouped(robust_z)
-prices <- subset(prices, !robust_z(monthly_return, group = city))
+outlier <- split(monthly_return, prices$city) |>
+  lapply(\(x) piar::outliers(x, 2.5, method = "robust-z")) |>
+  unsplit(prices$city)
+
+prices <- subset(prices, !outlier)
 
 head(prices)
-#>          sale property city  price     period price_prev period_prev
-#> 2  2018-10-05    00001    1 290000 2018-10-01    2831000  2012-11-01
-#> 4  2019-12-19    00002    1 269000 2019-12-01    1519000  2010-09-01
-#> 6  2016-10-15    00003    1 520000 2016-10-01     712000  2012-06-01
-#> 8  2011-07-18    00004    1 305000 2011-07-01      90000  2010-07-01
-#> 9  2013-12-03    00004    1 768000 2013-12-01     305000  2011-07-01
-#> 10 2018-08-02    00004    1 121000 2018-08-01     768000  2013-12-01
-#>    holding_period
-#> 2              71
-#> 4             111
-#> 6              52
-#> 8              12
-#> 9              29
-#> 10             56
 ```
+
+    ##          sale property city  price     period price_prev period_prev
+    ## 2  2018-10-05    00001    1 290000 2018-10-01    2831000  2012-11-01
+    ## 4  2019-12-19    00002    1 269000 2019-12-01    1519000  2010-09-01
+    ## 6  2016-10-15    00003    1 520000 2016-10-01     712000  2012-06-01
+    ## 8  2011-07-18    00004    1 305000 2011-07-01      90000  2010-07-01
+    ## 9  2013-12-03    00004    1 768000 2013-12-01     305000  2011-07-01
+    ## 10 2018-08-02    00004    1 121000 2018-08-01     768000  2013-12-01
+    ##    holding_period
+    ## 2              71
+    ## 4             111
+    ## 6              52
+    ## 8              12
+    ## 9              29
+    ## 10             56
 
 ## Calculating a repeat-sales index
 
@@ -184,15 +190,16 @@ y <- matrices("y")
 
 grs <- exp(solve(crossprod(Z), crossprod(Z, y)))
 head(grs)
-#> 6 x 1 Matrix of class "dgeMatrix"
-#>                   [,1]
-#> 1.2010-02-01 0.9319471
-#> 2.2010-02-01 1.0682105
-#> 3.2010-02-01 1.0434833
-#> 4.2010-02-01 1.0185787
-#> 5.2010-02-01 0.9715417
-#> 1.2010-03-01 1.0499673
 ```
+
+    ## 6 x 1 Matrix of class "dgeMatrix"
+    ##                   [,1]
+    ## 1.2010-02-01 0.9319471
+    ## 2.2010-02-01 1.0682105
+    ## 3.2010-02-01 1.0434833
+    ## 4.2010-02-01 1.0185787
+    ## 5.2010-02-01 0.9715417
+    ## 1.2010-03-01 1.0499673
 
 There are various inverse-variance (or interval) weighting schemes found
 in the literature. These weights are the result of regressing the
@@ -209,15 +216,16 @@ W <- Diagonal(x = 1 / fitted.values(mdl))
 
 grs_cs <- exp(solve(crossprod(Z, W %*% Z), crossprod(Z, W %*% y)))
 head(grs_cs)
-#> 6 x 1 Matrix of class "dgeMatrix"
-#>                   [,1]
-#> 1.2010-02-01 0.9216778
-#> 2.2010-02-01 1.0395309
-#> 3.2010-02-01 1.0265610
-#> 4.2010-02-01 0.9885539
-#> 5.2010-02-01 0.9611430
-#> 1.2010-03-01 1.0373087
 ```
+
+    ## 6 x 1 Matrix of class "dgeMatrix"
+    ##                   [,1]
+    ## 1.2010-02-01 0.9216778
+    ## 2.2010-02-01 1.0395309
+    ## 3.2010-02-01 1.0265610
+    ## 4.2010-02-01 0.9885539
+    ## 5.2010-02-01 0.9611430
+    ## 1.2010-03-01 1.0373087
 
 Adding the square of the holding period to the model for the variance,
 with or without an intercept, is a common variation for the interval
@@ -234,15 +242,16 @@ Y <- matrices("Y")
 
 ars <- 1 / solve(crossprod(Z, X), crossprod(Z, Y))
 head(ars)
-#> 6 x 1 Matrix of class "dgeMatrix"
-#>                   [,1]
-#> 1.2010-02-01 0.9049071
-#> 2.2010-02-01 1.1567195
-#> 3.2010-02-01 1.0093530
-#> 4.2010-02-01 1.0107540
-#> 5.2010-02-01 0.9458214
-#> 1.2010-03-01 0.9840927
 ```
+
+    ## 6 x 1 Matrix of class "dgeMatrix"
+    ##                   [,1]
+    ## 1.2010-02-01 0.9049071
+    ## 2.2010-02-01 1.1567195
+    ## 3.2010-02-01 1.0093530
+    ## 4.2010-02-01 1.0107540
+    ## 5.2010-02-01 0.9458214
+    ## 1.2010-03-01 0.9840927
 
 Like the GRS index, the ARS index can be calculated with
 inverse-variance weights.
@@ -256,15 +265,16 @@ W <- Diagonal(x = 1 / fitted.values(mdl))
 
 ars_cs <- 1 / solve(crossprod(Z, W %*% X), crossprod(Z, W %*% Y))
 head(ars_cs)
-#> 6 x 1 Matrix of class "dgeMatrix"
-#>                   [,1]
-#> 1.2010-02-01 0.9040179
-#> 2.2010-02-01 1.1194659
-#> 3.2010-02-01 0.9667189
-#> 4.2010-02-01 0.9549480
-#> 5.2010-02-01 0.9161033
-#> 1.2010-03-01 0.9856805
 ```
+
+    ## 6 x 1 Matrix of class "dgeMatrix"
+    ##                   [,1]
+    ## 1.2010-02-01 0.9040179
+    ## 2.2010-02-01 1.1194659
+    ## 3.2010-02-01 0.9667189
+    ## 4.2010-02-01 0.9549480
+    ## 5.2010-02-01 0.9161033
+    ## 1.2010-03-01 0.9856805
 
 Dividing the \\X\\ and \\Y\\ matrices by the price of the first sale for
 each row produces an equally-weighted arithmetic index (as opposed to
@@ -278,15 +288,16 @@ ars_ew <- with(
 )
 
 head(ars_ew)
-#> 6 x 1 Matrix of class "dgeMatrix"
-#>                   [,1]
-#> 1.2010-02-01 0.9831875
-#> 2.2010-02-01 1.1454796
-#> 3.2010-02-01 1.1332362
-#> 4.2010-02-01 0.9957358
-#> 5.2010-02-01 0.8859613
-#> 1.2010-03-01 0.9510087
 ```
+
+    ## 6 x 1 Matrix of class "dgeMatrix"
+    ##                   [,1]
+    ## 1.2010-02-01 0.9831875
+    ## 2.2010-02-01 1.1454796
+    ## 3.2010-02-01 1.1332362
+    ## 4.2010-02-01 0.9957358
+    ## 5.2010-02-01 0.8859613
+    ## 1.2010-03-01 0.9510087
 
 Once the index is calculated, it’s often easier to turn into a
 matrix-like object with cities as rows and time periods as columns. The
@@ -294,26 +305,27 @@ easiest way to do this is with the **piar** package.
 
 ``` r
 
-library(piar)
-
 dimensions <- do.call(rbind, strsplit(rownames(grs), ".", fixed = TRUE))
-grs_piar <- elementary_index(
-  grs,
-  period = dimensions[, 2],
-  ea = dimensions[, 1],
+grs_piar <- piar::as_index(
+  data.frame(
+    period = dimensions[, 2],
+    city = dimensions[, 1],
+    index =  as.numeric(grs)
+  ),
   chainable = FALSE
 )
 
-grs_piar[1:5, 1:5]
-#> Fixed-base price index for 5 levels over 5 time periods 
-#>       time
-#> levels 2010-02-01 2010-03-01 2010-04-01 2010-05-01 2010-06-01
-#>      1  0.9319471   1.049967  1.0312130  0.9332345  1.0074811
-#>      2  1.0682105   0.984812  1.0840525  1.0113186  0.9645851
-#>      3  1.0434833   1.044671  0.9526141  0.9330665  1.0234300
-#>      4  1.0185787   1.048738  1.0757727  1.1258297  1.0099260
-#>      5  0.9715417   1.025133  1.0648382  1.0387825  1.0930171
+head(grs_piar, c(5, 5))
 ```
+
+    ## Fixed-base price index for 5 levels over 5 time periods 
+    ##       time
+    ## levels 2010-02-01 2010-03-01 2010-04-01 2010-05-01 2010-06-01
+    ##      1  0.9319471   1.049967  1.0312130  0.9332345  1.0074811
+    ##      2  1.0682105   0.984812  1.0840525  1.0113186  0.9645851
+    ##      3  1.0434833   1.044671  0.9526141  0.9330665  1.0234300
+    ##      4  1.0185787   1.048738  1.0757727  1.1258297  1.0099260
+    ##      5  0.9715417   1.025133  1.0648382  1.0387825  1.0930171
 
 ## Sales pair contributions
 
@@ -333,6 +345,10 @@ contribution of each property at each point in time.
 
 ``` r
 
+geometric_contributions <- function(x) {
+  (x - 1) * piar::transmute_weights(x, order = 0)
+}
+
 grs_contributions <- Map(
   \(df, df_prev) {
     impute_back <- with(
@@ -351,16 +367,25 @@ grs_contributions <- Map(
 )
 
 all.equal(sapply(grs_contributions, sum) + 1, grs)
-#> [1] TRUE
+```
+
+    ## [1] TRUE
+
+``` r
 
 range(unlist(grs_contributions))
-#> [1] -0.008215347  0.009111019
 ```
+
+    ## [1] -0.008215347  0.009111019
 
 The same applies to the ARS index, noting that it is a weighted
 arithmetic mean of imputed price relatives.
 
 ``` r
+
+arithmetic_contributions <- function(x, w) {
+  (x - 1) * piar::transmute_weights(x, w, order = 1)
+}
 
 ars_contributions <- Map(
   \(df, df_prev) {
@@ -381,11 +406,16 @@ ars_contributions <- Map(
 )
 
 all.equal(sapply(ars_contributions, sum) + 1, ars)
-#> [1] TRUE
+```
+
+    ## [1] TRUE
+
+``` r
 
 range(unlist(ars_contributions))
-#> [1] -0.07041332  0.08316015
 ```
+
+    ## [1] -0.07041332  0.08316015
 
 [^1]: The GRS index is simply the first-difference estimator for the
     linear model of log price with property fixed effects. This is easy

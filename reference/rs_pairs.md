@@ -13,20 +13,21 @@ rs_pairs(period, product, match_first = TRUE)
 
 - period:
 
-  A vector that gives the time period for each sale. Usually a date
-  vector, or a factor with the levels in chronological order, but other
-  values are possible if they can be sorted in chronological order
-  (i.e., with [`order()`](https://rdrr.io/r/base/order.html)).
+  `[Date | factor]` A vector that gives the time period for each sale.
+  Usually a date vector, or a factor with the levels in chronological
+  order, but other values are possible if they can be sorted in
+  chronological order (i.e., with
+  [`order()`](https://rdrr.io/r/base/order.html)).
 
 - product:
 
-  A vector that gives the product identifier for each sale. Usually a
-  factor or vector of integer codes for each product.
+  `[factor]` A vector that gives the product identifier for each sale.
+  Usually a factor or vector of integer codes for each product.
 
 - match_first:
 
-  Should products in the first period match with themselves (the
-  default)?
+  `[logical(1)]` Should products in the first period match with
+  themselves (the default)?
 
 ## Value
 
