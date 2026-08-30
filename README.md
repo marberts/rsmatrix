@@ -1,4 +1,4 @@
-
+Moved to [codeberg](https://codeberg.org/marberts/rsmatrix)
 <!-- README.md is generated from README.Rmd. Please edit that file. -->
 
 # Matrices for repeat-sales price indexes <a href="https://marberts.github.io/rsmatrix/"><img src="man/figures/logo.png" align="right" height="139" alt="rsmatrix website" /></a>
