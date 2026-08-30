@@ -1,5 +1,7 @@
 # Matrices for repeat-sales price indexes
 
+Moved to [codeberg](https://codeberg.org/marberts/rsmatrix)
+
 Calculate the matrices in Shiller (1991) that serve as the foundation
 for many repeat-sales price indexes.
 
